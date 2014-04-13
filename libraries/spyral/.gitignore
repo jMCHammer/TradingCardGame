@@ -1,0 +1,12 @@
+*.pyc
+*.bak
+*.stackdump
+*.swp
+*.swo
+examples/spyral
+.DS_Store
+MANIFEST
+build
+source
+dist
+*.egg-info
