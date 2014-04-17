@@ -21,7 +21,7 @@ class StartScreen(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.image.Image("game/rsz_tundraclimate.png")
 	startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
-	startText.pos = (WIDTH/4,HEIGHT/5)
+	startText.pos = (WIDTH/4, 10)
 
 	class RegisterForm(spyral.Form):
             startButton = spyral.widgets.Button("START GAME")
