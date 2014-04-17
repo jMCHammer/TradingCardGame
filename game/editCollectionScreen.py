@@ -1,7 +1,7 @@
 import spyral
 import random
 import math
-import genderScreen
+import controlPanelScreen
 
 import time
 
