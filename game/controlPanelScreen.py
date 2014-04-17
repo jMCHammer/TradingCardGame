@@ -1,8 +1,8 @@
 import spyral
 import random
 import math
-
 import editCollectionScreen
+
 #import beginFaceOffScreen
 
 WIDTH = 1200
@@ -28,7 +28,7 @@ class ControlPanelScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = hero;
-        self.background = spyral.image.Image("game/rsz_tundraclimate.png")
+        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
 
         charText = drawFont(self.scene, "Extras/Comic_Book.ttf", "Welcome " + self.hero.name + "!")
         charText.pos = (WIDTH/3, 10)

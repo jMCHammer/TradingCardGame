@@ -55,7 +55,7 @@ class NameScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.image.Image("game/rsz_tundraclimate.png")
+        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
 
         startText = drawTitleFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)

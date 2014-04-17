@@ -25,7 +25,7 @@ class EditCollectionScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = hero
-        self.background = spyral.image.Image("game/rsz_tundraclimate.png")
+        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.layers = ["bottom", "text"]
 
         deckTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Deck", 50)

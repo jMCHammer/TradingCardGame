@@ -16,33 +16,33 @@ class drawFont(spyral.Sprite):
 
 class drawCharacterImage(spyral.Sprite):
     def __init__(self, Scene):
-	spyral.Sprite.__init__(self, Scene)
-	self.image = spyral.image.Image("Extras/boy.png")
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/boy.png")
 
 class drawVsImage(spyral.Sprite):
     def __init__(self, Scene):
-	spyral.Sprite.__init__(self, Scene)
-	self.image = spyral.image.Image("Extras/vs.png")
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/vs.png")
 
 class drawOpponentImage(spyral.Sprite):
     def __init__(self, Scene):
-	spyral.Sprite.__init__(self, Scene)
-	self.image = spyral.image.Image("Extras/girl.png")
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/girl.png")
 
 class BeginFaceoffScreen(spyral.Scene):
     def __init__(self):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.image.Image("game/rsz_tundraclimate.png")
+        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
 
-	characterImage = drawCharacterImage(self.scene)
-	characterImage.pos = (WIDTH*4/5, 400)
+	    characterImage = drawCharacterImage(self.scene)
+	    characterImage.pos = (WIDTH*4/5, 400)
 
-	vsImage = drawVsImage(self.scene)
-	vsImage.pos = (WIDTH/3, 225)
+	    vsImage = drawVsImage(self.scene)
+	    vsImage.pos = (WIDTH/3, 225)
 
-	opponentImage = drawOpponentImage(self.scene)
-	opponentImage.pos = (WIDTH/13,50)
+	    opponentImage = drawOpponentImage(self.scene)
+	    opponentImage.pos = (WIDTH/13,50)
 
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
