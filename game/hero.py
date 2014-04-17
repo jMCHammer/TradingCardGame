@@ -12,8 +12,9 @@ class Hero:
         "Algebra" : Card("Algebra"), 
         "Geometry" : Card("Geometry")}
 
-    def __init__(self, name):
+    def __init__(self, name, gender):
         self.name = name
+        self.gender = gender
 
     def addCardToDeck(self, subject):
         if len(self.deck) < 3 and subject in self.looseCards:
