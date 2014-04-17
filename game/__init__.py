@@ -1,5 +1,5 @@
 import spyral
-import pong
+import startScreen
 
 def main():
-    spyral.director.push(pong.Pong())
+    spyral.director.push(startScreen.StartScreen())
