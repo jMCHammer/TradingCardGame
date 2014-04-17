@@ -1,22 +1,8 @@
-class Player():
-	def __init__(self, name):
-		self.name = name
-		self.deck = 
-	def getDeck():
+from hero import Hero
+from card import Card
 
-class Deck():
-	def __init__(self):
-		self.cards = []
-	def add(self, card):
-		self.cards.append(card)
+class Model:
+    allCards = [Card("Math")]
 
-class Card():
-	def __init__(self, subject, questions):
-		self.subject = subject
-#		self.questions.append(questions)
-
-class Question():
-	def __init__(self, description, difficulty):
-		self.description = description
-		self.difficulty = difficulty
-	def createQuestion():
+    def initHero(self, name):
+        self.hero = Hero(name)

@@ -4,7 +4,6 @@ import math
 import genderScreen
 
 import time
-#import selectionScreen
 
 from hero import Hero
 
@@ -105,6 +104,5 @@ class EditCollectionScreen(spyral.Scene):
     #TODO make selectionScreen class
     def backClicked(self, event):
         if (event.value == "down"):
-            ss = selectionScreen.SelectionScreen(self.hero)
-            spyral.director.replace(ss)
+            spyral.director.pop()
 
