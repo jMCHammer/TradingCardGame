@@ -51,7 +51,7 @@ class EditCollectionScreen(spyral.Scene):
 ####
 
         self.drawAllCards() 
-        spyral.event.register("system.quit", spyral.director.pop)
+        spyral.event.register("system.quit", spyral.director.quit)
         spyral.event.register("form.RegisterForm.addButton.changed", self.addToDeck)
         spyral.event.register("form.RegisterForm.removeButton.changed", self.removeFromDeck)
         spyral.event.register("form.RegisterForm.backButton.changed", self.backClicked)
