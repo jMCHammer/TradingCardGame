@@ -69,38 +69,8 @@ class Arith(Question):
 #Decimal Arithmetics.
 #Takes Difficulty level(possibly an integer)
 #and Question Type, of 'maximize', 'quiz', or 'match'
-class decArith(Question):
+class decArith(Arith):
     def __init__(self, d, q):
         super(decArith, self).__init__(d,q)
         self.randomList = [ float(random.randrange(10000))/100.0, float(random.randrange(10000))/100.0, float(random.randrange(10000))/100.0 ]
-        self.randops = random.sample(ops, 2)
-        self.question = eval("self." + q + "()")
         self.answer = float(int(eval(self.question) * 100))/100.0
-
-    def quiz(self):
-        trandomList = list(self.randomList)
-        tops = list(self.randops)
-        firstNumber = trandomList[random.randrange(len(trandomList))]
-        firstOps = tops[random.randrange(len(tops))]
-        trandomList.remove(firstNumber)
-        tops.remove(firstOps)
-        secondNumber = trandomList[random.randrange(len(trandomList))]
-        trandomList.remove(secondNumber)
-        return str(firstNumber) + ' ' + firstOps + ' ' + str(secondNumber) + ' ' + tops[0] + ' ' + str(trandomList[0])
-
-    def maximize(self):
-        maxlist = {}
-        for i in range(len(self.randomList)):
-            p = str(self.randomList[i%3]) + ' ' + self.randops[0] + ' ' + str(self.randomList[(i+1)%3]) + ' ' + self.randops[1] + ' ' + str(self.randomList[(i+2)%3])
-            maxlist[p] = eval(p)
-            p = str(self.randomList[i%3]) + ' ' + self.randops[0] + ' ' + str(self.randomList[(i+2)%3]) + ' ' + self.randops[1] + ' ' + str(self.randomList[(i+1)%3])
-            maxlist[p] = eval(p)
-            p = str(self.randomList[i%3]) + ' ' + self.randops[1] + ' ' + str(self.randomList[(i+1)%3]) + ' ' + self.randops[0] + ' ' + str(self.randomList[(i+2)%3])
-            maxlist[p] = eval(p)
-            p = str(self.randomList[i%3]) + ' ' + self.randops[1] + ' ' + str(self.randomList[(i+2)%3]) + ' ' + self.randops[0] + ' ' + str(self.randomList[(i+1)%3])
-            maxlist[p] = eval(p)
-
-        return max(maxlist.iterkeys(), key=lambda k: maxlist[k])
-    
-    def match(self):
-        pass
