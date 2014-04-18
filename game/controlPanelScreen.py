@@ -48,8 +48,8 @@ class ControlPanelScreen(spyral.Scene):
         characterImage.pos = (WIDTH*3/4, 200)
 
 	faceoffButton = drawButton(self, "Extras/faceoff.png", WIDTH/4, 300)
-	editdeckButton = drawButton(self, "Extras/editdeck.png", WIDTH/4, 300)
-	tutorialButton = drawButton(self, "Extras/tutorial.png", WIDTH/4, 300)
+	editdeckButton = drawButton(self, "Extras/editdeck.png", WIDTH/3.35, 400)
+	tutorialButton = drawButton(self, "Extras/tutorial.png", WIDTH/2.9, 500)
 
         #class RegisterForm(spyral.Form):
         #    faceoffButton = spyral.widgets.Button("FACEOFF!")
