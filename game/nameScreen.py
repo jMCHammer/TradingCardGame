@@ -24,6 +24,16 @@ class drawTextFont(spyral.Sprite):
 	    f = spyral.Font(font, 50)
 	    self.image = f.render(text)
 
+class drawButton(spyral.Sprite):
+    def __init__(self, Scene, imageloc, posx, posy):
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image(imageloc)
+	    self.pos = (posx, posy)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+	    spyral.director.replace(controlPanelScreen.ControlPanelScreen(Hero(self.name, GENDER)))  
 
 class drawBoyImage(spyral.Sprite):
     def __init__(self, Scene):
@@ -64,14 +74,15 @@ class NameScreen(spyral.Scene):
         charText.pos = (WIDTH/5, 200)
 
         self.boyImage = drawBoyImage(self.scene)
-        self.girlImage = drawGirlImage(self.scene)				
+        self.girlImage = drawGirlImage(self.scene)	
+	continueButton = drawButton(self, "Extras/continue.png", WIDTH/2.6, HEIGHT*9/10)			
 
         class RegisterForm(spyral.Form):
-            nameButton = spyral.widgets.Button("Continue")
+            #nameButton = spyral.widgets.Button("Continue")
             nameAnswer = spyral.widgets.TextInput(275, "Enter your name here.")
 
         form = RegisterForm(self)
-        form.nameButton.pos = (WIDTH/2.25, HEIGHT*9/10)
+        #form.nameButton.pos = (WIDTH/2.25, HEIGHT*9/10)
         form.nameAnswer.pos = (WIDTH/2.75, HEIGHT*8.5/10)
 
         def continueClick(event):
@@ -82,4 +93,4 @@ class NameScreen(spyral.Scene):
 
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
-        spyral.event.register("form.RegisterForm.nameButton.changed", continueClick)
+        #spyral.event.register("form.RegisterForm.nameButton.changed", continueClick)
