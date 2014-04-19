@@ -27,6 +27,7 @@ class EditCollectionScreen(spyral.Scene):
         self.hero = hero
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.layers = ["bottom", "text"]
+#        self.load_style("styles.spys")
 
         deckTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Deck", 50)
         screenTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Edit Collection", 50)
@@ -65,25 +66,24 @@ class EditCollectionScreen(spyral.Scene):
         for card in self.hero.looseCards:
             self.hero.looseCards[card].visible = True
             self.hero.looseCards[card].setPos(x,y)
-            x = x + WIDTH/8
+            x = x + 220
 
         x = WIDTH/12
-        y = HEIGHT-150
+        y = HEIGHT-315
 
         ## Draw deck cards
         for card in self.hero.deck:
             self.hero.deck[card].visible = True
             self.hero.deck[card].setPos(x, y)
-            x = x + WIDTH/8
+            x = x + 220
 
 #### Event Handlers
-    #TODO select a card based on user input
     def addToDeck(self, event):
         subjects = []
         if (event.value == "down"):
             for card in self.hero.looseCards: 
                 if self.hero.looseCards[card].clicked:
-                    self.hero.looseCards[card].clicked = False
+                    self.hero.looseCards[card].handle_deselect()
                     subjects.append(self.hero.looseCards[card].subject)
             for subject in subjects:
                 self.hero.addCardToDeck(subject)
@@ -95,13 +95,13 @@ class EditCollectionScreen(spyral.Scene):
         if (event.value == "down"):
             for card in self.hero.deck: 
                 if self.hero.deck[card].clicked:
-                    self.hero.deck[card].clicked = False
+                    self.hero.deck[card].handle_deselect()
                     subjects.append(self.hero.deck[card].subject)
             for subject in subjects:
                 self.hero.removeCardFromDeck(subject)
             self.drawAllCards()
 
-    #TODO make selectionScreen class
+#### Go back to controlPanelScreen
     def backClicked(self, event):
         if (event.value == "down"):
             spyral.director.pop()

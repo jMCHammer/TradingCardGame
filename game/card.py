@@ -1,18 +1,14 @@
 import spyral
 
+from spyral import Vec2D
 from question import Question
-
-class drawFont(spyral.Sprite):
-    def __init__(self, Scene, font, text, size):
-        spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, size)
-        self.image = f.render(text)
-        self.layer = "text"
 
 class Card(spyral.Sprite):
     def __init__(self, subject):
 
         self.subject = subject
+        self.path_u = "Extras/TradingCards/"+self.subject+"_u.png"
+        self.path_s = "Extras/TradingCards/"+self.subject+"_s.png"
         self.difficultyList = ["easy", "medium", "hard"]
         self.damage = 10
         self.hp = 100
@@ -22,24 +18,30 @@ class Card(spyral.Sprite):
     
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            self.clicked = True
+            if self.clicked:
+                self.clicked = False
+                self.image = spyral.image.Image(self.path_u).scale(Vec2D(200,300))
+            else:
+                self.clicked = True
+                self.image = spyral.image.Image(self.path_s).scale(Vec2D(200,300))
 
-##
+    def handle_deselect(self):
+        self.clicked = False
+        self.image = spyral.image.Image(self.path_u).scale(Vec2D(200,300))
+
     def setPos(self, x, y):
         self.x = x
         self.y = y
-        self.text.pos = (self.x+10, self.y+10)
 
-##TODO Should be private
+
+##TODO Should only be called once
     def draw(self, Scene):
         spyral.Sprite.__init__(self, Scene)
-        self.image = spyral.Image(size=(100, 140)).fill((139, 69, 19))
+        self.image = spyral.image.Image(self.path_u).scale(Vec2D(200,300))
         self.x = 10
         self.y = 10
-        self.text = drawFont(Scene, "Extras/Comic_Book.ttf", self.subject, 15)
-        self.text.pos = (self.x+10, self.y+10)
-        self.visible = False
 
+        self.visible = False
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
     def isAlive(self, opponentDamage):
