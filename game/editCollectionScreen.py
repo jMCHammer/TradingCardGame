@@ -1,9 +1,5 @@
 import spyral
-import random
-import math
 import controlPanelScreen
-
-import time
 
 from hero import Hero
 
@@ -27,7 +23,6 @@ class EditCollectionScreen(spyral.Scene):
         self.hero = hero
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.layers = ["bottom", "text"]
-#        self.load_style("styles.spys")
 
         deckTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Deck", 50)
         screenTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Edit Collection", 50)
@@ -45,9 +40,9 @@ class EditCollectionScreen(spyral.Scene):
         form.backButton.pos = (10, 10)
 
 #### Temporary addition of Cards to deck
-        self.hero.addCardToLooseCards("Addition")
+        self.hero.addCardToLooseCards("Arithmetic")
         self.hero.addCardToLooseCards("Geometry")
-        self.hero.looseCards["Addition"].draw(self)
+        self.hero.looseCards["Arithmetic"].draw(self)
         self.hero.looseCards["Geometry"].draw(self)
 ####
 

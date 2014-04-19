@@ -7,31 +7,31 @@ class Hero:
     deck       = {}
     looseCards = {}
     allCards   = {
-        "Addition" : Card("Addition"), 
-        "Decimal Addition" : Card("Decimal Addition"), 
-        "Algebra" : Card("Algebra"), 
-        "Geometry" : Card("Geometry")}
+        "Arithmetic"       : Card("Arithmetic", 80, 40), 
+        "Geometry"         : Card("Geometry", 100, 80),
+        "Decimal Addition" : Card("Decimal Addition", 90, 50), 
+        "Algebra"          : Card("Algebra", 100, 100)}
 
     def __init__(self, name, gender):
         self.name = name
         self.gender = gender
 
+
+########## EditCollectionScreen functions #####################################
+#### Adds card from looseCards to Deck
     def addCardToDeck(self, subject):
         if len(self.deck) < 3 and subject in self.looseCards:
             newcard = self.looseCards[subject]
             newcard.alive = True
             self.deck[subject] = newcard
             del self.looseCards[subject]
-##
-            print (self.looseCards)
-            print (self.deck)
-##
 
             ## Return so referencing class can modify Card
             return newcard
         else:
             print ("A deck can't have more than 3 cards OR Card isn't in looseCards")
 
+#### Adds new card to looseCards from allCards
     def addCardToLooseCards(self, subject):
         if subject in self.allCards:
             self.looseCards[subject] = self.allCards[subject]
@@ -41,6 +41,7 @@ class Hero:
         else:
             print ("Card doesn't exist")
 
+### Adds card to looseCards from Deck
     def removeCardFromDeck(self, subject):
         if subject in self.deck:
             newcard = self.deck[subject]
@@ -52,7 +53,10 @@ class Hero:
             return newcard
         else:
             print ("subject isn't in deck")
+########## </EditCollectionScreen> ############################################
 
+########## FaceOffScreen functions ############################################
+#### Used for Battles to determine whether all cards are alive
     def isAlive(self):
         for card in self.deck:
             if (card.alive):
