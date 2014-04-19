@@ -15,27 +15,28 @@ class drawFont(spyral.Sprite):
         f = spyral.Font(font, 150)
         self.image = f.render(text)
 
+class drawButton(spyral.Sprite):
+    def __init__(self, Scene, imageloc, posx, posy):
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image(imageloc)
+	    self.pos = (posx, posy)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+	        spyral.director.replace(nameScreen.NameScreen())            
+
 class StartScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.image.Image("game/rsz_tundraclimate.png")
-	startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
-	startText.pos = (WIDTH/4, 10)
+        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        
+        startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
+        startText.pos = (WIDTH/4, 10)
 
-	class RegisterForm(spyral.Form):
-            startButton = spyral.widgets.Button("START GAME")
-
-        form = RegisterForm(self)
-	form.startButton.pos = (WIDTH/2.25, HEIGHT*4/5)
-
-	def startClick(event):
-	    if (event.value == "down"):
-		spyral.director.replace(nameScreen.NameScreen())
-	
+        startButton = drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*4/5)
 
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
-	spyral.event.register("form.RegisterForm.startButton.changed", startClick)
-
 
