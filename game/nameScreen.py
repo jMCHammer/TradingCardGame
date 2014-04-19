@@ -20,28 +20,28 @@ class drawTitleFont(spyral.Sprite):
 
 class drawTextFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
-	    spyral.Sprite.__init__(self, Scene)
-	    f = spyral.Font(font, 50)
-	    self.image = f.render(text)
+        spyral.Sprite.__init__(self, Scene)
+        f = spyral.Font(font, 50)
+        self.image = f.render(text)
 
 class drawButton(spyral.Sprite):
     def __init__(self, Scene, imageloc, posx, posy):
-	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image(imageloc)
-	    self.pos = (posx, posy)
-	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+        spyral.Sprite.__init__(self, Scene)
+        self.image = spyral.image.Image(imageloc)
+        self.pos = (posx, posy)
+        spyral.event.register("input.mouse.down.left", self.handle_clicked)    
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-	    spyral.director.replace(controlPanelScreen.ControlPanelScreen(Hero(self.name, GENDER)))  
+            spyral.director.replace(controlPanelScreen.ControlPanelScreen(Hero(self.name, GENDER)))  
 
 class drawBoyImage(spyral.Sprite):
     def __init__(self, Scene):
-	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/boy.png")
-	    self.pos = (WIDTH/5, 300)
-	    self.gender = ""
-	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+        spyral.Sprite.__init__(self, Scene)
+        self.image = spyral.image.Image("Extras/boy.png")
+        self.pos = (WIDTH/5, 300)
+        self.gender = ""
+        spyral.event.register("input.mouse.down.left", self.handle_clicked)    
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
@@ -50,11 +50,11 @@ class drawBoyImage(spyral.Sprite):
 
 class drawGirlImage(spyral.Sprite):
     def __init__(self, Scene):
-	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/girl.png")
-	    self.pos = (WIDTH*3/5, 300)
-	    self.gender = ""
-	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+        spyral.Sprite.__init__(self, Scene)
+        self.image = spyral.image.Image("Extras/girl.png")
+        self.pos = (WIDTH*3/5, 300)
+        self.gender = ""
+        spyral.event.register("input.mouse.down.left", self.handle_clicked)    
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
@@ -74,8 +74,8 @@ class NameScreen(spyral.Scene):
         charText.pos = (WIDTH/5, 200)
 
         self.boyImage = drawBoyImage(self.scene)
-        self.girlImage = drawGirlImage(self.scene)	
-	continueButton = drawButton(self, "Extras/continue.png", WIDTH/2.6, HEIGHT*9/10)			
+        self.girlImage = drawGirlImage(self.scene)    
+        continueButton = drawButton(self, "Extras/continue.png", WIDTH/2.6, HEIGHT*9/10)            
 
         class RegisterForm(spyral.Form):
             #nameButton = spyral.widgets.Button("Continue")
