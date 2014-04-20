@@ -3,7 +3,7 @@ from card import Card
 
 class Hero(spyral.Sprite):
     """This is our Hero class, otherwise known as the main character
-    of the game.
+    of the game. It is also used as a framework for Opponents.
     """
     deck       = {}
     looseCards = {}
@@ -14,9 +14,19 @@ class Hero(spyral.Sprite):
         "Algebra"          : Card("Algebra", 100, 100)}
 
     def __init__(self, name, gender):
+        self.allCards["Arithmetic"] = Card("Arithmetic", 80, 40)
         self.name = name
         self.gender = gender
 
+#### Initialize Opponent "Youngster Joey"
+    def initJoey(self, scene):
+        self.addCardToLooseCards("Arithmetic")
+      #  self.addCardToLooseCards("Geometry")
+        self.looseCards["Arithmetic"].draw(scene)
+    #    self.looseCards["Geometry"].draw(scene)
+
+        self.addCardToDeck("Arithmetic")
+    #    self.addCardToDeck("Geometry")
 
 ########## EditCollectionScreen functions #####################################
 #### Draws card in appropriate scene 

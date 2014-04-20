@@ -61,7 +61,7 @@ class Card(spyral.Sprite):
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
 ########## FaceOffScreen functions ############################################
-    def isAlive(self, opponentDamage):
+    def applyDamage(self, opponentDamage):
         self.hp = self.hp - opponentDamage
         if (self.hp <= 0):
             self.hp = 0
