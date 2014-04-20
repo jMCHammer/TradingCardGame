@@ -24,7 +24,7 @@ class drawButton(spyral.Sprite):
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-	    spyral.director.replace(nameScreen.NameScreen())            
+	        spyral.director.replace(nameScreen.NameScreen())            
 
 class StartScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):
@@ -35,21 +35,8 @@ class StartScreen(spyral.Scene):
         startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
 
-	startButton = drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*4/5)
-
-        #class RegisterForm(spyral.Form):
-            #startButton = spyral.widgets.Button("START GAME")
-
-        #form = RegisterForm(self)
-        #form.startButton.pos = (WIDTH/2.25, HEIGHT*4/5)
-
-        #def startClick(event):
-            #if (event.value == "down"):
-                #spyral.director.replace(nameScreen.NameScreen())
-	
+        startButton = drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*4/5)
 
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
-        #spyral.event.register("form.RegisterForm.startButton.changed", startClick)
-
 
