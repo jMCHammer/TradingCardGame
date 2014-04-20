@@ -72,7 +72,7 @@ class NameScreen(spyral.Scene):
         startText = drawTitleFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
 
-        charText = drawTextFont(self.scene, "Extras/Comic_Book.ttf", "CHOOSE YOUR CHARACTER")
+        charText = drawTextFont(self.scene, "Extras/Comic_Book.ttf", "CLICK YOUR CHARACTER")
         charText.pos = (WIDTH/5, 200)
 
         self.boyImage = drawBoyImage(self.scene)
