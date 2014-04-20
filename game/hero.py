@@ -1,5 +1,6 @@
 import spyral
 from card import Card
+import model
 
 class Hero(spyral.Sprite):
     """This is our Hero class, otherwise known as the main character
@@ -13,10 +14,12 @@ class Hero(spyral.Sprite):
         "Decimal Addition" : Card("Decimal Addition", 90, 50), 
         "Algebra"          : Card("Algebra", 100, 100)}
 
-    def __init__(self, name, gender):
+    def __init__(self, Scene):
+        spyral.Sprite.__init__(self,Scene)
         self.allCards["Arithmetic"] = Card("Arithmetic", 80, 40)
-        self.name = name
-        self.gender = gender
+        self.name = model.name
+        self.gender = model.gender
+        self.image = spyral.image.Image("Extras/" + self.gender + ".png")
 
 #### Initialize Opponent "Youngster Joey"
     def initJoey(self, scene):
@@ -27,15 +30,6 @@ class Hero(spyral.Sprite):
 
         self.addCardToDeck("Arithmetic")
     #    self.addCardToDeck("Geometry")
-
-########## EditCollectionScreen functions #####################################
-#### Draws card in appropriate scene 
-    def draw(self, Scene):
-        spyral.Sprite.__init__(self, Scene)
-        if (self.gender == "boy"):
-            self.image = spyral.image.Image("Extras/boy.png")
-        if (self.gender == "girl"):
-            self.image = spyral.image.Image("Extras/girl.png")
 
 #### Adds card from looseCards to Deck
     def addCardToDeck(self, subject):

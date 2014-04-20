@@ -1,16 +1,14 @@
 import spyral
 import random
 import math
+import model
 import controlPanelScreen
-from hero import Hero
 
 WIDTH = 1200
 HEIGHT = 900
 BG_COLOR = (0,0,0)
 WHITE = (255, 255, 255)
 SIZE = (WIDTH, HEIGHT)
-GENDER = ""
-
 
 class drawTitleFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
@@ -29,26 +27,22 @@ class drawBoyImage(spyral.Sprite):
 	    spyral.Sprite.__init__(self, Scene)
 	    self.image = spyral.image.Image("Extras/boy.png")
 	    self.pos = (WIDTH/5, 300)
-	    self.gender = ""
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            global GENDER 
-            GENDER = "boy"
+            model.gender = "boy"
 
 class drawGirlImage(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
 	    self.image = spyral.image.Image("Extras/girl.png")
 	    self.pos = (WIDTH*3/5, 300)
-	    self.gender = ""
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            global GENDER
-            GENDER = "girl"
+            model.gender = "girl"
 
 class drawButton(spyral.Sprite):
     def __init__(self, Scene):
@@ -59,7 +53,8 @@ class drawButton(spyral.Sprite):
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            cps = controlPanelScreen.ControlPanelScreen(Hero(form.nameAnswer.value, GENDER))
+            model.name = form.nameAnswer.value
+            cps = controlPanelScreen.ControlPanelScreen()
             spyral.director.replace(cps)
 
 class NameScreen(spyral.Scene):

@@ -1,6 +1,7 @@
 import spyral
 import random
 import math
+from hero import Hero
 
 WIDTH = 1200
 HEIGHT = 900
@@ -21,14 +22,13 @@ class drawImage(spyral.Sprite):
         self.pos = (posx, posy)
 
 class BeginFaceoffScreen(spyral.Scene):
-    def __init__(self, hero):
+    def __init__(self):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.hero = hero
+        self.hero = Hero(self.scene)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
 
-        hero.draw(self.scene)
-        hero.pos = (WIDTH*4/5, 400) 
+        self.hero.pos = (WIDTH*4/5, 400) 
 
         vsImage = drawImage(self.scene, "Extras/vs.png", WIDTH/3, 225)
         opponentImage = drawImage(self.scene, "Extras/girl.png", WIDTH/13, 50)

@@ -1,6 +1,5 @@
 import spyral
 import controlPanelScreen
-
 from hero import Hero
 
 WIDTH    = 1200
@@ -17,10 +16,10 @@ class drawFont(spyral.Sprite):
 
 #Scene used to edit Deck used in battle
 class EditCollectionScreen(spyral.Scene):
-    def __init__(self, hero):
+    def __init__(self):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.hero = hero
+        self.hero = Hero(self.scene)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.layers = ["bottom", "text"]
 
