@@ -1,6 +1,7 @@
+import spyral
 from card import Card
 
-class Hero:
+class Hero(spyral.Sprite):
     """This is our Hero class, otherwise known as the main character
     of the game. It is also used as a framework for Opponents.
     """
@@ -28,6 +29,14 @@ class Hero:
     #    self.addCardToDeck("Geometry")
 
 ########## EditCollectionScreen functions #####################################
+#### Draws card in appropriate scene 
+    def draw(self, Scene):
+        spyral.Sprite.__init__(self, Scene)
+        if (self.gender == "boy"):
+            self.image = spyral.image.Image("Extras/boy.png")
+        if (self.gender == "girl"):
+            self.image = spyral.image.Image("Extras/girl.png")
+
 #### Adds card from looseCards to Deck
     def addCardToDeck(self, subject):
         if len(self.deck) < 3 and subject in self.looseCards:
