@@ -1,5 +1,5 @@
 import spyral
-import nameScreen
+import startScreen
 
 def main():
-    spyral.director.push(nameScreen.NameScreen())
+    spyral.director.push(startScreen.StartScreen())
