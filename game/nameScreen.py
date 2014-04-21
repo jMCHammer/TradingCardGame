@@ -53,14 +53,13 @@ class drawButton(spyral.Sprite):
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            model.name = form.nameAnswer.value
+            model.name = self.scene.form.nameAnswer.value
             cps = controlPanelScreen.ControlPanelScreen()
             spyral.director.replace(cps)
 
 class NameScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
-        global form
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
 
@@ -76,8 +75,8 @@ class NameScreen(spyral.Scene):
         class RegisterForm(spyral.Form):
             nameAnswer = spyral.widgets.TextInput(275, "Enter your name here.")
 
-        form = RegisterForm(self)
-        form.nameAnswer.pos = (WIDTH/2.75, HEIGHT*8.5/10)
+        self.form = RegisterForm(self)
+        self.form.nameAnswer.pos = (WIDTH/2.75, HEIGHT*8.5/10)
 
         continueButton = drawButton(self.scene)		
 
