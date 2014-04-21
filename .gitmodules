@@ -1,0 +1,3 @@
+[submodule "libraries/spyral"]
+	path = libraries/spyral
+	url = https://github.com/platipy/spyral.git
