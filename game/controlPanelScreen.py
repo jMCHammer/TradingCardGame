@@ -50,7 +50,6 @@ class drawTutorialButton(spyral.Sprite):
 class ControlPanelScreen(spyral.Scene):
     def __init__(self):
         global manager
-        global hero
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self.scene)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")

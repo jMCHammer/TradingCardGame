@@ -1,7 +1,6 @@
 import spyral
-import random
-import math
 import nameScreen
+import model
 
 WIDTH = 1200
 HEIGHT = 900
@@ -30,12 +29,13 @@ class StartScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        model.loadResources()
+        self.background = model.resources["background"]
         
         startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
 
-        startButton = drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*4/5)
+        drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*4/5)
 
         spyral.event.register("system.quit", spyral.director.pop)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)

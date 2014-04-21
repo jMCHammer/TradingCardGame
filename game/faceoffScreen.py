@@ -1,7 +1,10 @@
 import spyral
-from spyral import Animation, easing
+import model
 
+from opponent import Opponent
+from spyral import Animation, easing
 from hero import Hero
+from card import Card
 
 WIDTH    = 1200
 HEIGHT   = 900
@@ -22,13 +25,14 @@ class drawFont(spyral.Sprite):
 
 #Scene used for battle
 class FaceoffScreen(spyral.Scene):
-    def __init__(self, hero):
+    def __init__(self):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.hero = hero
-###TODO Pass on selected Opponent from StartFaceoffScreen
-        self.opponent = Hero("Youngster Joey", "boy")
-        self.opponent.initJoey(self)
+        self.hero = Hero(self)
+### TODO Pass on selected Opponent from StartFaceoffScreen
+        self.opponent = Opponent(self, "Youngster Joey")
+        self.opponent.image.pos = (15, WIDTH-200)
+
 ###
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.layers = ["bottom", "text"]
@@ -52,22 +56,30 @@ class FaceoffScreen(spyral.Scene):
         self.form.answerButton.visible = False
         self.form.answerField.visible  = False
         
+        self.deck = {}
+        self.opponentcards = {}
+        # Initalize Hero cards
+        for card_guts in model.deck:
+            card_guts = model.deck[card_guts]
+            self.deck[card_guts[0]] = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
+        # Initialize Opponent cards
+        for card_guts in self.opponent.deck:
+            card_guts = self.opponent.deck[card_guts]
+            self.opponentcards[card_guts[0]] = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
+
         ## Screen Text
         self.battleTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "BATTLE", 50)
         self.battleTitle.pos = (WIDTH/2-170, HEIGHT/3+30)
 
-### Temporary addition of cards until game hero is correctly passed to file
-### TODO 
-        self.hero.addCardToLooseCards("Arithmetic")
-        self.hero.addCardToLooseCards("Geometry")
-        self.hero.looseCards["Arithmetic"].draw(self)
-        self.hero.looseCards["Geometry"].draw(self)
-
-        self.hero.addCardToDeck("Arithmetic")
-        self.hero.addCardToDeck("Geometry")
-###
         self.showOppHealth = [0, 0, 0]
-        self.showHealth    = [0, 0, 0]
+        self.showHealth = [0, 0, 0]
+        count = 0
+        for card in self.deck:
+            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.deck[card].health), 25))
+        count = 0
+        for card in self.opponentcards:
+            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponentcards[card].health), 25))
+        
         self.drawAllCards()
 
         spyral.event.register("system.quit", spyral.director.quit)
@@ -89,11 +101,13 @@ class FaceoffScreen(spyral.Scene):
         # Deal damage
         # TODO 
 ###TODO Temporary
-        self.opponent.deck[self.opponent.selectedSubject].applyDamage(damage)
+        self.opponentcards[self.opponent.selectedSubject].applyDamage(damage)
+        print (self.opponent.deck[self.opponent.selectedSubject])
 ###
 
 #### Starts the battle
     def startBattle(self, event):
+        self.opponent.pickCard()
         if (event.value == "down"):
             count = 0
             subjects = []
@@ -109,17 +123,19 @@ class FaceoffScreen(spyral.Scene):
                 pass
 
             # If there is more than one card selected, don't run
-            for card in self.hero.deck:
-                if self.hero.deck[card].clicked:
+            for card in self.deck:
+                if self.deck[card].clicked:
+                    subjects.append(self.deck[card].subject)
+                    self.deck[card].visible = False
+                    print self.deck
+                    print self.showHealth
+                    self.showHealth[count].visible = False
                     count += 1
-                    subjects.append(self.hero.deck[card].subject)
-                self.hero.deck[card].visible = False
-                self.showHealth[count].visible = False
 
             # If there is one card selected, start battle
             if count == 1:
                 self.selectedSubject = subjects[0]
-                self.hero.deck[self.selectedSubject].visible = True
+                self.deck[self.selectedSubject].visible = True
 
                 self.battleTitle.visible       = False
                 self.form.selectButton.visible = False
@@ -127,23 +143,25 @@ class FaceoffScreen(spyral.Scene):
                 self.form.answerButton.visible = True
 
 ###TODO Show question text on screen
-                self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.hero.deck[self.selectedSubject].question, 25)
+                self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
                 self.showQuestion.pos = (WIDTH/2-100, HEIGHT/3+30)
 ###
         # If there are no card selected, show all cards
             if count == 0:
-                for card in self.hero.deck:
-                    self.hero.deck[card].visible = True
+                for card in self.deck:
+                    self.deck[card].visible = True
                     self.showHealth[count].visible = True
+
         
 ################### Event Handlers ############################################
 #### Submit answer to system
 #### TODO implement game logic, damage, if answer is close -> still does damage?
     def submitAnswer(self, event):
+        self.opponent.answerQuestion()
         if (event.value == "down"):
             # if answer is correct
-            if float(self.form.answerField.value) == float(self.hero.deck[self.selectedSubject].answer):
-                self.dealDamage(self.hero.deck[self.selectedSubject].damage)
+            if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
+                self.dealDamage(self.deck[self.selectedSubject].damage)
             else:
                 print ("False: 0 Damage?")
         self._reset()
@@ -151,6 +169,20 @@ class FaceoffScreen(spyral.Scene):
 ################### Drawing Functions #########################################
 #### Resets screen
     def _reset(self):
+        dead = True
+        for card in self.deck:
+            if self.deck[card].alive:
+                dead = False
+        if dead:
+            print ("Hero has died!")
+
+        dead = True
+        for card in self.opponentcards:
+            if self.opponentcards[card].alive:
+                dead = False
+        if dead:
+            print ("Enemy has died!")
+
         # Show appropriate buttons and titles
         self.form.selectButton.visible = True
         self.form.answerButton.visible = False
@@ -161,8 +193,8 @@ class FaceoffScreen(spyral.Scene):
 
         # reset values
         self.form.answerField.value = ""
-        for card in self.hero.deck:
-            self.hero.deck[card].handle_deselect()    
+        for card in self.deck:
+            self.deck[card].handle_deselect()    
         self.drawAllCards()
 
 #### Draws all cards on screen
@@ -172,24 +204,54 @@ class FaceoffScreen(spyral.Scene):
         count = 0
 
         ## Draw Hero's deck cards
-        for card in self.hero.deck:
+        for card in self.deck:
             try:    
                 self.showHealth[count].visible = False
 #                del self.showHealth[count]
             except:
                 pass
             # Init health counters
-            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.hero.deck[card].health), 25))
+            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.deck[card].health), 25))
             # Draw Health counters on screen
             self.showHealth[count].layer = "text"
             self.showHealth[count].pos = (x + 70, y - 35)
             # Draw cards on screen
-            self.hero.deck[card].layer = "text"
-            self.hero.deck[card].visible = True
-            self.hero.deck[card].setPos(x, y)
+            self.deck[card].layer = "text"
+            if self.deck[card].alive:
+                self.deck[card].visible = True
+            self.deck[card].pos = (x, y)
             x = x + 400
             count += 1
 
+        # Opponent cards
+        x = WIDTH/12
+        y = 15
+
+        for card in self.opponentcards:
+            try:    
+                self.showOppHealth[count].visible = False
+#                del self.showHealth[count]
+            except:
+                pass
+            # Init health counters
+            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponentcards[card].health), 25))
+            self.showOppHealth[count].layer = "text"
+            self.showOppHealth[count].pos = (x + 70, y + 300)
+            # Draw cards on screen
+            self.opponentcards[card].layer = "text"
+            if self.opponentcards[card].alive:
+                self.opponentcards[card].visible = True
+            self.opponentcards[card].pos = (x, y)
+            x = x + 400
+            count += 1
+
+################### Exit ######################################################
+#### Go back to controlPanelScreen
+    def backClicked(self, event):
+        if (event.value == "down"):
+            spyral.director.pop()
+
+"""
         ## Draw Opponent's deck cards
 ###############################MAJOR TODO ######################## Figure out why project is only drawing one set of cards
         y = 10
@@ -209,13 +271,7 @@ class FaceoffScreen(spyral.Scene):
             # Draw cards on screen
             self.opponent.deck[card].layer = "text"
             self.opponent.deck[card].visible = True
-            self.opponent.deck[card].setPos(x, y)
+            self.opponent.deck[card].pos = (x, y)
             x = x + 400
             count += 1
-
-
-################### Exit ######################################################
-#### Go back to controlPanelScreen
-    def backClicked(self, event):
-        if (event.value == "down"):
-            spyral.director.pop()
+            """
