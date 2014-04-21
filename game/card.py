@@ -1,24 +1,27 @@
 import spyral
+import model
 
 from spyral import Vec2D
-from question import Question
+#from question import Question
 
 class Card(spyral.Sprite):
-    def __init__(self, subject, health, damage):
+    def __init__(self, Scene, subject, health, damage):
+        spyral.Sprite.__init__(self, Scene)
+        self.image = model.resources[subject + "_u"].scale(Vec2D(200,300))
+        self.x = 10
+        self.y = 10
 
         self.subject = subject
         self.health = health
         self.damage = damage
 
-        self.path_u = "Extras/TradingCards/"+self.subject+"_u.png"
-        self.path_s = "Extras/TradingCards/"+self.subject+"_s.png"
-
         self.difficultyList = ["easy", "medium", "hard"]
-        self.alive   = False
+        self.alive   = True
         self.clicked = False
+        spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
 ##TODO Temporary solution until Question logic is finished
-##TODO Should initQuestion after a player chooses it's card difficulty
+## Should initQuestion after a player chooses it's card difficulty
         self.initQuestion("easy")
 ##
 
@@ -27,21 +30,15 @@ class Card(spyral.Sprite):
     def handle_clicked(self, pos):
         if self.collide_point(pos):
             if self.clicked:
-                self.clicked = False
-                self.image = spyral.image.Image(self.path_u).scale(Vec2D(200,300))
+                self.handle_deselect()
             else:
                 self.clicked = True
-                self.image = spyral.image.Image(self.path_s).scale(Vec2D(200,300))
+                self.image = model.resources[self.subject + "_s"].scale(Vec2D(200,300))
 
 #### Used to deselect an active card
     def handle_deselect(self):
         self.clicked = False
-        self.image = spyral.image.Image(self.path_u).scale(Vec2D(200,300))
-
-#### Sets the screen position of the card
-    def setPos(self, x, y):
-        self.x = x
-        self.y = y
+        self.image = model.resources[self.subject + "_u"].scale(Vec2D(200,300))
 
 #### Initialized the Question for the corresponding card
 ## TODO
@@ -50,22 +47,7 @@ class Card(spyral.Sprite):
         self.answer = 50
 #        self.question = Question(self.subject, selectedDifficulty)
 
-##TODO Should only be called once
-    def draw(self, Scene):
-        spyral.Sprite.__init__(self, Scene)
-        self.image = spyral.image.Image(self.path_u).scale(Vec2D(200,300))
-        self.x = 10
-        self.y = 10
 
-        self.visible = False
-        spyral.event.register("input.mouse.down.left", self.handle_clicked)
-
-########## FaceOffScreen functions ############################################
-    def applyDamage(self, opponentDamage):
-        self.hp = self.hp - opponentDamage
-        if (self.hp <= 0):
-            self.hp = 0
-            self.alive = False
 
 
 
