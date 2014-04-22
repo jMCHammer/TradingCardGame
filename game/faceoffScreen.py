@@ -30,7 +30,9 @@ class FaceoffScreen(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self)
 ### TODO Pass on selected Opponent from StartFaceoffScreen
-        self.opponent = Opponent("Youngster Joey")
+        self.opponent = Opponent(self, "Youngster Joey")
+        self.opponent.image.pos = (15, WIDTH-200)
+
 ###
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.layers = ["bottom", "text"]
@@ -55,10 +57,15 @@ class FaceoffScreen(spyral.Scene):
         self.form.answerField.visible  = False
         
         self.deck = {}
-        # Initalize all cards
+        self.opponentcards = {}
+        # Initalize Hero cards
         for card_guts in model.deck:
             card_guts = model.deck[card_guts]
             self.deck[card_guts[0]] = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
+        # Initialize Opponent cards
+        for card_guts in self.opponent.deck:
+            card_guts = self.opponent.deck[card_guts]
+            self.opponentcards[card_guts[0]] = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
 
         ## Screen Text
         self.battleTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "BATTLE", 50)
@@ -69,7 +76,10 @@ class FaceoffScreen(spyral.Scene):
         count = 0
         for card in self.deck:
             self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.deck[card].health), 25))
-
+        count = 0
+        for card in self.opponentcards:
+            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponentcards[card].health), 25))
+        
         self.drawAllCards()
 
         spyral.event.register("system.quit", spyral.director.quit)
@@ -91,11 +101,13 @@ class FaceoffScreen(spyral.Scene):
         # Deal damage
         # TODO 
 ###TODO Temporary
-        self.opponent.deck[self.opponent.selectedSubject].applyDamage(damage)
+        self.opponentcards[self.opponent.selectedSubject].applyDamage(damage)
+        print (self.opponent.deck[self.opponent.selectedSubject])
 ###
 
 #### Starts the battle
     def startBattle(self, event):
+        self.opponent.pickCard()
         if (event.value == "down"):
             count = 0
             subjects = []
@@ -145,6 +157,7 @@ class FaceoffScreen(spyral.Scene):
 #### Submit answer to system
 #### TODO implement game logic, damage, if answer is close -> still does damage?
     def submitAnswer(self, event):
+        self.opponent.answerQuestion()
         if (event.value == "down"):
             # if answer is correct
             if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
@@ -156,6 +169,20 @@ class FaceoffScreen(spyral.Scene):
 ################### Drawing Functions #########################################
 #### Resets screen
     def _reset(self):
+        dead = True
+        for card in self.deck:
+            if self.deck[card].alive:
+                dead = False
+        if dead:
+            print ("Hero has died!")
+
+        dead = True
+        for card in self.opponentcards:
+            if self.opponentcards[card].alive:
+                dead = False
+        if dead:
+            print ("Enemy has died!")
+
         # Show appropriate buttons and titles
         self.form.selectButton.visible = True
         self.form.answerButton.visible = False
@@ -190,34 +217,41 @@ class FaceoffScreen(spyral.Scene):
             self.showHealth[count].pos = (x + 70, y - 35)
             # Draw cards on screen
             self.deck[card].layer = "text"
-            self.deck[card].visible = True
+            if self.deck[card].alive:
+                self.deck[card].visible = True
             self.deck[card].pos = (x, y)
             x = x + 400
             count += 1
 
+        # Opponent cards
+        x = WIDTH/12
+        y = 15
 
-    def setPositions(self):
-        topx = WIDTH/6
-        topy = 15
-        bottomx = WIDTH/6
-        bottomy = HEIGHT - 300
-        dxl = WIDTH/(len(model.looseCards) + 1)
-        dxd = WIDTH/(len(model.deck) + 1)
+        for card in self.opponentcards:
+            try:    
+                self.showOppHealth[count].visible = False
+#                del self.showHealth[count]
+            except:
+                pass
+            # Init health counters
+            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponentcards[card].health), 25))
+            self.showOppHealth[count].layer = "text"
+            self.showOppHealth[count].pos = (x + 70, y + 300)
+            # Draw cards on screen
+            self.opponentcards[card].layer = "text"
+            if self.opponentcards[card].alive:
+                self.opponentcards[card].visible = True
+            self.opponentcards[card].pos = (x, y)
+            x = x + 400
+            count += 1
 
-        print self.cards
-        print model.deck
-        print model.looseCards
-        # Delete any cards that were moved
-        for subject in self.cards:
-            card = self.cards[subject]
-            if subject in model.looseCards:
-                # Draw cards
-                card.pos = (topx,topy)
-                topx = topx + dxl
-            else:
-                card.pos = (bottomx,bottomy)
-                bottomx = bottomx + dxd
+################### Exit ######################################################
+#### Go back to controlPanelScreen
+    def backClicked(self, event):
+        if (event.value == "down"):
+            spyral.director.pop()
 
+"""
         ## Draw Opponent's deck cards
 ###############################MAJOR TODO ######################## Figure out why project is only drawing one set of cards
         y = 10
@@ -240,10 +274,4 @@ class FaceoffScreen(spyral.Scene):
             self.opponent.deck[card].pos = (x, y)
             x = x + 400
             count += 1
-
-
-################### Exit ######################################################
-#### Go back to controlPanelScreen
-    def backClicked(self, event):
-        if (event.value == "down"):
-            spyral.director.pop()
+            """

@@ -7,7 +7,7 @@ from spyral import Vec2D
 class Card(spyral.Sprite):
     def __init__(self, Scene, subject, health, damage):
         spyral.Sprite.__init__(self, Scene)
-        self.image = model.resources[subject + "_u"].scale(Vec2D(200,300))
+        self.image = model.resources[subject + "_u"]
         self.x = 10
         self.y = 10
 
@@ -18,7 +18,14 @@ class Card(spyral.Sprite):
         self.difficultyList = ["easy", "medium", "hard"]
         self.alive   = True
         self.clicked = False
+        self.initQuestion("easy")
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
+
+    def applyDamage(self, damage):
+        self.health = self.health - damage
+        if self.health <= 0:
+            self.health = 0
+            self.alive = False
 
 ##TODO Temporary solution until Question logic is finished
 ## Should initQuestion after a player chooses it's card difficulty
@@ -33,12 +40,12 @@ class Card(spyral.Sprite):
                 self.handle_deselect()
             else:
                 self.clicked = True
-                self.image = model.resources[self.subject + "_s"].scale(Vec2D(200,300))
+                self.image = model.resources[self.subject + "_s"]
 
 #### Used to deselect an active card
     def handle_deselect(self):
         self.clicked = False
-        self.image = model.resources[self.subject + "_u"].scale(Vec2D(200,300))
+        self.image = model.resources[self.subject + "_u"]
 
 #### Initialized the Question for the corresponding card
 ## TODO
