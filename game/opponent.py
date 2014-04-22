@@ -11,6 +11,10 @@ class Opponent(spyral.Sprite):
 		spyral.Sprite.__init__(self, Scene)
 		self.name = name
 		self.image = model.resources[name]
+		self.pos = (WIDTH-200, 15)
+		self.layer = "text"
+
+
 		self.deck = {}
 		if name == "Youngster Joey":
 			self.deck = model.joeyDeck

@@ -29,12 +29,12 @@ class FaceoffScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self)
+        self.hero.pos = (0, HEIGHT - 300)
 ### TODO Pass on selected Opponent from StartFaceoffScreen
         self.opponent = Opponent(self, "Youngster Joey")
-        self.opponent.image.pos = (15, WIDTH-200)
-
+#        self.opponent.image.pos = (15, WIDTH-200)
 ###
-        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        self.background = model.resources["background"]
         self.layers = ["bottom", "text"]
 
         ## Adds widgets to screen
@@ -43,6 +43,10 @@ class FaceoffScreen(spyral.Scene):
             selectButton = spyral.widgets.Button("Select Card")
             backButton   = spyral.widgets.Button("Back")
             answerButton = spyral.widgets.Button("Submit")
+
+            easyButton   = spyral.widgets.Button("Easy")
+            mediumButton = spyral.widgets.Button("Medium")
+            hardButton   = spyral.widgets.Button("Hard")
             #Fields
             answerField  = spyral.widgets.TextInput(50, "")
 
@@ -52,9 +56,16 @@ class FaceoffScreen(spyral.Scene):
         self.form.backButton.pos   = (10, 10)
         self.form.answerButton.pos = (WIDTH/2+70, HEIGHT/2)
         self.form.answerField.pos  = (WIDTH/2+150, HEIGHT/3+30)
+
+        self.form.easyButton.pos = (WIDTH/3, HEIGHT*2/3)
+        self.form.mediumButton.pos = (WIDTH/2, HEIGHT*2/3)
+        self.form.hardButton.pos = (WIDTH*2/3, HEIGHT*2/3)
         # Setting visible
         self.form.answerButton.visible = False
         self.form.answerField.visible  = False
+        self.form.easyButton.visible = False
+        self.form.mediumButton.visible = False
+        self.form.hardButton.visible = False
         
         self.deck = {}
         self.opponentcards = {}
@@ -86,9 +97,31 @@ class FaceoffScreen(spyral.Scene):
         spyral.event.register("form.RegisterForm.selectButton.changed", self.startBattle)
         spyral.event.register("form.RegisterForm.backButton.changed", self.backClicked)
         spyral.event.register("form.RegisterForm.answerButton.changed", self.submitAnswer)
+        spyral.event.register("form.RegisterForm.easyButton.changed", self.initEasy)
+        spyral.event.register("form.RegisterForm.mediumButton.changed", self.initMedium)
+        spyral.event.register("form.RegisterForm.hardButton.changed", self.initHard)
 
+    def initEasy(self, event):
+        if (event.value == "down"):
+            self.initQ("easy")
 
+    def initMedium(self, event):
+        if (event.value == "down"):
+            self.initQ("medium")
 
+    def initHard(self, event):
+        if (event.value == "down"):
+            self.initQ("hard")
+
+    def initQ(self, diff):
+        self.deck[self.selectedSubject].initQuestion(diff)
+        self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
+        self.showQuestion.pos = (WIDTH/2-100, HEIGHT/3+30)
+        self.form.answerField.visible  = True
+        self.form.answerButton.visible = True
+        self.form.easyButton.visible = False
+        self.form.mediumButton.visible = False
+        self.form.hardButton.visible = False
 
 ################### Battle Logic #########################################
 #### Deal Hero Damage to Opponent
@@ -110,6 +143,7 @@ class FaceoffScreen(spyral.Scene):
         self.opponent.pickCard()
         if (event.value == "down"):
             count = 0
+            c = 0
             subjects = []
             # If no card selected, don't show anything
             try:    
@@ -124,13 +158,14 @@ class FaceoffScreen(spyral.Scene):
 
             # If there is more than one card selected, don't run
             for card in self.deck:
+                self.showHealth[c].visible = False
+                self.deck[card].visible = False
                 if self.deck[card].clicked:
                     subjects.append(self.deck[card].subject)
-                    self.deck[card].visible = False
-                    print self.deck
-                    print self.showHealth
-                    self.showHealth[count].visible = False
+                    self.deck[card].visible = True
+                    self.showHealth[c].visible = True
                     count += 1
+                c += 1
 
             # If there is one card selected, start battle
             if count == 1:
@@ -139,18 +174,17 @@ class FaceoffScreen(spyral.Scene):
 
                 self.battleTitle.visible       = False
                 self.form.selectButton.visible = False
-                self.form.answerField.visible  = True
-                self.form.answerButton.visible = True
 
-###TODO Show question text on screen
-                self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
-                self.showQuestion.pos = (WIDTH/2-100, HEIGHT/3+30)
-###
+                self.form.easyButton.visible   = True
+                self.form.mediumButton.visible = True
+                self.form.hardButton.visible   = True
+
         # If there are no card selected, show all cards
             if count == 0:
                 for card in self.deck:
                     self.deck[card].visible = True
                     self.showHealth[count].visible = True
+                    count += 1
 
         
 ################### Event Handlers ############################################
@@ -160,11 +194,14 @@ class FaceoffScreen(spyral.Scene):
         self.opponent.answerQuestion()
         if (event.value == "down"):
             # if answer is correct
-            if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
-                self.dealDamage(self.deck[self.selectedSubject].damage)
-            else:
-                print ("False: 0 Damage?")
-        self._reset()
+            try:
+                if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
+                    self.dealDamage(self.deck[self.selectedSubject].damage)
+                else:
+                    print ("False: 0 Damage?")
+                self._reset()
+            except(ValueError):
+                pass
 
 ################### Drawing Functions #########################################
 #### Resets screen
@@ -187,6 +224,9 @@ class FaceoffScreen(spyral.Scene):
         self.form.selectButton.visible = True
         self.form.answerButton.visible = False
         self.form.answerField.visible  = False
+        self.form.easyButton.visible   = False
+        self.form.mediumButton.visible = False
+        self.form.hardButton.visible   = False
 
         self.showQuestion.visible = False
         self.battleTitle.visible  = True

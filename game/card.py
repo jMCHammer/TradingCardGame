@@ -1,8 +1,7 @@
 import spyral
 import model
 
-from spyral import Vec2D
-#from question import Question
+from question import Question
 
 class Card(spyral.Sprite):
     def __init__(self, Scene, subject, health, damage):
@@ -18,7 +17,6 @@ class Card(spyral.Sprite):
         self.difficultyList = ["easy", "medium", "hard"]
         self.alive   = True
         self.clicked = False
-        self.initQuestion("easy")
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
     def applyDamage(self, damage):
@@ -29,7 +27,7 @@ class Card(spyral.Sprite):
 
 ##TODO Temporary solution until Question logic is finished
 ## Should initQuestion after a player chooses it's card difficulty
-        self.initQuestion("easy")
+       # self.initQuestion("easy")
 ##
 
 
@@ -50,8 +48,12 @@ class Card(spyral.Sprite):
 #### Initialized the Question for the corresponding card
 ## TODO
     def initQuestion(self, selectedDifficulty):
-        self.question = "25.0 + 25.0 = "
-        self.answer = 50
+        q = Question(self.subject, selectedDifficulty)
+        print q.answer
+        print q.text
+        self.question = q.text
+        self.answer = q.answer
+#        quiz.
 #        self.question = Question(self.subject, selectedDifficulty)
 
 
