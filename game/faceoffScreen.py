@@ -1,5 +1,6 @@
 import spyral
 import model
+import endGameScreen
 
 from opponent import Opponent
 from spyral import Animation, easing
@@ -211,8 +212,8 @@ class FaceoffScreen(spyral.Scene):
             if self.deck[card].alive:
                 dead = False
         if dead:
-            print ("Hero has died!")
-
+            model.opponentDead = True
+            spyral.director.replace(endGameScreen.EndGameScreen())
         dead = True
         for card in self.opponentcards:
             if self.opponentcards[card].alive:
