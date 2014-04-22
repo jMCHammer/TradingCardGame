@@ -8,8 +8,8 @@ looseCards = {
     "Geometry"         : ["Geometry",         100, 80]
 }
 allCards   = {
-#    "Arithmetic"       : ["Arithmetic",       80,  40], 
-#    "Geometry"         : ["Geometry",         100, 80],
+    "Arithmetic"       : ["Arithmetic",       80,  40], 
+    "Geometry"         : ["Geometry",         100, 80],
     "Decimal Addition" : ["Decimal Addition", 90,  50], 
     "Algebra"          : ["Algebra",          100, 100]
     }
@@ -20,7 +20,8 @@ joeyDeck = {
 
 class Model:
     name = ""        
-    gender = "" 
+    gender = ""
+    opponentDead = False
 
 def loadResources():
 	    resources["background"] = spyral.image.Image("Extras/rsz_tundraclimate.png")

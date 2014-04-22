@@ -54,6 +54,7 @@ class drawButton(spyral.Sprite):
     def handle_clicked(self, pos):
         if self.collide_point(pos):
             model.name = self.scene.form.nameAnswer.value
+            model.opponentDead = False
             cps = controlPanelScreen.ControlPanelScreen()
             spyral.director.replace(cps)
 

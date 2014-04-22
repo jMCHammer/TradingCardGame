@@ -212,14 +212,15 @@ class FaceoffScreen(spyral.Scene):
             if self.deck[card].alive:
                 dead = False
         if dead:
-            model.opponentDead = True
+            model.opponentDead = False
             spyral.director.replace(endGameScreen.EndGameScreen())
         dead = True
         for card in self.opponentcards:
             if self.opponentcards[card].alive:
                 dead = False
         if dead:
-            print ("Enemy has died!")
+            model.opponentDead = True
+            spyral.director.replace(endGameScreen.EndGameScreen())
 
         # Show appropriate buttons and titles
         self.form.selectButton.visible = True
