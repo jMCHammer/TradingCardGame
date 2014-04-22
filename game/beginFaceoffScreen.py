@@ -1,8 +1,8 @@
 import spyral
-import time
 import faceoffScreen
 import model
 
+from opponent import Opponent
 from hero import Hero
 
 WIDTH = 1200
@@ -46,7 +46,9 @@ class BeginFaceoffScreen(spyral.Scene):
 
         drawBattleButton(self)
         drawImage(self.scene, "Extras/vs.png", WIDTH/3, 225)
-        drawImage(self.scene, "Extras/girl.png", WIDTH/13, 50)
+        opp = Opponent(self, "Youngster Joey")
+        opp.pos = (WIDTH/13, 50)
+      #  drawImage(self.scene, "Extras/Youngster_.png", WIDTH/13, 50)
 
         spyral.event.register("system.quit", spyral.director.quit)
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
