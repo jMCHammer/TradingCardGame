@@ -70,26 +70,35 @@ class Man(MovingPiece):
 		self.dx = 5 # how fast this dick is moving
 		self.x = 0
 		self.floor = 0;  # which floor is he at
-		self.images = [model.resources["Gay"].scale((HEIGHT/32, HEIGHT/16)),
-						model.resources["GayRun"].scale((HEIGHT/16, HEIGHT/16))]
+		self.images = [model.resources["GayRight"].scale((HEIGHT/32, HEIGHT/16)),
+						model.resources["GayLeft"].scale((HEIGHT/32, HEIGHT/16)),
+						model.resources["GayRunRight"].scale((HEIGHT/16, HEIGHT/16)),
+						model.resources["GayRunLeft"].scale((HEIGHT/16, HEIGHT/16))]
 		self.image = self.images[0]
 
+		spyral.event.register("input.keyboard.down.down", self.moveDown)
+		spyral.event.register("input.keyboard.down.up", self.moveUp)
 		spyral.event.register("director.update", self.imageUpdate)
 
-	def moveUpDown(self):
-		pass
+	def moveUp(self):
+		if(self.floor > 0):
+			self.floor -= 1
+
+	def moveDown(self):
+		if(self.floor < 3):
+			self.floor += 1
 
 	def imageUpdate(self):
 		if(not self.move):
-			if(self.direction == "left"):
-				self.image = self.images[0].flip(True,False)
+			if self.direction == "right":
+				self.image = self.images[0]
 			else:
-				self.image = self.images[0].flip(False,False)
+				self.image = self.images[1]
 		else:
-			if(self.direction == "left"):
-				self.image = self.images[1].flip(True,False)
+			if self.direction == "right":
+				self.image = self.images[2]
 			else:
-				self.image = self.images[1].flip(False,False)
+				self.image = self.images[3]	
 
 class DivisionScreen(spyral.Scene):
 	def __init__(self, q):
@@ -101,6 +110,8 @@ class DivisionScreen(spyral.Scene):
 		self.question = q
 		self.numerator = self.question.randomNumTwo
 		self.divisor = self.question.randomNumOne
+
+		spyral.event.register("director.update", self.Update)
 
 		self.floors = []
 		self.boxes = []
@@ -120,3 +131,6 @@ class DivisionScreen(spyral.Scene):
 
 		self.man = Man(self)
 		self.man.pos = (WIDTH/19, self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
+
+	def Update(self):
+		self.man.pos = (self.man.pos[0], self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
