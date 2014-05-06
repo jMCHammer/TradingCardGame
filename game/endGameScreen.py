@@ -16,19 +16,19 @@ SIZE = (WIDTH, HEIGHT)
 class drawWinFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, 150)
+        f = spyral.Font(font, 150, WHITE)
         self.image = f.render(text)
 
 class drawTextFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
 	    spyral.Sprite.__init__(self, Scene)
-	    f = spyral.Font(font, 50)
+	    f = spyral.Font(font, 50, WHITE)
 	    self.image = f.render(text)
 
 class drawButton(spyral.Sprite):
     def __init__(self, Scene):
         spyral.Sprite.__init__(self, Scene)
-        self.image = spyral.image.Image("Extras/continue.png")
+        self.image = spyral.image.Image("Extras/continueButton.png")
         self.pos = (WIDTH/2.6, HEIGHT*9/10)
         spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
@@ -41,7 +41,7 @@ class EndGameScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self.scene)
-        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        self.background = model.resources["background"]
         card_guts = model.allCards["Geometry"]        
         card = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
         card.pos = (WIDTH/3, HEIGHT/3)

@@ -17,7 +17,7 @@ SIZE     = (WIDTH, HEIGHT)
 class drawFont(spyral.Sprite):
     def __init__(self, Scene, font, text, size):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, size)
+        f = spyral.Font(font, size, WHITE)
         self.image = f.render(text)
 
 #### Used to draw a vertical linear animation 
@@ -58,12 +58,12 @@ class FaceoffScreen(spyral.Scene):
         # Setting positions
         self.form.selectButton.pos = (WIDTH/2-70, HEIGHT/2)
         self.form.backButton.pos   = (10, 10)
-        self.form.answerButton.pos = (WIDTH/2+70, HEIGHT/2)
-        self.form.answerField.pos  = (WIDTH/2+150, HEIGHT/3+30)
+        self.form.answerButton.pos = (WIDTH/2+150, HEIGHT/2)
+        self.form.answerField.pos  = (WIDTH/2+70, HEIGHT/2)
 
-        self.form.easyButton.pos = (WIDTH/3, HEIGHT*2/3)
-        self.form.mediumButton.pos = (WIDTH/2, HEIGHT*2/3)
-        self.form.hardButton.pos = (WIDTH*2/3, HEIGHT*2/3)
+        self.form.easyButton.pos = (WIDTH/3, HEIGHT/2)
+        self.form.mediumButton.pos = (WIDTH/2, HEIGHT/2)
+        self.form.hardButton.pos = (WIDTH*2/3, HEIGHT/2)
         # Setting visible
         self.form.answerButton.visible = False
         self.form.answerField.visible  = False
@@ -81,10 +81,6 @@ class FaceoffScreen(spyral.Scene):
         for card_guts in self.opponent.deck:
             card_guts = self.opponent.deck[card_guts]
             self.opponentcards[card_guts[0]] = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
-
-        ## Screen Text
-        self.battleTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "BATTLE", 50)
-        self.battleTitle.pos = (WIDTH/2-170, HEIGHT/3+30)
 
         self.showOppHealth = [0, 0, 0]
         self.showHealth = [0, 0, 0]
@@ -130,7 +126,7 @@ class FaceoffScreen(spyral.Scene):
         if self.deck[self.selectedSubject].q.randomOpKey == "/":
             spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
-        self.showQuestion.pos = (WIDTH/2-100, HEIGHT/3+30)
+        self.showQuestion.pos = (WIDTH/2-100, HEIGHT/2)
         self.form.answerField.visible  = True
         self.form.answerButton.visible = True
 
@@ -183,7 +179,6 @@ class FaceoffScreen(spyral.Scene):
                 self.selectedSubject = subjects[0]
                 self.deck[self.selectedSubject].visible = True
 
-                self.battleTitle.visible       = False
                 self.form.selectButton.visible = False
 
                 self.form.easyButton.visible   = True
@@ -248,7 +243,6 @@ class FaceoffScreen(spyral.Scene):
         self.form.hardButton.visible   = False
 
         self.showQuestion.visible = False
-        self.battleTitle.visible  = True
 
         # reset values
         self.form.answerField.value = ""
