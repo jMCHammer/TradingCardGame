@@ -83,10 +83,18 @@ def loadCode(saveCode):
     orderedCards = OrderedDict(sorted(allCards.items(), key=lambda t: t[0]))
     i = 0
     cards = bin(int(saveCode[0]))
+    #Trim binary 0b
+    cards = cards[2:]
+    #if there are missing leading digits
+    while len(cards) < 4:
+        cards = "0" + cards
     while cards:
-        if int(cards[0]):
-            card = orderedCards.items()[i]
-            deck[card[0]] = card[1]
+        if cards[0].isdigit():
+            if int(cards[0]):
+                card = orderedCards.items()[i]
+                deck[card[0]] = card[1]
+                if card[0] in looseCards:
+                    del looseCards[card[0]]
         i += 1
         cards = cards[1:]
-    print deck
+
