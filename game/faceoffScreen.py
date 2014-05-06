@@ -30,12 +30,14 @@ class FaceoffScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self)
-        self.hero.pos = (0, HEIGHT - 300)
+        self.hero.pos = (WIDTH-180, HEIGHT - 395)
+        self.hero.scale_x = .80;
+        self.hero.scale_y = .80;
 ### TODO Pass on selected Opponent from StartFaceoffScreen
-        self.opponent = Opponent(self, "Youngster Joey")
+        self.opponent = Opponent(self);
 #        self.opponent.image.pos = (15, WIDTH-200)
 ###
-        self.background = model.resources["background"]
+        self.background = model.resources[model.currentOpponent + "bg"]
         self.layers = ["bottom", "text"]
 
         ## Adds widgets to screen

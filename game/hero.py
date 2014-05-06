@@ -9,5 +9,5 @@ class Hero(spyral.Sprite):
     def __init__(self, Scene):
         spyral.Sprite.__init__(self,Scene)
         self.name   = model.name
-        self.gender = model.gender
-        self.image  = model.resources["Hero_" + self.gender]
+        self.char = model.char
+        self.image  = model.resources[self.char]

@@ -22,33 +22,83 @@ class drawTextFont(spyral.Sprite):
 	    f = spyral.Font(font, 50)
 	    self.image = f.render(text)
 
-class drawBoyImage(spyral.Sprite):
+class drawCharOneImage(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/boy.png")
-	    self.pos = (WIDTH/5, 300)
+	    self.image = spyral.image.Image("Extras/char1.png")
+	    self.pos = (WIDTH/8, 300)
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            model.gender = "boy"
+            model.char = "char1"
+            print model.char
 
-class drawGirlImage(spyral.Sprite):
+class drawCharTwoImage(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/girl.png")
-	    self.pos = (WIDTH*3/5, 300)
+	    self.image = spyral.image.Image("Extras/char2.png")
+	    self.pos = (WIDTH*2/8, 300)
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            model.gender = "girl"
+            model.char = "char2"
+            print model.char
+
+class drawCharThreeImage(spyral.Sprite):
+    def __init__(self, Scene):
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/char3.png")
+	    self.pos = (WIDTH*3/8, 300)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+            model.char = "char3"
+            print model.char
+
+class drawCharFourImage(spyral.Sprite):
+    def __init__(self, Scene):
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/char4.png")
+	    self.pos = (WIDTH*4/8, 300)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+            model.char = "char4"
+            print model.char
+
+class drawCharFiveImage(spyral.Sprite):
+    def __init__(self, Scene):
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/char5.png")
+	    self.pos = (WIDTH*5/8, 300)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+            model.char = "char5"
+            print model.char
+
+class drawCharSixImage(spyral.Sprite):
+    def __init__(self, Scene):
+	    spyral.Sprite.__init__(self, Scene)
+	    self.image = spyral.image.Image("Extras/char6.png")
+	    self.pos = (WIDTH*6/8, 300)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+            model.char = "char6"
+            print model.char
 
 class drawButton(spyral.Sprite):
     def __init__(self, Scene):
         spyral.Sprite.__init__(self, Scene)
         self.image = spyral.image.Image("Extras/continue.png")
-        self.pos = (WIDTH/2.6, HEIGHT*9/10)
+        self.pos = (WIDTH/2.6, HEIGHT*9.5/10)
         spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):
@@ -70,14 +120,18 @@ class NameScreen(spyral.Scene):
         charText = drawTextFont(self.scene, "Extras/Comic_Book.ttf", "CLICK YOUR CHARACTER")
         charText.pos = (WIDTH/5, 200)
 
-        self.boyImage = drawBoyImage(self.scene)
-        self.girlImage = drawGirlImage(self.scene)	
+        self.char1Image = drawCharOneImage(self.scene)
+        self.char2Image = drawCharTwoImage(self.scene)	
+        self.char3Image = drawCharThreeImage(self.scene)
+        self.char4Image = drawCharFourImage(self.scene)
+        self.char5Image = drawCharFiveImage(self.scene)
+        self.char6Image = drawCharSixImage(self.scene)
 
         class RegisterForm(spyral.Form):
             nameAnswer = spyral.widgets.TextInput(275, "Enter your name here.")
 
         self.form = RegisterForm(self)
-        self.form.nameAnswer.pos = (WIDTH/2.75, HEIGHT*8.5/10)
+        self.form.nameAnswer.pos = (WIDTH/2.75, HEIGHT*9/10)
 
         continueButton = drawButton(self.scene)		
 
