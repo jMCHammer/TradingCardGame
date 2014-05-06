@@ -3,12 +3,14 @@ import spyral
 import model
 import question
 from spyral import Sprite, Vec2D
+import math
 
 FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
 HEIGHT = 675
 SIZE = (WIDTH, HEIGHT)
-DIFFICULTY = {"easy":0, "medium":1, "hard":2}
+DIFFICULTY = {"easy":0, "medium":0, "hard":1}
+
 
 
 class drawFont(Sprite):
@@ -40,7 +42,12 @@ class BoatFloor(Sprite):
 class Boat(Sprite): #HAVENT BEEN USED YET
 	def __init__(self, Scene):
 		super(Boat,self).__init__(Scene)
-		pass
+		self.image = model.resources["ship"].scale((WIDTH, HEIGHT/2))
+		self.anchor = "midbottom"
+		self.layer = 'bottom'
+
+	def tilt(self, angle):
+		self.angle = angle
 
 class MovingPiece(Sprite):	
 	def __init__(self, Scene):
@@ -58,6 +65,7 @@ class MovingPiece(Sprite):
 	def moveLeft(self):
 		self.move = "left"
 		self.direction = "left"
+
 	def moveRight(self):
 		self.move = "right"
 		self.direction = "right"
@@ -65,9 +73,11 @@ class MovingPiece(Sprite):
 		self.move = False
 
 	def Update(self):
-		if(self.move == "left"):
+		if(self.move == "left" and
+			self.pos[0] > 5):
 			self.pos = (self.pos[0] - self.dx, self.pos[1])
-		elif(self.move == "right"):
+		elif(self.move == "right" and
+			self.pos[0] < WIDTH - self.width- 5):
 			self.pos = (self.pos[0] + self.dx, self.pos[1])
 
 	def initialPos(self, pos):
@@ -150,7 +160,6 @@ class Man(MovingPiece):
 
 class DivisionScreen(spyral.Scene):
 	def __init__(self, q, difficulty):
-		global manager
 		super(DivisionScreen, self).__init__(SIZE)
 		model.loadResources()
 		self.difficulty = DIFFICULTY[difficulty]
@@ -162,6 +171,7 @@ class DivisionScreen(spyral.Scene):
 		self.answer = 0
 
 		spyral.event.register("director.update", self.Update)
+		spyral.event.register("input.keyboard.down.return", self.Return)
 
 		self.floors = []
 		self.boxes = []
@@ -208,3 +218,79 @@ class DivisionScreen(spyral.Scene):
 			answer += int((box.pos[0]/(WIDTH/length)) + modifier) * self.divisor * pow(10, (1 - box.floor))
 		self.answer = answer
 		self.currentText.update(" Current: " + str(self.answer))
+
+	def Return(self):
+		spyral.director.replace(resultScreen(int((self.numerator - self.answer)*100), self.numerator))
+
+class Sea(Sprite):
+	def __init__(self, Scene):
+		super(Sea, self).__init__(Scene)
+		self.image = spyral.Image(size=(WIDTH,HEIGHT/2)).fill((80,160,222))
+		self.anchor = 'topleft'	
+		self.layer = 'top'
+
+
+class sinkingScreen(spyral.Scene):
+	def __init__(self, q, difficulty):
+		super(sinkingScreen, self).__init__(SIZE)
+		model.loadResources()
+		self.q = q
+		self.difficulty = difficulty
+		spyral.event.register("director.update", self.Update)
+		self.timer = 0
+		self.background = spyral.Image(size=SIZE)
+		self.background.fill((193,255,255))
+		
+		self.ship = Boat(self)
+		self.ship.pos = (WIDTH/2, HEIGHT/7 * 6)
+		self.shipangle = 8.0 if self.q.answer > 0 else -8.0
+		self.ship.angle = math.pi/self.shipangle
+
+		self.sea = Sea(self)
+		self.sea.pos = (0, HEIGHT/3 * 2)
+
+		self.layers = ['top','bottom']
+
+	def Update(self):
+		if self.timer < 60:
+			self.timer += 1
+			self.ship.angle = math.pi/(self.shipangle - math.fabs((float(self.timer)/20.0)%2 - 1.0))
+		else:
+			spyral.director.replace(DivisionScreen(self.q, self.difficulty))
+
+	
+class resultScreen(spyral.Scene):
+	def __init__(self, result, answer):
+		super(resultScreen, self).__init__(SIZE)
+		model.loadResources()
+		self.result = result
+		self.timer = 0
+		self.background = spyral.Image(size=SIZE)
+		self.background.fill((193,255,255))
+		spyral.event.register("director.update", self.Update)
+		self.ship = Boat(self)
+		self.ship.pos = (WIDTH/2, HEIGHT/7 * 6)
+		self.shipangle = math.pi/(8.0 if answer > 0 else -8.0)
+		self.ship.angle = self.shipangle
+		self.sea = Sea(self)
+		self.sea.pos = (0, HEIGHT/3 * 2)
+		self.correct = (result == 0)
+
+	def Update(self):
+		self.timer += 1
+		if self.result == 0:
+			if self.timer < 140:
+				self.ship.angle -= self.shipangle/140
+				self.ship.y = (HEIGHT/7 * 6) - (0.4 * self.timer)
+		elif self.result > 0:
+			if self.timer < 100:
+				self.ship.angle += (math.pi/2 - self.shipangle)/100
+			elif self.timer >= 100 and self.timer < 140:
+				self.ship.pos = (self.ship.pos[0], self.ship.pos[1] + 4)
+		else:
+			if self.timer < 100:
+				self.ship.angle -= (math.pi/2 + self.shipangle)/100
+			elif self.timer >= 100 and self.timer < 140:
+				self.ship.pos = (self.ship.pos[0], self.ship.pos[1] + 4)
+		if self.timer >= 140:
+			self.visible = False

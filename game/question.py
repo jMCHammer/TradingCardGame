@@ -89,9 +89,7 @@ class Question:
     def hardArithmetic(self):
         self.randomOpKey = random.choice(ops.keys())
         if self.randomOpKey == "/":
-            self.randomNumOne = round(random.uniform(-10.0, 10.0),1)
-            while(self.randomNumOne == 0):
-                self.randomNumOne = round(random.uniform(-10.0, 10.0),1) #Avoiding divide by 0
+            self.randomNumOne = round(random.uniform(0.0, 10.0) + 1,1)
             self.randomNumTwo = round(random.uniform(-30.0, 30.0),1) * self.randomNumOne
             while(self.randomNumTwo == 0):
                 self.randomNumTwo = round(random.uniform(-30.0, 30.0),1) * self.randomNumOne #avoiding answer ends up 0
