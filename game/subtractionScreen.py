@@ -44,7 +44,10 @@ class drawButton(spyral.Sprite):
 
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            key = self.scene.q.x + self.scene.q.y
+            if self.scene.q.x > self.scene.q.y:
+                key = self.scene.q.x - self.scene.q.y
+            else:
+                key = self.scene.q.y - self.scene.q.x
             if int(key) == int(self.scene.answer.text):
                 print "you're right"
             else: 
@@ -64,38 +67,54 @@ class Question:#initiate two random numbers to add
             self.x = random.randint(1,99)
             self.y = random.randint(1,99)
 
-class AdditionScreen(spyral.Scene):
+class SubtractionScreen(spyral.Scene):
     def __init__(self):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
         self.q = Question("Hard")
     
-        subtractionssign = drawQuestion(self.scene, "Extras/Comic_Book.ttf", "+")
+        subtractionssign = drawQuestion(self.scene, "Extras/Comic_Book.ttf", "-")
         subtractionssign.pos = (WIDTH - 300, 130)
 
         #draw all question numbers as well as starting "000" answer
 
         questionText1 = drawQuestion(self.scene, "Extras/Comic_Book.ttf", str(self.q.x))
         questionText2 = drawQuestion(self.scene, "Extras/Comic_Book.ttf", str(self.q.y))
-        if self.q.x < 10:
-            questionText1.pos = (WIDTH-78, 30)
-        if self.q.x < 100 and self.q.x > 10:
-            questionText1.pos = (WIDTH-150, 30)
-        if self.q.x >100:
-            questionText1.pos = (WIDTH-208, 30)
-        if self.q.y < 10:
-            questionText2.pos = (WIDTH-78, 130)
-        if self.q.y < 100 and self.q.y > 10:
-            questionText2.pos = (WIDTH-150, 130)
-        if self.q.y >100:
-            questionText2.pos = (WIDTH-208, 130)
-        
+        if self.q.x > self.q.y:
+            answerNum = self.q.x
+            if self.q.x < 10:
+                questionText1.pos = (WIDTH-78, 30)
+            if self.q.x < 100 and self.q.x > 10:
+                questionText1.pos = (WIDTH-150, 30)
+            if self.q.x >100:
+                questionText1.pos = (WIDTH-208, 30)
+            if self.q.y < 10:
+                questionText2.pos = (WIDTH-78, 130)
+            if self.q.y < 100 and self.q.y > 10:
+                questionText2.pos = (WIDTH-150, 130)
+            if self.q.y >100:
+                questionText2.pos = (WIDTH-208, 130)
+        else:
+            answerNum = self.q.y
+            if self.q.x < 10:
+                questionText1.pos = (WIDTH-78, 130)
+            if self.q.x < 100 and self.q.x > 10:
+                questionText1.pos = (WIDTH-150, 130)
+            if self.q.x >100:
+                questionText1.pos = (WIDTH-208, 130)
+            if self.q.y < 10:
+                questionText2.pos = (WIDTH-78, 30)
+            if self.q.y < 100 and self.q.y > 10:
+                questionText2.pos = (WIDTH-150, 30)
+            if self.q.y >100:
+                questionText2.pos = (WIDTH-208, 30)
+
         questionText3 = drawQuestion(self.scene, "Extras/Comic_Book.ttf", "___")
         questionText3.pos = (WIDTH-250,130)
 
         continuebutton = drawButton(self.scene, "Extras/continue.png")
         continuebutton.pos = (WIDTH/2-100, HEIGHT-100)
-        explainationText = drawCarry(self.scene, "Add the two numbers.")
+        explainationText = drawCarry(self.scene, "Subtract the two numbers.")
         explainationText.pos = (0,0)
         explainationText6 = drawCarry(self.scene, "Click continue")
         explainationText6.pos = (0,100)
