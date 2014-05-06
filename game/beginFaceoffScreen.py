@@ -28,7 +28,7 @@ class drawBattleButton(spyral.Sprite):
         spyral.Sprite.__init__(self, Scene)
         #TODO: Create "Battle!" button
         self.image = spyral.image.Image("Extras/faceoff.png")
-        self.pos = (WIDTH/4.5, 300)
+        self.pos = (WIDTH/2 - 100, HEIGHT*2/3)
         spyral.event.register("input.mouse.down.left", self.handle_clicked) 
 
     def handle_clicked(self, pos):
@@ -48,7 +48,6 @@ class BeginFaceoffScreen(spyral.Scene):
         drawImage(self.scene, "Extras/vs.png", WIDTH/3, 225)
         opp = Opponent(self, "Youngster Joey")
         opp.pos = (WIDTH/13, 50)
-      #  drawImage(self.scene, "Extras/Youngster_.png", WIDTH/13, 50)
 
         spyral.event.register("system.quit", spyral.director.quit)
-        spyral.event.register("input.keyboard.down.q", spyral.director.pop)
+
