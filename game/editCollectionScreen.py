@@ -23,13 +23,11 @@ class EditCollectionScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self.scene)
+        self.hero.pos = (50, 250);
+        self.hero.scale_x = .80;
+        self.hero.scale_y = .80;
         self.background = spyral.image.Image("Extras/editCollectionBackgroundTemplate.png").scale(Vec2D(1200,900))
         self.layers = ["bottom", "text"]
-
-        deckTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Deck", 50)
-        screenTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Edit Collection", 50)
-        screenTitle.pos = (WIDTH/2-170, HEIGHT/3+30)
-        deckTitle.pos = (WIDTH/2-50, HEIGHT*2/3-85)
 
         class RegisterForm(spyral.Form):
             addButton = spyral.widgets.Button("Add to Deck")
@@ -59,10 +57,10 @@ class EditCollectionScreen(spyral.Scene):
 
     # Draws cards in their proper positions on the screen
     def setPositions(self):
-        topx = WIDTH/6
-        topy = 15
-        bottomx = WIDTH/6
-        bottomy = HEIGHT - 300
+        topx = WIDTH/5
+        topy = 50
+        bottomx = WIDTH/5
+        bottomy = HEIGHT - 350
         dxl = WIDTH/(len(model.looseCards) + 1)
         dxd = WIDTH/(len(model.deck) + 1)
         # Delete any cards that were moved

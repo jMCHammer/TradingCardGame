@@ -97,8 +97,8 @@ class drawCharSixImage(spyral.Sprite):
 class drawButton(spyral.Sprite):
     def __init__(self, Scene):
         spyral.Sprite.__init__(self, Scene)
-        self.image = spyral.image.Image("Extras/continue.png")
-        self.pos = (WIDTH/2.6, HEIGHT*9.5/10)
+        self.image = spyral.image.Image("Extras/continueButton.png")
+        self.pos = (WIDTH/2.4, HEIGHT*9.5/10)
         spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):

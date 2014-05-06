@@ -40,8 +40,8 @@ class StartScreen(spyral.Scene):
         startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
 
-        drawButton(self, "Extras/startgame.png", WIDTH/2.5, HEIGHT*3/5, "start")
-        drawButton(self, "Extras/startgame.png", WIDTH/2.5, HEIGHT*4/5, "loadgame")
+        drawButton(self, "Extras/startButton.png", WIDTH/2.5, HEIGHT*3/5, "start")
+        drawButton(self, "Extras/loadButton.png", WIDTH/2.5, HEIGHT*4/5, "loadgame")
 
         spyral.event.register("system.quit", spyral.director.pop)
 

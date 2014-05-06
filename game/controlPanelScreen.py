@@ -20,7 +20,7 @@ class drawFont(spyral.Sprite):
 class drawFaceoffButton(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/faceoff.png")
+	    self.image = spyral.image.Image("Extras/faceoffButton.png")
 	    self.pos = (WIDTH/4, 300)
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
@@ -32,7 +32,7 @@ class drawFaceoffButton(spyral.Sprite):
 class drawEditDeckButton(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/editdeck.png")
+	    self.image = spyral.image.Image("Extras/editDeckButton.png")
 	    self.pos = (WIDTH/4, 400)
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
@@ -44,13 +44,13 @@ class drawEditDeckButton(spyral.Sprite):
 class drawTutorialButton(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
-	    self.image = spyral.image.Image("Extras/tutorial.png")
+	    self.image = spyral.image.Image("Extras/tutorialButton.png")
 	    self.pos = (WIDTH/4, 500)
 
 class drawCodeButton(spyral.Sprite):
     def __init__(self, Scene):
         spyral.Sprite.__init__(self, Scene)
-        self.image = spyral.image.Image("Extras/tutorial.png")
+        self.image = spyral.image.Image("Extras/saveGameCodeButton.png")
         self.pos = (WIDTH/4, 600)
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
