@@ -1,6 +1,7 @@
 import spyral
 import model
 import endGameScreen
+import division
 
 from opponent import Opponent
 from spyral import Animation, easing
@@ -117,14 +118,21 @@ class FaceoffScreen(spyral.Scene):
             self.initQ("hard")
 
     def initQ(self, diff):
+        self.form.easyButton.visible = False
+        self.form.mediumButton.visible = False
+        self.form.hardButton.visible = False
+
         self.deck[self.selectedSubject].initQuestion(diff)
+        ##division testcase##
+#        while(self.deck[self.selectedSubject].q.randomOpKey != "/"):
+#            self.deck[self.selectedSubject].initQuestion(diff)
+        ##endtestcase##
+        if self.deck[self.selectedSubject].q.randomOpKey == "/":
+            spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
         self.showQuestion.pos = (WIDTH/2-100, HEIGHT/3+30)
         self.form.answerField.visible  = True
         self.form.answerButton.visible = True
-        self.form.easyButton.visible = False
-        self.form.mediumButton.visible = False
-        self.form.hardButton.visible = False
 
 ################### Battle Logic #########################################
 #### Deal Hero Damage to Opponent
@@ -206,6 +214,13 @@ class FaceoffScreen(spyral.Scene):
             except(ValueError):
                 pass
 
+    def submitDivisionAnswer(self, correct):
+        self.opponent.answerQuestion()
+        if correct:
+            self.dealDamage(self.deck[self.selectedSubject].damage)
+        else:
+            print ("False: 0 Damage?")
+        self._reset()
 ################### Drawing Functions #########################################
 #### Resets screen
     def _reset(self):

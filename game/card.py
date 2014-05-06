@@ -48,11 +48,11 @@ class Card(spyral.Sprite):
 #### Initialized the Question for the corresponding card
 ## TODO
     def initQuestion(self, selectedDifficulty):
-        q = Question(self.subject, selectedDifficulty)
-        print q.answer
-        print q.text
-        self.question = q.text
-        self.answer = q.answer
+        self.q = Question(self.subject, selectedDifficulty)
+        print self.q.answer
+        print self.q.text
+        self.question = self.q.text
+        self.answer = self.q.answer
 #        quiz.
 #        self.question = Question(self.subject, selectedDifficulty)
 
