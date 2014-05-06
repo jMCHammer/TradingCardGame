@@ -6,8 +6,9 @@ from spyral import Sprite, Vec2D
 
 FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
-HEIGHT = 900
+HEIGHT = 675
 SIZE = (WIDTH, HEIGHT)
+DIFFICULTY = {"easy":0, "medium":1, "hard":2}
 
 
 class drawFont(Sprite):
@@ -33,7 +34,10 @@ class BoatFloor(Sprite):
 		self.num = num * pow(10,self.numFloor)
 		pass
 
-class Boat(Sprite):
+	def rescale(self,size):
+		self.image = model.resources["Wood"].scale(size)
+
+class Boat(Sprite): #HAVENT BEEN USED YET
 	def __init__(self, Scene):
 		super(Boat,self).__init__(Scene)
 		pass
@@ -111,6 +115,7 @@ class Man(MovingPiece):
 			for box in self.sc.boxes:
 				if self.sc.collide_sprites(self.sc.man, box):
 					box.pickUp()
+					box.pos = (self.pos[0], self.pos[1] - box.height)
 					self.pickingUp = True
 					print("You are picking up the box...")
 					break
@@ -119,15 +124,16 @@ class Man(MovingPiece):
 				if box.pickedUp:
 					self.pickingUp = False
 					box.putDown()
+					box.pos = (self.pos[0], self.pos[1] + HEIGHT/16 - box.height)
 					break
 		pass
 
 	def moveUp(self):
-		if(self.floor > 0):
+		if(self.floor > 0 and not self.pickingUp):
 			self.floor -= 1
 
 	def moveDown(self):
-		if(self.floor < 3):
+		if(self.floor < 2 and not self.pickingUp):
 			self.floor += 1
 
 	def imageUpdate(self):
@@ -143,10 +149,11 @@ class Man(MovingPiece):
 				self.image = self.images[3]	
 
 class DivisionScreen(spyral.Scene):
-	def __init__(self, q):
+	def __init__(self, q, difficulty):
 		global manager
 		super(DivisionScreen, self).__init__(SIZE)
 		model.loadResources()
+		self.difficulty = DIFFICULTY[difficulty]
 		self.background = spyral.Image(size=SIZE)
 		self.background.fill((0,0,0))
 		self.question = q
@@ -166,23 +173,26 @@ class DivisionScreen(spyral.Scene):
 		self.currentText = drawFont(self, " Current: " + str(self.answer), spyral.Font(FONT, 30, (255,255,255)))
 		self.currentText.pos = (self.answerText.width + self.weightText.width, 0)
 
-		print(str(WIDTH/19))
-
-		for f in range(1, 5):
+		for f in range(1, 4):
+			length = 19 if self.difficulty > 0 else 10
+			modifier = -9 if self.difficulty > 0 else 0
+			scalar = (WIDTH/length, HEIGHT/32)
 			floor = []
-			for i in range(0, 19):
+			for i in range(0, length):
 				floormat = BoatFloor(self)
-				floormat.setNumber(2 - f, i - 9)
-				floormat.pos = (i * WIDTH/19, f * HEIGHT/4 - floormat.image.height)
+				floormat.setNumber(2 - f, i + modifier)
+				floormat.pos = (i * WIDTH/length, f * HEIGHT/3 - floormat.image.height)
+				floormat.rescale(scalar)
 				floor.append(floormat)
 				t = drawFont(self, str(floormat.num), spyral.Font(FONT, 15, (255,255,255)))
 				t.pos = (floormat.pos[0], floormat.pos[1] - floormat.image.height)
 				self.texts.append(t)
 			self.floors.append(floor)
 
-		for i in range(1, 5):
+		for i in range(1, 4):
 				box = Box(self, self.divisor)
-				box.pos = (WIDTH/2, self.floors[i - 1][0].pos[1] - HEIGHT/32)
+				box.pos = (WIDTH/19 * 9 + box.width/2 if self.difficulty > 0 else 0 + box.width/2,
+							self.floors[i - 1][0].pos[1] - HEIGHT/32)
 				box.floor = i - 1
 				self.boxes.append(box)
 
@@ -190,9 +200,11 @@ class DivisionScreen(spyral.Scene):
 		self.man.pos = (WIDTH/19, self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
 
 	def Update(self):
+		length = 19 if self.difficulty > 0 else 10
+		modifier = -9 if self.difficulty > 0 else 0
 		self.man.pos = (self.man.pos[0], self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
 		answer = 0
 		for box in self.boxes:
-			answer += int((box.pos[0]/(WIDTH/19)) - 9) * self.divisor * pow(10, (1 - box.floor))
+			answer += int((box.pos[0]/(WIDTH/length)) + modifier) * self.divisor * pow(10, (1 - box.floor))
 		self.answer = answer
 		self.currentText.update(" Current: " + str(self.answer))

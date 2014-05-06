@@ -105,8 +105,12 @@ class AdditionScreen(spyral.Scene):
         self.answer.pos = (WIDTH-230, 250)
 
         spyral.event.register("system.quit", spyral.director.pop)
+<<<<<<< HEAD
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
         spyral.event.register('input.keyboard.down', self.updateAnswer)
+=======
+
+>>>>>>> 0bd90837780443b8132100d94825c99f41d32d96
 
     def updateAnswer(self, unicode, key):
         if unicode == u"\u0008":

@@ -82,4 +82,4 @@ class NameScreen(spyral.Scene):
         continueButton = drawButton(self.scene)		
 
         spyral.event.register("system.quit", spyral.director.pop)
-        spyral.event.register("input.keyboard.down.q", spyral.director.pop)
+
