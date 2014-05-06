@@ -88,7 +88,7 @@ class AdditionScreen(spyral.Scene):
         down3Button.pos = (WIDTH/2 -20, 500)
 
         spyral.event.register("system.quit", spyral.director.pop)
-        spyral.event.register("input.keyboard.down.q", spyral.director.pop)
+
 
     def update():
         answerText1 = drawQuestion(self.scene, "Extras/Comic_Book.ttf", str(answer1))

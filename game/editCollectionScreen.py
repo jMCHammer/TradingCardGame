@@ -3,6 +3,7 @@ import model
 
 from card import Card
 from hero import Hero
+from spyral import Vec2D
 
 WIDTH    = 1200
 HEIGHT   = 900
@@ -22,7 +23,7 @@ class EditCollectionScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self.scene)
-        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        self.background = spyral.image.Image("Extras/editCollectionBackgroundTemplate.png").scale(Vec2D(1200,900))
         self.layers = ["bottom", "text"]
 
         deckTitle = drawFont(self.scene, "Extras/Comic_Book.ttf", "Deck", 50)
@@ -64,10 +65,6 @@ class EditCollectionScreen(spyral.Scene):
         bottomy = HEIGHT - 300
         dxl = WIDTH/(len(model.looseCards) + 1)
         dxd = WIDTH/(len(model.deck) + 1)
-
-        print self.cards
-        print model.deck
-        print model.looseCards
         # Delete any cards that were moved
         for subject in self.cards:
             card = self.cards[subject]
@@ -112,6 +109,7 @@ class EditCollectionScreen(spyral.Scene):
 #### Go back to controlPanelScreen
     def backClicked(self, event):
         if (event.value == "down"):
+            ##TODO GET RID OF
             spyral.director.pop()
 
 ################### Add or Remove Cards from Deck #############################
