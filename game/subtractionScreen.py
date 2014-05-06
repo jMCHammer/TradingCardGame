@@ -68,10 +68,10 @@ class Question:#initiate two random numbers to add
             self.y = random.randint(1,99)
 
 class SubtractionScreen(spyral.Scene):
-    def __init__(self):
+    def __init__(self, difficulty):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
-        self.q = Question("Hard")
+        self.q = Question(difficulty)
     
         subtractionssign = drawQuestion(self.scene, "Extras/Comic_Book.ttf", "-")
         subtractionssign.pos = (WIDTH - 300, 130)

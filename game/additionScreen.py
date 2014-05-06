@@ -65,10 +65,10 @@ class Question:#initiate two random numbers to add
             self.y = random.randint(1,99)
 
 class AdditionScreen(spyral.Scene):
-    def __init__(self):
+    def __init__(self, difficulty):
         spyral.Scene.__init__(self, SIZE)
         self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
-        self.q = Question("Hard")
+        self.q = Question(difficulty)
     
         subtractionssign = drawQuestion(self.scene, "Extras/Comic_Book.ttf", "+")
         subtractionssign.pos = (WIDTH - 300, 130)
@@ -105,12 +105,8 @@ class AdditionScreen(spyral.Scene):
         self.answer.pos = (WIDTH-230, 250)
 
         spyral.event.register("system.quit", spyral.director.pop)
-<<<<<<< HEAD
         spyral.event.register("input.keyboard.down.q", spyral.director.pop)
         spyral.event.register('input.keyboard.down', self.updateAnswer)
-=======
-
->>>>>>> 0bd90837780443b8132100d94825c99f41d32d96
 
     def updateAnswer(self, unicode, key):
         if unicode == u"\u0008":
