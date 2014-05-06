@@ -12,7 +12,7 @@ SIZE = (WIDTH, HEIGHT)
 class drawFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, 150)
+        f = spyral.Font(font, 150, WHITE)
         self.image = f.render(text)
 
 class drawButton(spyral.Sprite):
@@ -40,8 +40,8 @@ class StartScreen(spyral.Scene):
         startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
 
-        drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*3/5, "start")
-        #drawButton(self, "Extras/startgame.png", WIDTH/2.25, HEIGHT*4/5, "loadgame")
+        drawButton(self, "Extras/startgame.png", WIDTH/2.5, HEIGHT*3/5, "start")
+        drawButton(self, "Extras/startgame.png", WIDTH/2.5, HEIGHT*4/5, "loadgame")
 
         spyral.event.register("system.quit", spyral.director.pop)
 

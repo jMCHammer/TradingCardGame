@@ -23,7 +23,7 @@ class Model:
 
 
 def loadResources():
-		resources["background"] = spyral.image.Image("Extras/rsz_tundraclimate.png")
+		resources["background"] = spyral.image.Image("Extras/background.png")
 		resources["Arithmetic_u"] = spyral.image.Image("Extras/TradingCards/Arithmetic_u.png").scale(Vec2D(200,300))
 		resources["Arithmetic_s"] = spyral.image.Image("Extras/TradingCards/Arithmetic_s.png").scale(Vec2D(200,300))
 		resources["Geometry_u"] = spyral.image.Image("Extras/TradingCards/Geometry_u.png").scale(Vec2D(200,300))

@@ -14,7 +14,7 @@ SIZE = (WIDTH, HEIGHT)
 class drawFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, 50)
+        f = spyral.Font(font, 50, WHITE)
         self.image = f.render(text) 
 
 class drawOpponentOneImage(spyral.Sprite):

@@ -14,14 +14,14 @@ SIZE = (WIDTH, HEIGHT)
 class drawFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, 50)
+        f = spyral.Font(font, 50, WHITE)
         self.image = f.render(text)
 
 class drawFaceoffButton(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
 	    self.image = spyral.image.Image("Extras/faceoff.png")
-	    self.pos = (WIDTH/4.5, 300)
+	    self.pos = (WIDTH/4, 300)
 	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
 
     def handle_clicked(self, pos):
@@ -45,13 +45,13 @@ class drawTutorialButton(spyral.Sprite):
     def __init__(self, Scene):
 	    spyral.Sprite.__init__(self, Scene)
 	    self.image = spyral.image.Image("Extras/tutorial.png")
-	    self.pos = (WIDTH/3.5, 500)
+	    self.pos = (WIDTH/4, 500)
 
 class drawCodeButton(spyral.Sprite):
-    def __init__(self, Scene, imageloc, posx, posy):
+    def __init__(self, Scene):
         spyral.Sprite.__init__(self, Scene)
-        self.image = spyral.image.Image(imageloc)
-        self.pos = (posx, posy)
+        self.image = spyral.image.Image("Extras/tutorial.png")
+        self.pos = (WIDTH/4, 600)
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
     def handle_clicked(self, pos):
@@ -72,18 +72,17 @@ class ControlPanelScreen(spyral.Scene):
         global manager
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self.scene)
-        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        self.background = model.resources["background"]
 
         charText = drawFont(self.scene, "Extras/Comic_Book.ttf", "Welcome " + self.hero.name + "!")
         charText.pos = (WIDTH/3, 10)
 
-        self.hero.pos = (WIDTH*3/4, 200) 
+        self.hero.pos = (WIDTH*2.5/4, 200) 
 
         faceoffButton = drawFaceoffButton(self.scene)
         editDeckButton = drawEditDeckButton(self.scene)
         tutorialButton = drawTutorialButton(self.scene)
-## Change image
-        self.showGameCodeButton = drawCodeButton(self.scene, "Extras/tutorial.png", WIDTH/3, 600)
+        showGameCodeButton = drawCodeButton(self.scene)
 
         spyral.event.register("system.quit", spyral.director.pop)
 

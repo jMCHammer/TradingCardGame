@@ -13,13 +13,13 @@ SIZE = (WIDTH, HEIGHT)
 class drawTitleFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, 150)
+        f = spyral.Font(font, 150, WHITE)
         self.image = f.render(text)
 
 class drawTextFont(spyral.Sprite):
     def __init__(self, Scene, font, text):
 	    spyral.Sprite.__init__(self, Scene)
-	    f = spyral.Font(font, 50)
+	    f = spyral.Font(font, 50, WHITE)
 	    self.image = f.render(text)
 
 class drawCharOneImage(spyral.Sprite):
@@ -112,7 +112,7 @@ class NameScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.background = spyral.image.Image("Extras/rsz_tundraclimate.png")
+        self.background = model.resources["background"]
 
         startText = drawTitleFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
