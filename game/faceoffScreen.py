@@ -277,9 +277,9 @@ class FaceoffScreen(spyral.Scene):
             count += 1
 
         # Opponent cards
-        x = WIDTH/12
+        x = WIDTH/5
         y = 15
-
+        count = 0
         for card in self.opponentcards:
             try:    
                 self.showOppHealth[count].visible = False
@@ -294,8 +294,9 @@ class FaceoffScreen(spyral.Scene):
             self.opponentcards[card].layer = "text"
             if self.opponentcards[card].alive:
                 self.opponentcards[card].visible = True
+            #Card placement
             self.opponentcards[card].pos = (x, y)
-            x = x + 400
+            x = x + 200
             count += 1
 
 ################### Exit ######################################################
