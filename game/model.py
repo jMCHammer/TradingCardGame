@@ -32,12 +32,13 @@ def loadResources():
 	    resources["Geometry_s"] = spyral.image.Image("Extras/TradingCards/Geometry_s.png").scale(Vec2D(200,300))
 	    resources["Hero_boy"] = spyral.image.Image("Extras/boy.png")
 	    resources["Hero_girl"] = spyral.image.Image("Extras/girl.png")
-	    resources["Youngster Joey"] = spyral.image.Image("Extras/Youngster_Joey.png").scale(Vec2D(8, 10))
+#	    resources["Youngster Joey"] = spyral.image.Image("Extras/Youngster_Joey.png").scale(Vec2D(8, 10))
 	    resources["Wood"] = spyral.image.Image("Extras/wood1.png").scale(Vec2D(200,300))
 	    resources["GayRight"] = spyral.image.Image("Extras/stand.png")
 	    resources["GayLeft"] = spyral.image.Image("Extras/stand.png").flip(True,False)
 	    resources["GayRunRight"] = spyral.image.Image("Extras/run1.png")
 	    resources["GayRunLeft"] = spyral.image.Image("Extras/run1.png").flip(True,False)
+	    resources["ship"] = spyral.image.Image("Extras/rms.png")
 	    resources["woodbox"] = spyral.image.Image("Extras/box.png")
 
 #Used to generate a saveCode which can be used to load a previous state
