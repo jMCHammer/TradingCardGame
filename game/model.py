@@ -1,4 +1,5 @@
 import spyral
+import model
 from spyral import Vec2D
 from collections import OrderedDict
 
@@ -73,28 +74,34 @@ def saveCode():
             deck_string += "0"
     saveCode = str(int(deck_string, 2))
     ## To add more data, add
-    # saveCode = saveCode + "." + newDataString
+    
+    saveCode = saveCode + "." + name + "." + char.replace("char", "")
     return saveCode
 
 #Used to load a previous game play state
 # SaveCode : deckCardsString ## + "." + otherString 
 def loadCode(saveCode):
-    saveCode = saveCode.split('.')
-    orderedCards = OrderedDict(sorted(allCards.items(), key=lambda t: t[0]))
-    i = 0
-    cards = bin(int(saveCode[0]))
-    #Trim binary 0b
-    cards = cards[2:]
-    #if there are missing leading digits
-    while len(cards) < 4:
-        cards = "0" + cards
-    while cards:
-        if cards[0].isdigit():
-            if int(cards[0]):
-                card = orderedCards.items()[i]
-                deck[card[0]] = card[1]
-                if card[0] in looseCards:
-                    del looseCards[card[0]]
-        i += 1
-        cards = cards[1:]
-
+    try:
+        saveCode = saveCode.split('.')
+        orderedCards = OrderedDict(sorted(allCards.items(), key=lambda t: t[0]))
+        i = 0
+        cards = bin(int(saveCode[0]))
+        #Trim binary 0b
+        cards = cards[2:]
+        #if there are missing leading digits
+        while len(cards) < 4:
+            cards = "0" + cards
+        while cards:
+            if cards[0].isdigit():
+                if int(cards[0]):
+                    card = orderedCards.items()[i]
+                    deck[card[0]] = card[1]
+                    if card[0] in looseCards:
+                        del looseCards[card[0]]
+            i += 1
+            cards = cards[1:]
+        model.name = saveCode[1]
+        model.char = "char" + saveCode[2]
+        return True
+    except:
+        return False

@@ -98,6 +98,11 @@ class BeginFaceoffScreen(spyral.Scene):
 
         self.hero.visible = False;
     
+        class RegisterForm(spyral.Form):
+            #Buttons
+            backButton   = spyral.widgets.Button("Back")
+        self.form = RegisterForm(self)
+        self.form.backButton.pos   = (10, 10)
         opponentText = drawFont(self.scene, "Extras/Comic_Book.ttf", "Choose Your Opponent")
         opponentText.pos = (WIDTH/5, 10)
 
@@ -110,4 +115,11 @@ class BeginFaceoffScreen(spyral.Scene):
         
 
         spyral.event.register("system.quit", spyral.director.quit)
+        spyral.event.register("form.RegisterForm.backButton.changed", self.backClicked)
+
+################### Exit ##################################################
+#### Go back to controlPanelScreen
+    def backClicked(self, event):
+        if (event.value == "down"):
+            spyral.director.pop()
 

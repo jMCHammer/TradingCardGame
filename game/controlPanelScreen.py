@@ -61,8 +61,8 @@ class drawCodeButton(spyral.Sprite):
 #            del self.codeText
         except:
             pass        
-        sc = "Game Code: " + model.saveCode()
         if self.collide_point(pos):
+            sc = "Game Code: " + model.saveCode()
             self.codeText = drawFont(self.scene, "Extras/Comic_Book.ttf", sc)
             self.codeText.pos = (WIDTH/2 - 100, HEIGHT*4/5)
 

@@ -1,5 +1,6 @@
 import spyral
 import model
+import random
 
 
 WIDTH    = 1200
@@ -23,11 +24,10 @@ class Opponent(spyral.Sprite):
             #Needs to be changed to take in a deck
             pass
 
-
-# TODO implement AI logic
+    #Randomly pick a card
     def pickCard(self):
-        self.selectedSubject = "Arithmetic"
+        c = random.randint(0,len(self.deck)-1)
+        self.selectedSubject = self.deck.keys()[c] 
 
     def answerQuestion(self):
         pass
-

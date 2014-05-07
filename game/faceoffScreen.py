@@ -34,10 +34,9 @@ class FaceoffScreen(spyral.Scene):
         self.hero.pos = (WIDTH-180, HEIGHT - 395)
         self.hero.scale_x = .80;
         self.hero.scale_y = .80;
-### TODO Pass on selected Opponent from StartFaceoffScreen
+        # Create Opponent Sprite
         self.opponent = Opponent(self);
-#        self.opponent.image.pos = (15, WIDTH-200)
-###
+
         self.background = model.resources[model.currentOpponent + "bg"]
         self.layers = ["bottom", "text"]
 
@@ -100,6 +99,8 @@ class FaceoffScreen(spyral.Scene):
         spyral.event.register("form.RegisterForm.easyButton.changed", self.initEasy)
         spyral.event.register("form.RegisterForm.mediumButton.changed", self.initMedium)
         spyral.event.register("form.RegisterForm.hardButton.changed", self.initHard)
+
+        spyral.event.register("", self.deselectCards)
 
     def initEasy(self, event):
         if (event.value == "down"):
@@ -195,7 +196,6 @@ class FaceoffScreen(spyral.Scene):
         
 ################### Event Handlers ############################################
 #### Submit answer to system
-#### TODO implement game logic, damage, if answer is close -> still does damage?
     def submitAnswer(self, event):
         self.opponent.answerQuestion()
         if (event.value == "down"):
@@ -203,8 +203,6 @@ class FaceoffScreen(spyral.Scene):
             try:
                 if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
                     self.dealDamage(self.deck[self.selectedSubject].damage)
-                else:
-                    print ("False: 0 Damage?")
                 self._reset()
             except(ValueError):
                 pass
@@ -299,33 +297,9 @@ class FaceoffScreen(spyral.Scene):
             x = x + 200
             count += 1
 
-################### Exit ######################################################
+################### Exit ###################################################
 #### Go back to controlPanelScreen
     def backClicked(self, event):
         if (event.value == "down"):
             spyral.director.pop()
 
-"""
-        ## Draw Opponent's deck cards
-###############################MAJOR TODO ######################## Figure out why project is only drawing one set of cards
-        y = 10
-        x = WIDTH/12
-        count = 0
-        for card in self.opponent.deck:
-            try:    
-                self.showOppHealth[count].visible = False
-#                del self.showHealth[count]
-            except:
-                pass
-            # Init health counters
-            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponent.deck[card].health), 25))
-            # Draw Health counters on screen
-            self.showOppHealth[count].layer = "text"
-            self.showOppHealth[count].pos = (x + 70, y + 295)
-            # Draw cards on screen
-            self.opponent.deck[card].layer = "text"
-            self.opponent.deck[card].visible = True
-            self.opponent.deck[card].pos = (x, y)
-            x = x + 400
-            count += 1
-            """
