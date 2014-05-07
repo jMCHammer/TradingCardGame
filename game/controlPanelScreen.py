@@ -2,6 +2,7 @@ import spyral
 import model
 import editCollectionScreen
 import beginFaceoffScreen
+import tutorialScreen
 
 from hero import Hero
 
@@ -46,6 +47,11 @@ class drawTutorialButton(spyral.Sprite):
 	    spyral.Sprite.__init__(self, Scene)
 	    self.image = spyral.image.Image("Extras/tutorialButton.png")
 	    self.pos = (WIDTH/4, 500)
+	    spyral.event.register("input.mouse.down.left", self.handle_clicked)	
+
+    def handle_clicked(self, pos):
+        if self.collide_point(pos):
+            spyral.director.push(tutorialScreen.TutorialScreen())
 
 class drawCodeButton(spyral.Sprite):
     def __init__(self, Scene):

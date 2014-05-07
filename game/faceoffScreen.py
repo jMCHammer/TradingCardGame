@@ -100,8 +100,6 @@ class FaceoffScreen(spyral.Scene):
         spyral.event.register("form.RegisterForm.mediumButton.changed", self.initMedium)
         spyral.event.register("form.RegisterForm.hardButton.changed", self.initHard)
 
-        spyral.event.register("", self.deselectCards)
-
     def initEasy(self, event):
         if (event.value == "down"):
             self.initQ("easy")
@@ -197,18 +195,18 @@ class FaceoffScreen(spyral.Scene):
 ################### Event Handlers ############################################
 #### Submit answer to system
     def submitAnswer(self, event):
-        self.opponent.answerQuestion()
         if (event.value == "down"):
             # if answer is correct
             try:
                 if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
                     self.dealDamage(self.deck[self.selectedSubject].damage)
+                print "Opponent's answer: " + str(self.opponent.answerQuestion())
                 self._reset()
             except(ValueError):
                 pass
 
     def submitDivisionAnswer(self, correct):
-        self.opponent.answerQuestion()
+        print "Opponent's answer: " + (self.opponent.answerQuestion())
         if correct:
             self.dealDamage(self.deck[self.selectedSubject].damage)
         else:

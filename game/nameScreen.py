@@ -2,6 +2,7 @@ import spyral
 import random
 import math
 import model
+import tutorialScreen
 import controlPanelScreen
 
 WIDTH = 1200
@@ -105,8 +106,8 @@ class drawButton(spyral.Sprite):
         if self.collide_point(pos):
             model.name = self.scene.form.nameAnswer.value
             model.opponentDead = False
-            cps = controlPanelScreen.ControlPanelScreen()
-            spyral.director.replace(cps)
+            spyral.director.replace(controlPanelScreen.ControlPanelScreen())
+            spyral.director.push(tutorialScreen.TutorialScreen())
 
 class NameScreen(spyral.Scene):
     def __init__(self, *args, **kwargs):

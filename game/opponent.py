@@ -19,6 +19,8 @@ class Opponent(spyral.Sprite):
         #self.deck = {}
         self.deck = {"Arithmetic" : ["Arithmetic", 80,  40]}
         self.selectedSubject = "Arithmetic"
+        # 1 = easy, 2 = medium, 3 = hard
+        self.selectedDifficulty = 1
 
         if self.name is not None:
             #Needs to be changed to take in a deck
@@ -30,4 +32,28 @@ class Opponent(spyral.Sprite):
         self.selectedSubject = self.deck.keys()[c] 
 
     def answerQuestion(self):
-        pass
+        #Randomly pick a difficulty
+        # 60% easy, 30% medium, 10% hard
+        c = random.randint(1, 10)
+        if c > 6: 
+            if c > 9:
+                self.selectedDifficulty = 2
+            else:
+                self.selectedDifficulty = 3
+
+        # 1 <= c <= 10
+        rnge = self.selectedDifficulty*10
+        t = random.randint(1, rnge)
+        # 1 <= t <= {10, 20, 30}
+
+        # AI logic
+
+        # if t > {3, 13, 23}
+
+        # if easy,   70% chance of answering correctly
+        # if medium, 35% chance of answering correctly
+        # if hard, 17.5% chance of answering correctly
+        if t >= (rnge - 7):
+            return True
+        else:
+            return False
