@@ -27,8 +27,8 @@ class Translator(object):
         'KP_Right' : pygame.K_KP6,
         'numbersign' : pygame.K_HASH,
         'percent' : ord('%'),
-        'exclam' : pygame.K_EXCLAIM,
-	'asciicircum' : pygame.K_CARET,
+        'exclam' : pygame.K_EXCLAIM 
+        'asciicircum' : pygame.K_CARET,
         'parenleft' : pygame.K_LEFTPAREN,
         'parenright' : pygame.K_RIGHTPAREN,
         'braceleft' : ord('{'),
