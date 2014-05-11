@@ -90,12 +90,10 @@ class Question:
         self.randomOpKey = random.choice(ops.keys())
         if self.randomOpKey == "/":
             self.randomNumOne = round(random.uniform(0.0, 10.0) + 1,1)
-            self.randomNumTwo = round(random.uniform(-30.0, 30.0),1) * self.randomNumOne
-            while(self.randomNumTwo == 0):
-                self.randomNumTwo = round(random.uniform(-30.0, 30.0),1) * self.randomNumOne #avoiding answer ends up 0
+            self.randomNumTwo = round(random.uniform(0.0, 50.0),1) * self.randomNumOne
         else:
-            self.randomNumOne = round(random.uniform(-50.0, 50.0),1)
-            self.randomNumTwo = round(random.uniform(-50.0, 50.0),1)
+            self.randomNumOne = round(random.uniform(0.0, 100.0),1)
+            self.randomNumTwo = round(random.uniform(0.0, 100.0),1)
 
         self.randomOpValue = ops[self.randomOpKey]
         if (self.randomNumOne < self.randomNumTwo):

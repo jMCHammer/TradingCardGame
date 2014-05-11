@@ -9,7 +9,7 @@ FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
 HEIGHT = 675
 SIZE = (WIDTH, HEIGHT)
-DIFFICULTY = {"easy":0, "medium":0, "hard":1}
+DIFFICULTY = {"easy":0, "medium":0, "hard":0}
 
 
 
