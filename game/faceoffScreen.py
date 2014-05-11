@@ -205,13 +205,13 @@ class FaceoffScreen(spyral.Scene):
             except(ValueError):
                 pass
 
-    def submitDivisionAnswer(self, correct):
-        print "Opponent's answer: " + (self.opponent.answerQuestion())
+    def submitScreenAnswer(self, correct):
         if correct:
             self.dealDamage(self.deck[self.selectedSubject].damage)
         else:
             print ("False: 0 Damage?")
         self._reset()
+
 ################### Drawing Functions #########################################
 #### Resets screen
     def _reset(self):

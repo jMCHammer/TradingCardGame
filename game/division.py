@@ -275,7 +275,7 @@ class resultScreen(spyral.Scene):
 		self.sea = Sea(self)
 		self.sea.pos = (0, HEIGHT/3 * 2)
 		self.correct = (result == 0)
-		self.layers = ['top','bottom']
+		self.layers = ['top','bottom'] 
 
 	def Update(self):
 		self.timer += 1
@@ -297,4 +297,5 @@ class resultScreen(spyral.Scene):
 				self.ship.pos = (self.ship.pos[0], self.ship.pos[1] + 6)
 		if self.timer >= 200:
 			spyral.director.pop()
-			spyral.director.get_scene().submitDivisionAnswer(self.correct)
+			spyral.director.get_scene().submitScreenAnswer(self.correct)
+			self.kill()
