@@ -298,4 +298,3 @@ class resultScreen(spyral.Scene):
 		if self.timer >= 200:
 			spyral.director.pop()
 			spyral.director.get_scene().submitScreenAnswer(self.correct)
-			self.kill()

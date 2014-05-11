@@ -249,9 +249,6 @@ class mainScene(spyral.Scene):
 		submission = 0.0
 		for i in range(3):
 			submission += len(self.subFrom[2-i]) * pow(10,1-i)
-		correct = (submission == float(self.answer))
-		print(str(submission) + ' ' + str(float(self.answer)))
-		print(correct)
+		correct = int(submission*10) == int(self.answer*10)
 		spyral.director.pop()
 		spyral.director.get_scene().submitScreenAnswer(correct)
-		self.kill()
