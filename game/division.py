@@ -286,7 +286,7 @@ class resultScreen(spyral.Scene):
 		elif self.result > 0:
 			if self.timer < 100:
 				self.ship.angle += (math.pi/2 - self.shipangle)/100
-				self.ship.y = (HEIGHT/7 * 6) + (3 * self.timer)
+				self.ship.y = (HEIGHT/7 * 6) + (8 * self.timer)
 			elif self.timer >= 100 and self.timer < 140:
 				self.ship.pos = (self.ship.pos[0], self.ship.pos[1] + 6)
 		else:

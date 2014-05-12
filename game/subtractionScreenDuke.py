@@ -88,7 +88,7 @@ class dyingPebble(Sprite):
 		if(self.y > 2*HEIGHT/3 + WIDTH/25):
 			self.died = True
 		elif(self.ty >= 0):
-			dy = (0.245*WIDTH/1200)*self.ty
+			dy = (0.245*WIDTH/1200.0)*self.ty
 			if(self.y + dy > self.h - HEIGHT/50):
 				self.y = self.h - HEIGHT/50
 				self.ty = -1
@@ -96,7 +96,7 @@ class dyingPebble(Sprite):
 				self.y += dy
 				self.ty += 1
 		elif(self.tx < 25):
-			he = WIDTH/6
+			he = WIDTH/6.0
 			a = 8*he/(float(pow(self.dist,2)))
 			b = 4*he/float(self.dist)
 			self.tx += 1
@@ -120,12 +120,12 @@ class Beaker(Sprite):
 	def __init__(self, Scene, diff):
 		super(Beaker, self).__init__(Scene)
 		self.image = spyral.Image(size=(WIDTH/(4+DIFFICULTY[diff]),HEIGHT/50))
-		self.color = (200,200,200)
+		self.color = (180,180,200)
 		self.diff = diff
 		self.image.draw_rect(self.color,(WIDTH/1000, 0),(WIDTH/(4+DIFFICULTY[diff]) - WIDTH/500, HEIGHT/50), 0, 'center')
 
 	def fillup(self):
-		self.color = (100,100,127)
+		self.color = (80,80,127)
 		self.image.draw_rect(self.color,(WIDTH/1000, 0),(WIDTH/(4+DIFFICULTY[self.diff]) - WIDTH/500, HEIGHT/50), 0, 'center')
 
 class mainScene(spyral.Scene):
@@ -141,6 +141,12 @@ class mainScene(spyral.Scene):
 		self.subFrom = []
 		self.subBy = []
 		self.filllist = [0,0,0]
+		self.text1 = drawFont(self,"Fill in the beaker, and do not overfill!",spyral.Font(FONT,25,(0,0,0)))
+		self.text2 = drawFont(self,"Down: fill in the beaker!", spyral.Font(FONT,25,(0,0,0)))
+		self.text3 = drawFont(self,"Space: lend pebble to thr right!", spyral.Font(FONT,25,(0,0,0)))
+		self.text2.pos = (WIDTH/18, self.text1.height)
+		self.text1.pos = (WIDTH/18, 0)
+		self.text3.pos = (WIDTH/9 + self.text2.width, self.text1.height)
 		spyral.event.register("input.keyboard.down.return", self.submit)
 
 		#initiallize pebbles on subfrom side...
@@ -151,7 +157,6 @@ class mainScene(spyral.Scene):
 			decx = self.borrower.dx * 2.5 
 			decy = HEIGHT/3 + WIDTH/25
 			decimal1.pos = (decx, decy)
-
 		for d in range(1,4):
 			subfroms = []
 			if(len(numString) >= d):
@@ -217,7 +222,6 @@ class mainScene(spyral.Scene):
 							self.borrower.x - WIDTH/(2*(4+DIFFICULTY[self.diff])))
 				pebble.kill()
 				self.filllist[subposition] += 1
-		print(self.filllist)
 
 	def borrowFrom(self):
 		position = len(self.subFrom) - self.borrower.position
