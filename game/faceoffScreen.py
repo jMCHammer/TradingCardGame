@@ -2,6 +2,7 @@ import spyral
 import model
 import endGameScreen
 import division
+import subtractionScreenDuke as subtraction
 
 from opponent import Opponent
 from spyral import Animation, easing
@@ -118,12 +119,15 @@ class FaceoffScreen(spyral.Scene):
         self.form.hardButton.visible = False
 
         self.deck[self.selectedSubject].initQuestion(diff)
-        ##division testcase##
-#        while(self.deck[self.selectedSubject].q.randomOpKey != "/"):
+        ##Screen testcase##
+#        while(self.deck[self.selectedSubject].q.randomOpKey != "-"):
 #            self.deck[self.selectedSubject].initQuestion(diff)
         ##endtestcase##
-        if self.deck[self.selectedSubject].q.randomOpKey == "/":
-            spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
+        if self.selectedSubject == "Arithmetic":
+            if self.deck[self.selectedSubject].q.randomOpKey == "/":
+                spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
+            elif self.deck[self.selectedSubject].q.randomOpKey == "-":
+                spyral.director.push(subtraction.mainScene(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
         self.showQuestion.pos = (WIDTH/2-100, HEIGHT/2)
         self.form.answerField.visible  = True
@@ -205,13 +209,13 @@ class FaceoffScreen(spyral.Scene):
             except(ValueError):
                 pass
 
-    def submitDivisionAnswer(self, correct):
-        print "Opponent's answer: " + (self.opponent.answerQuestion())
+    def submitScreenAnswer(self, correct):
         if correct:
             self.dealDamage(self.deck[self.selectedSubject].damage)
         else:
             print ("False: 0 Damage?")
         self._reset()
+
 ################### Drawing Functions #########################################
 #### Resets screen
     def _reset(self):
