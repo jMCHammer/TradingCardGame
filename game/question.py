@@ -21,27 +21,25 @@ class Question:
 
     #### EACH FUNCTION DEFINED CREATES TWO RANDOM NUMBERS AND CHOOSES A RANDOM OPERATOR
     #### THE ANSWER IS CALCULATED FOR THAT SPECIFIC EQUATION AND IS SET, ALONG WITH EQUATION TEXT. 
-    def easyAddition(self):
-        self.randomNumOne = random.randint(0, 100)
-        self.randomNumTwo = random.randint(0, 100)
-        self.opValue = ops["+"]
-        self.answer = self.opValue(self.randomNumOne, self.randomNumTwo)
-        self.text = str(self.randomNumOne) + " + " + str(self.randomNumTwo)
 
-    def mediumAddition(self):
-        self.randomNumOne = round(random.uniform(0.0, 100.0),1)
-        self.randomNumTwo = round(random.uniform(0.0, 100.0),1)
-        self.opValue = ops["+"]
-        self.answer = self.opValue(self.randomNumOne, self.randomNumTwo)
-        self.text = str(self.randomNumOne) + " + " + str(self.randomNumTwo)
+# INTEGER REPRESENTATION #
+    def Integer(self, diff):
+        if diff == "easy":
+            self.randomNumOne = random.randint(-9, 10)
+        elif diff == "medium":
+            self.randomNumOne = random.randint(-15, 16)
+        elif diff == "hard":
+            self.randomNumOne = random.randint(-25, 26)
 
-    def hardAddition(self):
-        self.randomNumOne = round(random.uniform(-100.0, 100.0),1)
-        self.randomNumTwo = round(random.uniform(-100.0, 100.0),1)
-        self.opValue = ops["+"]
-        self.answer = self.opValue(self.randomNumOne, self.randomNumTwo)
-        self.text = str(self.randomNumOne) + " + " + str(self.randomNumTwo)
 #3==========================================================D
+# ARITHMETIC QUESTION LOGIC #
+# self.randomOpKey = random operator from + - / *
+# self.randomNumOne = First Random Number
+# self.randomNumTwo = Second Random Number
+# self.Answer = Answer of the question
+# self.Text = Question string
+# Status = Complete
+
     def Arithmetic(self, diff):
         self.randomOpKey = random.choice(ops.keys())
 
@@ -85,6 +83,8 @@ class Question:
             self.text = str(self.randomNumOne) + " " + self.randomOpKey + " " + str(self.randomNumTwo)
 
 #############################################################
+# Fraction Question Logic #
+# Status: Incomplete #
     def easyLikeFraction(self):
         denominator = random.randrange(9)+2
         numerator1 = random.randrange(denominator-1) + 1
@@ -103,6 +103,19 @@ class Question:
             self.text = self.randomNumOne + " " + self.randomOpKey + " " + self.randomNumTwo
             self.answer = self.randomOpValue(randomOne, randomTwo)
 #############################################################
+# Geometry Question Logic #
+# self.sh = Shape of the question. Either Triangle, Parallelogram, Trapezoid, Rectangle, or Square
+# self.h = height
+# self.w = width 
+#          top length if shape is a trapezoid
+#          base length if shape is a triangle
+# self.b = (Apply for Trapezoid only) bottom length
+# self.s1 = (Apply for Trapezoid, Parallelogram, and Triangle) Left side length
+# self.s2 = (Apply for Trapezoid and Triangle only) Right side length
+# self.answer = Answer key of the question. (Either Area or Parameter)
+# self.text = Question text
+# Status = Incomplete.(Need volume question logics)
+#          Need to clean some coding
     def easyGeometry(self):
         gt = geotype[random.randint(0,1)]
         self.sh = random.choice(shape)
@@ -162,15 +175,15 @@ class Question:
     def mediumGeometry(self):
         gt = geotype[random.randint(0,1)]
         self.sh = random.choice(shape)
-        self.w = random.randint(5,20) #width
-        self.h = random.randint(5,20) #height
+        self.w = random.randint(5,15) #width
+        self.h = random.randint(5,15) #height
         if(gt == "area"):
            self.text = "What is the area of a " + self.sh
         elif(gt == "perimeter"): 
             self.text = "What is the perimeter of a " + self.sh
         if(self.sh == "trapezoid"):
             self.h = self.h + 1 if self.h%2 != 0 else self.h
-            self.b = random.randint(self.w,30) #bottomlength
+            self.b = random.randint(self.w,25) #bottomlength
             self.l1 = random.randint(1,self.b-self.w)
             self.s1 = round(pow(pow(self.l1,2) + pow(self.h,2),.5),1)
             self.l2 = self.b - self.w - self.l1
