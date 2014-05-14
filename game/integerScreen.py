@@ -3,6 +3,7 @@ import model
 import question
 from spyral import Sprite, Vec2D
 import math
+import model
 
 FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
@@ -22,7 +23,14 @@ class drawFont(Sprite):
     def update(self, string):
         self.text = string
         self.image = self.f.render(self.text)
-
+class Nick(Sprite):
+	def __init__(self,View):
+		super(Nick, self).__init__(View)
+		self.anchor = "midbottom"
+		self.images = [model.resources["GayRight"].scale((HEIGHT/8, HEIGHT/4)),
+						model.resources["GayLeft"].scale((HEIGHT/8, HEIGHT/4)),]
+		self.direction = "right"
+		self.image = self.images[0]
 #Man dog Steve
 class Steve(spyral.View):
 	def __init__(self, Scene):
@@ -42,7 +50,7 @@ class Steve(spyral.View):
 		self.head.image.draw_ellipse((153,76,0), (0,0), self.head.size, 0)
 		self.head.anchor = 'center'
 		self.head.angle = math.pi/18.0
-		self.head.pos = (self.body.x - WIDTH/44.0, self.body.y-WIDTH/70.0)
+		self.head.pos = (self.body.x - WIDTH/44.0, self.body.y-WIDTH/75.0)
 		#tail
 		self.tail = Sprite(self)
 		self.tail.image = spyral.Image(size=(WIDTH/85.0,WIDTH/30.0))
@@ -79,12 +87,12 @@ class Steve(spyral.View):
 			self.leg1.angle = -math.pi/6.0
 			self.leg2.angle = math.pi/6.0
 		if self.direction == "left":
-			self.head.pos = (self.body.x - WIDTH/44.0, self.body.y-WIDTH/70.0)
+			self.head.pos = (self.body.x - WIDTH/44.0, self.body.y-WIDTH/75.0)
 			self.head.angle = math.pi/18.0
 			self.tail.pos = (self.body.x + WIDTH/38.0, self.body.y-WIDTH/90.0)
 			self.tail.angle = -math.pi/5.0
 		elif self.direction == "right":
-			self.head.pos = (self.body.x + WIDTH/44.0, self.body.y-WIDTH/70.0)
+			self.head.pos = (self.body.x + WIDTH/44.0, self.body.y-WIDTH/75.0)
 			self.head.angle = -math.pi/18.0
 			self.tail.pos = (self.body.x - WIDTH/38.0, self.body.y-WIDTH/90.0)
 			self.tail.angle = +math.pi/5.0
@@ -114,7 +122,7 @@ class SteveBody(Sprite):
 			 if self.ty >= 25:
 			 	self.ty = 0
 			 else:
-			 	he = WIDTH/12.0
+			 	he = WIDTH/15.0
 			 	a = -8.0*he/pow(24.0,2)
 			 	b = 4.0*he/24.0
 				dy = a*self.ty + b
@@ -138,7 +146,6 @@ class SteveLeg(Sprite):
 		self.anchor = 'center'
 		self.image = spyral.Image(size=(WIDTH/75.0, WIDTH/50.0))
 		self.image.draw_ellipse((153,76,0), (0,0), self.size, 0)
-
 
 class measureLine(Sprite):
 	def __init__(self, View, pos):
@@ -170,9 +177,11 @@ class camera(spyral.View):
 			number.anchor = 'center'
 			number.pos = ((i-25)*WIDTH/10.0, 6*HEIGHT/7 + number.height)
 			self.measurenumbers.append(number)
+		self.nick = Nick(self)
+		self.nick.pos = (0, 6*HEIGHT/7)
 
 		self.move = False
-		self.linedx = WIDTH/48
+		self.linedx = WIDTH/48.0
 		spyral.event.register("input.keyboard.down.left", self.left)
 		spyral.event.register("input.keyboard.down.right", self.right)
 		spyral.event.register("input.keyboard.up.left", self.stop)
@@ -196,12 +205,19 @@ class camera(spyral.View):
 class mainScreen(spyral.Scene):
 	def __init__(self, q, difficulty):
 		super(mainScreen, self).__init__(SIZE)
+		model.loadResources()
 		self.background = spyral.Image(size=SIZE)
 		self.background.fill((255,255,255))
 		self.cam = camera(self)
 		self.cam.pos = (WIDTH/2, self.cam.pos[1])
 		self.camy = self.cam.pos[1]
 		self.steve = Steve(self)
+
+		self.countdown = drawFont(self, "Ready!", spyral.Font(FONT,30,(0,0,0)))
+		self.countdown.anchor = 'midtop'
+		self.countdown.pos = (WIDTH/2, 0)
+		self.count = 0
+
 		spyral.event.register("director.update", self.update)
 
 	def update(self):
@@ -212,4 +228,14 @@ class mainScreen(spyral.Scene):
 		else:
 			self.cam.y = self.camy
 			self.steve.body.y = self.steve.body.tempy
+		if (self.count < 170):
+			self.count += 1
+			if (self.count%30 == 0):
+				if(self.count < 120):
+					self.countdown.update(str(4-self.count/30))
+				else:
+					self.countdown.update("Start!")
+		else:
+			self.countdown.kill()
+
 		self.steve.update()
