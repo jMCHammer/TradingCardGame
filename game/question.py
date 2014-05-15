@@ -6,7 +6,7 @@ from fractions import Fraction
 ops = {"+":add, "-":sub, "*":mul, "/":div}
 shape = ["triangle", "square", "parallelogram", "trapezoid", "rectangle"]
 geotype = ["perimeter","area","volume"]
-    
+itype = ["compare","representation"]
 
 #### FINISHED BESIDES GEOMETRY, WE NEED TO TALK ABOUT WHAT QUESTIONS NEED TO BE DONE FOR THAT ####
 class Question:
@@ -14,24 +14,38 @@ class Question:
         self.subject = subject
         self.difficulty = difficulty
 
-        if subject == "Arithmetic":
-            self.Arithmetic(difficulty)
-        elif subject == "Geometry":
-            self.Geometry(difficulty)
-        else:
-            eval("self." + self.difficulty + self.subject + "()");
+        # if subject == "Arithmetic":
+        #     self.Arithmetic(difficulty)
+        # elif subject == "Geometry":
+        #     self.Geometry(difficulty)
+        # elif subjec
+        # else:
+        eval("self." + self.subject + "(\"" + self.difficulty + "\")");
 
     #### EACH FUNCTION DEFINED CREATES TWO RANDOM NUMBERS AND CHOOSES A RANDOM OPERATOR
     #### THE ANSWER IS CALCULATED FOR THAT SPECIFIC EQUATION AND IS SET, ALONG WITH EQUATION TEXT. 
 
 # INTEGER REPRESENTATION #
     def Integer(self, diff):
-        if diff == "easy":
-            self.randomNumOne = random.randint(-9, 10)
-        elif diff == "medium":
-            self.randomNumOne = random.randint(-15, 16)
-        elif diff == "hard":
-            self.randomNumOne = random.randint(-25, 26)
+        qtype = "compare"
+        difficulty = 1 if diff == "easy" else (2 if diff == "medium" else 3)
+        intrange = int(2.5*pow(difficulty,2) - 2.5*difficulty + 10)
+        if qtype == "compare":
+            self.comparator = random.randint(0,1) # 0 = min, 1 = max
+            self.randomNumOne = random.randint(-intrange, intrange)
+            self.randomNumTwo = random.choice([random.randint(-intrange, self.randomNumOne - 1), random.randint(self.randomNumOne + 1, intrange)])
+            if(self.comparator == 1):
+                self.answer = max(self.randomNumOne, self.randomNumTwo)
+                self.text = "Which of the following is greater: " + str(self.randomNumOne) + " or " + str(self.randomNumTwo)
+            else:
+                self.answer = min(self.randomNumOne, self.randomNumTwo)
+                self.text = "Which of the following is smaller: " + str(self.randomNumOne) + " or " + str(self.randomNumTwo)
+
+        elif qtype == "representation":
+            self.randomNumOne = random.randint(-intrange, intrange)
+            self.randomNumTwo = random.randint(-intrange - self.randomNumOne, intrange) if self.randomNumOne < 0 else random.randint(-intrange, intrange - self.randomNumOne)
+            self.randomNumThree = random.randint(-intrange - (self.randomNumOne + self.randomNumTwo), intrange) if self.randomNumOne + self.randomNumTwo < 0 else random.randint(-intrange, intrange - (self.randomNumOne + self.randomNumTwo))
+
 
 #3==========================================================D
 # ARITHMETIC QUESTION LOGIC #
@@ -104,7 +118,7 @@ class Question:
         else :
             self.text = self.randomNumOne + " " + self.randomOpKey + " " + self.randomNumTwo
             self.answer = self.randomOpValue(randomOne, randomTwo)
-            
+
 #############################################################
 # Geometry Question Logic #
 # self.sh = Shape of the question. Either Triangle, Parallelogram, Trapezoid, Rectangle, or Square
@@ -118,7 +132,6 @@ class Question:
 # self.answer = Answer key of the question. (Either Area or Parameter)
 # self.text = Question text
 # Status = Incomplete.(Need volume question logics)
-#          Need to clean some coding
 
     def Geometry(self, diff):
         print diff
