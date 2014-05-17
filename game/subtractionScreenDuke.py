@@ -2,12 +2,14 @@ import spyral
 from spyral import Sprite
 import question
 import math
+import model
 
 WIDTH = 1200
 HEIGHT = 900
 SIZE = (WIDTH, HEIGHT)
 FONT = "Extras/Comic_Book.ttf"
 DIFFICULTY = {"easy":0, "medium":1, "hard":1}
+WHITE = (255, 255, 255)
 
 class drawFont(Sprite):
     def __init__(self, Scene, text, font):
@@ -116,6 +118,11 @@ class dyingPebble(Sprite):
 		if self.died:
 			self.kill()
 
+class LegitBeaker(Sprite):
+    def __init__(self, Scene):
+        super(LegitBeaker, self).__init__(Scene)
+        self.image = model.resources['beaker']
+
 class Beaker(Sprite):
 	def __init__(self, Scene, diff):
 		super(Beaker, self).__init__(Scene)
@@ -131,20 +138,21 @@ class Beaker(Sprite):
 class mainScene(spyral.Scene):
     def __init__(self, q, diff):
         super(mainScene, self).__init__(SIZE)
-        self.diff = diff
-        self.background = spyral.Image(size=SIZE)
-        self.background.fill((255,255,255))
+        model.loadResources();
+        self.background = model.resources["background"]
+        self.diff = diff        
         self.answer = q.answer
         self.firstnum = max(q.randomNumOne, q.randomNumTwo)
         self.secondnum = min(q.randomNumOne, q.randomNumTwo)
         self.borrower = Borrower(self, diff)
+        self.deakers = []
         self.subFrom = []
         self.subBy = []
         self.filllist = [0,0,0]
-        self.text1 = drawFont(self,"We need the perfect mixture to fuel us to victory!", spyral.Font(FONT, 25, (0,0,0)))
-        self.text2 = drawFont(self,"We have " + str(self.firstnum) + " pebbles but we only need " + str(self.secondnum) +"! Place the difference back in the beakers!", spyral.Font(FONT, 25, (0,0,0)))
-        self.text3 = drawFont(self,"Fill in the beakers but do not overflow them!",spyral.Font(FONT,25,(0,0,0)))
-        self.text4 = drawFont(self,"Down: Fill up the beaker       Space : Lend the pebble to the right", spyral.Font(FONT,25,(0,0,0)))
+        self.text1 = drawFont(self,"We need the perfect mixture to fuel us to victory!", spyral.Font(FONT, 25, WHITE))
+        self.text2 = drawFont(self,"We have " + str(self.firstnum) + " pebbles but we only need " + str(self.secondnum) +"! Place the difference back in the beakers!", spyral.Font(FONT, 25, WHITE))
+        self.text3 = drawFont(self,"Fill in the beakers but do not overflow them!",spyral.Font(FONT,25,WHITE))
+        self.text4 = drawFont(self,"Down: Fill up the beaker       Space : Lend the pebble to the right", spyral.Font(FONT,25,WHITE))
         self.text1.pos = (WIDTH/6 + 25, 0)
         self.text2.pos = (25, self.text1.height + self.text1.pos.y)		
         self.text3.pos = (WIDTH/5 + 25, self.text2.height + self.text2.pos.y)
@@ -186,21 +194,26 @@ class mainScene(spyral.Scene):
         self.secondnum = int(self.secondnum * 10)
         numString = str(self.secondnum)
         if(DIFFICULTY[diff]>0):
-			decimal2 = Pebble(self, (0,0,0))
-			decx = self.borrower.dx * 2.5 
-			decy = 2*HEIGHT/3 + WIDTH/25
-			decimal2.pos = (decx, decy)
+            decimal2 = Pebble(self, (0,0,0))
+            decx = self.borrower.dx * 2.5 
+            decy = 2*HEIGHT/3 + WIDTH/25
+            decimal2.pos = (decx, decy)
         for d in range(1,4):
-			subbys = []
-			if(len(numString) >= d):
-				n = int(numString[-1*d])
-				for i in range(n):
-					beaker = Beaker(self, diff)
-					x = self.borrower.dx * (4 - d) - (beaker.width/2)
-					y = 2*HEIGHT/3 + WIDTH/25 - (beaker.height * i)
-					beaker.pos = (x, y)
-					subbys.append(beaker)
-			self.subBy.append(subbys)
+            subbys = []
+            if(len(numString) >= d):
+                lbeaker = LegitBeaker(self)
+                lbeaker.x = self.borrower.dx * (4 - d) - (lbeaker.width/2)
+                lbeaker.y = 1.75*HEIGHT/3 + WIDTH/25
+                self.deakers.append(lbeaker)
+                n = int(numString[-1*d])
+                for i in range(n):
+                    beaker = Beaker(self, diff)
+                    x = self.borrower.dx * (4 - d) - (beaker.width/2)
+                    y = 2*HEIGHT/3 + WIDTH/25 - (beaker.height * i)
+                    beaker.pos = (x, y)
+                    beaker.visible = False
+                    subbys.append(beaker)
+            self.subBy.append(subbys)
 
 		#set keyboard control...
         spyral.event.register("input.keyboard.down.down", self.downPebble)
