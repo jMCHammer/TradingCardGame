@@ -4,6 +4,7 @@ import model
 import question
 from spyral import Sprite, Vec2D
 import math
+import time
 
 FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
@@ -297,4 +298,5 @@ class resultScreen(spyral.Scene):
 				self.ship.pos = (self.ship.pos[0], self.ship.pos[1] + 6)
 		if self.timer >= 200:
 			spyral.director.pop()
+			time.sleep(3)
 			spyral.director.get_scene().submitScreenAnswer(self.correct)
