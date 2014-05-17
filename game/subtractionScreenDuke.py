@@ -129,35 +129,37 @@ class Beaker(Sprite):
 		self.image.draw_rect(self.color,(WIDTH/1000, 0),(WIDTH/(4+DIFFICULTY[self.diff]) - WIDTH/500, HEIGHT/50), 0, 'center')
 
 class mainScene(spyral.Scene):
-	def __init__(self, q, diff):
-		super(mainScene, self).__init__(SIZE)
-		self.diff = diff
-		self.background = spyral.Image(size=SIZE)
-		self.background.fill((255,255,255))
-		self.answer = q.answer
-		self.firstnum = max(q.randomNumOne, q.randomNumTwo)
-		self.secondnum = min(q.randomNumOne, q.randomNumTwo)
-		self.borrower = Borrower(self, diff)
-		self.subFrom = []
-		self.subBy = []
-		self.filllist = [0,0,0]
-		self.text1 = drawFont(self,"Fill in the beaker, and do not overfill!",spyral.Font(FONT,25,(0,0,0)))
-		self.text2 = drawFont(self,"Down: fill in the beaker!", spyral.Font(FONT,25,(0,0,0)))
-		self.text3 = drawFont(self,"Space: lend pebble to thr right!", spyral.Font(FONT,25,(0,0,0)))
-		self.text2.pos = (WIDTH/18, self.text1.height)
-		self.text1.pos = (WIDTH/18, 0)
-		self.text3.pos = (WIDTH/9 + self.text2.width, self.text1.height)
-		spyral.event.register("input.keyboard.down.return", self.submit)
+    def __init__(self, q, diff):
+        super(mainScene, self).__init__(SIZE)
+        self.diff = diff
+        self.background = spyral.Image(size=SIZE)
+        self.background.fill((255,255,255))
+        self.answer = q.answer
+        self.firstnum = max(q.randomNumOne, q.randomNumTwo)
+        self.secondnum = min(q.randomNumOne, q.randomNumTwo)
+        self.borrower = Borrower(self, diff)
+        self.subFrom = []
+        self.subBy = []
+        self.filllist = [0,0,0]
+        self.text1 = drawFont(self,"We need the perfect mixture to fuel us to victory!", spyral.Font(FONT, 25, (0,0,0)))
+        self.text2 = drawFont(self,"We have " + str(self.firstnum) + " pebbles but we only need " + str(self.secondnum) +"! Place the difference back in the beakers!", spyral.Font(FONT, 25, (0,0,0)))
+        self.text3 = drawFont(self,"Fill in the beakers but do not overflow them!",spyral.Font(FONT,25,(0,0,0)))
+        self.text4 = drawFont(self,"Down: Fill up the beaker       Space : Lend the pebble to the right", spyral.Font(FONT,25,(0,0,0)))
+        self.text1.pos = (WIDTH/6 + 25, 0)
+        self.text2.pos = (25, self.text1.height + self.text1.pos.y)		
+        self.text3.pos = (WIDTH/5 + 25, self.text2.height + self.text2.pos.y)
+        self.text4.pos = (WIDTH/9, HEIGHT - 30)
+        spyral.event.register("input.keyboard.down.return", self.submit)
 
 		#initiallize pebbles on subfrom side...
-		self.firstnum = int(self.firstnum * 10)
-		numString = str(self.firstnum)
-		if(DIFFICULTY[diff]>0):
+        self.firstnum = int(self.firstnum * 10)
+        numString = str(self.firstnum)
+        if(DIFFICULTY[diff]>0):
 			decimal1 = Pebble(self, (0,0,0))
 			decx = self.borrower.dx * 2.5 
 			decy = HEIGHT/3 + WIDTH/25
 			decimal1.pos = (decx, decy)
-		for d in range(1,4):
+        for d in range(1,4):
 			subfroms = []
 			if(len(numString) >= d):
 				n = int(numString[-1*d])
@@ -181,14 +183,14 @@ class mainScene(spyral.Scene):
 			self.subFrom.append(subfroms)
 
 		#initialize beakers on subby side...
-		self.secondnum = int(self.secondnum * 10)
-		numString = str(self.secondnum)
-		if(DIFFICULTY[diff]>0):
+        self.secondnum = int(self.secondnum * 10)
+        numString = str(self.secondnum)
+        if(DIFFICULTY[diff]>0):
 			decimal2 = Pebble(self, (0,0,0))
 			decx = self.borrower.dx * 2.5 
 			decy = 2*HEIGHT/3 + WIDTH/25
 			decimal2.pos = (decx, decy)
-		for d in range(1,4):
+        for d in range(1,4):
 			subbys = []
 			if(len(numString) >= d):
 				n = int(numString[-1*d])
@@ -201,12 +203,12 @@ class mainScene(spyral.Scene):
 			self.subBy.append(subbys)
 
 		#set keyboard control...
-		spyral.event.register("input.keyboard.down.down", self.downPebble)
-		spyral.event.register("input.keyboard.down.space", self.borrowFrom)
+        spyral.event.register("input.keyboard.down.down", self.downPebble)
+        spyral.event.register("input.keyboard.down.space", self.borrowFrom)
 
-		pass
+        pass
 
-	def downPebble(self):
+    def downPebble(self):
 		position = len(self.subFrom) - self.borrower.position
 		subposition = self.borrower.position -1
 		if(len(self.subFrom) > position):
@@ -223,7 +225,7 @@ class mainScene(spyral.Scene):
 				pebble.kill()
 				self.filllist[subposition] += 1
 
-	def borrowFrom(self):
+    def borrowFrom(self):
 		position = len(self.subFrom) - self.borrower.position
 		if(len(self.subFrom) > position and position > 0):
 			if(len(self.subFrom[position-1]) == 0):
@@ -249,7 +251,7 @@ class mainScene(spyral.Scene):
 					subfroms.append(number)
 				self.subFrom[position-1] = subfroms
 
-	def submit(self):
+    def submit(self):
 		submission = 0.0
 		for i in range(3):
 			submission += len(self.subFrom[2-i]) * pow(10,1-i)
