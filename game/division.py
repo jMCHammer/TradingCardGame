@@ -4,6 +4,7 @@ import model
 import question
 from spyral import Sprite, Vec2D
 import math
+import time
 
 FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
