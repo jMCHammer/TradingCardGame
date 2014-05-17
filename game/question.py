@@ -27,13 +27,13 @@ class Question:
 
 # INTEGER REPRESENTATION #
     def Integer(self, diff):
-        qtype = "compare"
+        self.qtype = "compare"
         difficulty = 1 if diff == "easy" else (2 if diff == "medium" else 3)
         intrange = int(2.5*pow(difficulty,2) - 2.5*difficulty + 10)
-        if qtype == "compare":
+        if self.qtype == "compare":
             self.comparator = random.randint(0,1) # 0 = min, 1 = max
             self.randomNumOne = random.randint(-intrange, intrange)
-            self.randomNumTwo = random.choice([random.randint(-intrange, self.randomNumOne - 1), random.randint(self.randomNumOne + 1, intrange)])
+            self.randomNumTwo = random.choice(range(-intrange - 1, self.randomNumOne - 1) + range(self.randomNumOne + 1, intrange + 1))
             if(self.comparator == 1):
                 self.answer = max(self.randomNumOne, self.randomNumTwo)
                 self.text = "Which of the following is greater: " + str(self.randomNumOne) + " or " + str(self.randomNumTwo)
@@ -41,7 +41,7 @@ class Question:
                 self.answer = min(self.randomNumOne, self.randomNumTwo)
                 self.text = "Which of the following is smaller: " + str(self.randomNumOne) + " or " + str(self.randomNumTwo)
 
-        elif qtype == "representation":
+        elif self.qtype == "representation":
             self.randomNumOne = random.randint(-intrange, intrange)
             self.randomNumTwo = random.randint(-intrange - self.randomNumOne, intrange) if self.randomNumOne < 0 else random.randint(-intrange, intrange - self.randomNumOne)
             self.randomNumThree = random.randint(-intrange - (self.randomNumOne + self.randomNumTwo), intrange) if self.randomNumOne + self.randomNumTwo < 0 else random.randint(-intrange, intrange - (self.randomNumOne + self.randomNumTwo))
@@ -134,7 +134,6 @@ class Question:
 # Status = Incomplete.(Need volume question logics)
 
     def Geometry(self, diff):
-        print diff
         gt = geotype[random.randint(0,1)]
         self.sh = random.choice(shape)
         difficulty = 3 if diff == "easy" else (2 if diff == "medium" else 1)

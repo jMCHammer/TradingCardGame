@@ -5,6 +5,7 @@ from spyral import Sprite, Vec2D
 import math
 import random
 import model
+import copy
 
 FONT = "Extras/Comic_Book.ttf"
 WIDTH = 1200
@@ -38,6 +39,7 @@ class Steve(spyral.View):
 	def __init__(self, Scene):
 		super(Steve, self).__init__(Scene)
 		self.direction = "left"
+		self.ate = False
 		#body
 		self.body = SteveBody(self, (WIDTH/2.0, 6*HEIGHT/7.0 -WIDTH/35.0))
 		self.body.pos = (WIDTH/2.0, 6*HEIGHT/7.0 -WIDTH/35.0)
@@ -73,7 +75,11 @@ class Steve(spyral.View):
 	def jump(self):
 		self.body.jump()
 
-	def update(self):
+	def deRegister(self):
+		spyral.event.unregister("input.keyboard.down.space", self.jump)
+		spyral.event.unregister("input.keyboard.down.left", self.left)
+		spyral.event.unregister("input.keyboard.down.right", self.right)
+	def update(self, balls):
 		if not self.body.movey:
 			self.leg1.y = self.body.y + WIDTH/42.5
 			self.leg2.y = self.body.y + WIDTH/42.5
@@ -98,6 +104,16 @@ class Steve(spyral.View):
 			self.head.angle = -math.pi/18.0
 			self.tail.pos = (self.body.x - WIDTH/38.0, self.body.y-WIDTH/90.0)
 			self.tail.angle = +math.pi/5.0
+		if self.ate != False:
+			self.ate.pos = (self.head.x + (-WIDTH/35.0 if self.direction == "left" else WIDTH/35.0), self.head.y + WIDTH/50.0)
+
+		if not self.ate:
+			for b in balls:
+				if(self.body.collide_sprite(b.ball) and b.edible):
+					self.ate = Ball(self)
+					self.ate.Copyable(b)
+					b.visible = False
+					break
 
 class SteveBody(Sprite):
 	def __init__(self, View, pos):
@@ -164,25 +180,39 @@ class Line(Sprite):
 		self.anchor = 'topleft'
 		self.image.draw_lines((0,0,0),[(0, 0),(self.width, 0)],5, False)
 
-class Ball(Sprite):
+class Ball(spyral.View):
 	def __init__(self, View):
 		super(Ball, self).__init__(View)
-		self.anchor = 'midbottom'
-		self.image = spyral.Image(size=(WIDTH/25, WIDTH/25))
-		self.image.draw_circle((random.randint(30,225),random.randint(30,225),random.randint(30,225)),
+		self.ball = Sprite(self)
+		self.ball.anchor = 'midbottom'
+		self.ball.image = spyral.Image(size=(WIDTH/25, WIDTH/25))
+		self.ball.image.draw_circle((random.randint(30,225),random.randint(30,225),random.randint(30,225)),
 								(WIDTH/50,WIDTH/50), WIDTH/50, 0, 'topleft')
+		self.text = drawFont(self, "",spyral.Font(FONT, WIDTH/40, (0,0,0)))
+		self.text.anchor = "midbottom"
+
+		self.text.pos = (self.ball.x, self.ball.y)
+
 		self.number = 0
 		self.ay = 0
 		self.by = 0
 		self.ax = 0
 		self.bx = 0
 		self.t = 0
-		self.limt = 300.0
-		
+		self.limt = 250.0
+		self.edible = True		
 		self.visible = False
+
+	def Copyable(self, ball):
+		self.number = ball.number
+		self.visible = True
+		self.edible = False
+		self.ball.image = ball.ball.image
+		self.text.image = ball.text.image
 
 	def updateFormula(self, number):
 		self.number = number
+		self.text.update(str(number))
 		t = self.limt
 		#dy
 		uy = HEIGHT/5.0
@@ -192,7 +222,7 @@ class Ball(Sprite):
 		self.by = (pow(py,2)*dy - pow(t,2)*uy)/(t*pow(py,2) - py*pow(t,2))
 		#dx
 		dx = (number*WIDTH/10.0)
-		ux = (random.randint(-25, 25)*WIDTH/10.0)
+		ux = (random.randint(-15, 15)*WIDTH/10.0)
 		px = random.randrange(40.0, 160.0)
 		self.ax = 2*(px*dx - t*ux)/(px*pow(t,2) - t*pow(px,2))
 		self.bx = (pow(px,2)*dx - pow(t,2)*ux)/(t*pow(px,2) - px*pow(t,2))
@@ -203,6 +233,7 @@ class camera(spyral.View):
 		self.lin = Line(self)
 		self.lin.pos = (-WIDTH*2.5, 6*HEIGHT/7)
 		self.anchor = 'center'
+		self.balldrop = False
 		self.measures = []
 		self.measurenumbers = []
 		for i in range(51):
@@ -231,7 +262,6 @@ class camera(spyral.View):
 
 		self.shootOn = False
 		self.shoot = 0
-		self.edible = True
 
 		self.move = False
 		self.linedx = WIDTH/36.0
@@ -240,6 +270,26 @@ class camera(spyral.View):
 		spyral.event.register("input.keyboard.up.left", self.stop)
 		spyral.event.register("input.keyboard.up.right", self.stop)
 		spyral.event.register("director.update", self.update)
+		self.scrolldirection = "left"
+
+	def scroll(self, number):
+		if number * WIDTH/10.0 + WIDTH/2 > self.x:
+			self.scrolldirection = "right"
+			if number * WIDTH/10.0 + WIDTH/2 <= self.x + self.linedx:
+				self.x = number * WIDTH/10.0 + WIDTH/2
+			else:
+				self.x += self.linedx
+		elif number * WIDTH/10.0 + WIDTH/2 < self.x:
+			if number * WIDTH/10.0 + WIDTH/2 >= self.x - self.linedx:
+				self.x = number * WIDTH/10.0 + WIDTH/2
+			else:
+				self.x -= self.linedx
+
+	def deRegister(self):
+		spyral.event.unregister("input.keyboard.down.left", self.left)
+		spyral.event.unregister("input.keyboard.down.right", self.right)
+		spyral.event.unregister("input.keyboard.up.left", self.stop)
+		spyral.event.unregister("input.keyboard.up.right", self.stop)
 
 	def update(self):
 		if self.move == "right":
@@ -247,6 +297,7 @@ class camera(spyral.View):
 		elif self.move == "left":
 			self.pos = (self.pos[0] + self.linedx, self.pos[1])
 		self.shootBall()
+
 	def stop(self):
 		self.move = False
 
@@ -257,7 +308,7 @@ class camera(spyral.View):
 		self.move = "right"
 
 	def shootBall(self):
-		if self.shoot:
+		if self.shoot and not self.balldrop:
 			if not self.shootOn:
 				for b in self.balls:
 					b.visible = True
@@ -265,6 +316,7 @@ class camera(spyral.View):
 				self.shootOn = True
 			for b in self.balls:
 				if b.t > int(b.limt - 1):
+					self.balldrop = True
 					break
 				elif b.t == int(b.limt - 1):
 					b.x = b.number * WIDTH/10.0
@@ -274,7 +326,6 @@ class camera(spyral.View):
 					b.t += 1
 					b.y -= (b.ay*b.t + b.by)
 					b.x += (b.ax*b.t + b.bx)
-
 			pass
 		pass
 
@@ -289,17 +340,54 @@ class mainScreen(spyral.Scene):
 		self.camy = self.cam.pos[1]
 		self.steve = Steve(self)
 		self.q = q
+		self.choose = False #for comparison only
+		self.correct = False #initial
+		self.dreg = False
+
 		print self.q.randomNumOne
 		print self.q.randomNumTwo
 
-		self.countdown = drawFont(self, "Ready!", spyral.Font(FONT,30,(0,0,0)))
+		self.countdown = drawFont(self, "Ready!", spyral.Font(FONT,WIDTH/30,(0,0,0)))
 		self.countdown.anchor = 'midtop'
 		self.countdown.pos = (WIDTH/2, 0)
 		self.count = 0
-
+		self.hint = drawFont(self, "Hint: Whatever falls on the right is greater", spyral.Font(FONT,WIDTH/40,(0,0,0)))
+		self.hint.anchor = 'topleft'
+		self.hint.pos = (0, 40)
+		self.ballimage =[]
+		self.ballpointers = []
+		ballpointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, (0,0,0)))
+		ballpointer.visible = False
+		ballpointer.anchor = 'center'
+		self.ballpointers.append(ballpointer)
+		
+		if q.qtype == "compare":
+			ball2pointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, (0,0,0)))
+			ball2pointer.visible = False
+			ball2pointer.anchor = 'center'
+			self.ballpointers.append(ball2pointer)
+		
+		self.selector = drawFont(self, " ", spyral.Font(FONT, WIDTH/120, (0,0,0)))
+		self.selector.pos = (WIDTH/2, self.countdown.y + WIDTH/40 + WIDTH/10)
+		self.selector.anchor = "center"
 		spyral.event.register("director.update", self.update)
 
 	def update(self):
+		for i in range(len(self.ballpointers)):
+			currentx = -self.cam.x + WIDTH/2
+			if self.cam.balls[i].visible and math.fabs(self.cam.balls[i].x - currentx) > WIDTH/2:
+				if self.cam.balls[i].x < currentx:
+					self.ballpointers[i].update("<= " + str(self.cam.balls[i].number))
+					self.ballpointers[i].pos = (self.ballpointers[i].image.width/2,self.cam.balls[i].y)
+					self.ballpointers[i].visible = True
+				else:
+					self.ballpointers[i].update(str(self.cam.balls[i].number) + " =>")
+					self.ballpointers[i].pos = (WIDTH-self.ballpointers[i].image.width/2,self.cam.balls[i].y)
+					self.ballpointers[i].visible = True
+			else:
+				self.ballpointers[i].update(" ")
+				self.ballpointers[i].visible = False
+
 		if self.steve.body.tempy < HEIGHT/1.7:
 			self.steve.body.y = HEIGHT/1.7
 			dy = HEIGHT/1.7 - self.steve.body.tempy
@@ -307,18 +395,51 @@ class mainScreen(spyral.Scene):
 		else:
 			self.cam.y = self.camy
 			self.steve.body.y = self.steve.body.tempy
-		if (self.count < 170):
+		if (self.count < 250):
 			self.count += 1
 			if (self.count%30 == 0):
 				if(self.count < 120):
 					self.countdown.update(str(4-self.count/30))
 				else:
-					self.countdown.update("Start!")
 					if self.q.qtype == "compare":
-						self.cam.shoot = True
+						if(self.q.comparator == 1):
+							self.countdown.update("Go, Steve! Fetch bigger one!")
+						else:
+							self.countdown.update("Go, Steve! Fetch smaller one!")
+						if(not self.cam.shoot):
+							self.cam.shoot = True
+							i = 1
+							for b in self.cam.balls:
+								bt = Ball(self)
+								bt.ball.image = b.ball.image
+								bt.text.image = b.text.image
+								bt.text.y += HEIGHT/20
+								bt.visible = True
+								bt.pos = (i*WIDTH/3, self.countdown.y + WIDTH/40 + WIDTH/10)
+								i += 1
+								self.ballimage.append(bt)
 					else:
 						self.cam.shoot = 0
 		else:
 			self.countdown.kill()
+		self.steve.update(self.cam.balls)
+		if self.q.qtype == "compare":
+			if not self.choose and self.steve.ate != False:
+				self.correct = self.steve.ate.number == self.q.answer
+				print self.correct
+				for i in range(0,2):
+					if not self.cam.balls[i].visible:
+						selector = math.fabs(self.q.comparator - i)
+						self.selector.update(">" if selector > 0 else "<")
+						self.choose = True
+						break
 
-		self.steve.update()
+		if not self.dreg and (self.choose or self.cam.balldrop):
+
+			self.cam.deRegister()
+			self.steve.deRegister()
+			self.dreg = True
+			eval("self.steve." + self.cam.scrolldirection + "()")
+		
+		if self.dreg and self.choose and self.cam.balldrop:
+			self.cam.scroll(-self.steve.ate.number)
