@@ -12,6 +12,7 @@ WIDTH = 1200
 HEIGHT = 900
 SIZE = (WIDTH, HEIGHT)
 DIFFICULTY = {"easy":0, "medium":0, "hard":0}
+WHITE = (255,255,255)
 
 
 #steve's adventure
@@ -170,7 +171,7 @@ class measureLine(Sprite):
 		super(measureLine, self).__init__(View)
 		self.image = spyral.Image(size=(WIDTH/240, HEIGHT/45))
 		self.anchor = 'center'
-		self.image.draw_lines((0,0,0),[(WIDTH/480, 0),(WIDTH/480, HEIGHT/45)],5, False)
+		self.image.draw_lines(WHITE,[(WIDTH/480, 0),(WIDTH/480, HEIGHT/45)],5, False)
 		self.pos = pos
 
 class Line(Sprite):
@@ -178,7 +179,7 @@ class Line(Sprite):
 		super(Line, self).__init__(View)
 		self.image = spyral.Image(size=(WIDTH*5, HEIGHT/180))
 		self.anchor = 'topleft'
-		self.image.draw_lines((0,0,0),[(0, 0),(self.width, 0)],5, False)
+		self.image.draw_lines(WHITE,[(0, 0),(self.width, 0)],5, False)
 
 class Ball(spyral.View):
 	def __init__(self, View):
@@ -188,7 +189,7 @@ class Ball(spyral.View):
 		self.ball.image = spyral.Image(size=(WIDTH/25, WIDTH/25))
 		self.ball.image.draw_circle((random.randint(30,225),random.randint(30,225),random.randint(30,225)),
 								(WIDTH/50,WIDTH/50), WIDTH/50, 0, 'topleft')
-		self.text = drawFont(self, "",spyral.Font(FONT, WIDTH/40, (0,0,0)))
+		self.text = drawFont(self, "",spyral.Font(FONT, WIDTH/40, WHITE))
 		self.text.anchor = "midbottom"
 
 		self.text.pos = (self.ball.x, self.ball.y)
@@ -240,7 +241,7 @@ class camera(spyral.View):
 		for i in range(51):
 			measure = measureLine(self,((i-25)*WIDTH/10.0, 6*HEIGHT/7))
 			self.measures.append(measure)
-			number = drawFont(self, str(i-25), spyral.Font(FONT, 15, (0,0,0)))
+			number = drawFont(self, str(i-25), spyral.Font(FONT, 15, WHITE))
 			number.anchor = 'center'
 			number.pos = ((i-25)*WIDTH/10.0, 6*HEIGHT/7 + number.height)
 			self.measurenumbers.append(number)
@@ -337,8 +338,7 @@ class mainScreen(spyral.Scene):
 	def __init__(self, q, difficulty):
 		super(mainScreen, self).__init__(SIZE)
 		model.loadResources()
-		self.background = spyral.Image(size=SIZE)
-		self.background.fill((255,255,255))
+		self.background = model.resources["background"]
 		self.cam = camera(self, q)
 		self.cam.pos = (WIDTH/2, self.cam.pos[1])
 		self.camy = self.cam.pos[1]
@@ -351,28 +351,28 @@ class mainScreen(spyral.Scene):
 		print self.q.randomNumOne
 		print self.q.randomNumTwo
 
-		self.countdown = drawFont(self, "Ready!", spyral.Font(FONT,WIDTH/30,(0,0,0)))
+		self.countdown = drawFont(self, "Ready!", spyral.Font(FONT,WIDTH/30,WHITE))
 		self.countdown.anchor = 'midtop'
-		self.countdown.pos = (WIDTH/2, 0)
+		self.countdown.pos = (WIDTH/2, 40)
 		self.count = 0
-		self.hint = drawFont(self, "Hint: Whatever falls on the right is greater", spyral.Font(FONT,WIDTH/40,(0,0,0)))
-		self.hint.anchor = 'topleft'
-		self.hint.pos = (0, 40)
+		self.hint = drawFont(self, "Hint: Whatever falls on the right is greater", spyral.Font(FONT,WIDTH/40,WHITE))
+		self.hint.anchor = 'midbottom'
+		self.hint.pos = (WIDTH/2, HEIGHT - 20)
 		self.ballimage =[]
 		self.ballpointers = []
-		ballpointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, (0,0,0)))
+		ballpointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, WHITE))
 		ballpointer.visible = False
 		ballpointer.anchor = 'center'
 		self.ballpointers.append(ballpointer)
 		self.offtime = 0
 		
 		if q.qtype == "compare":
-			ball2pointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, (0,0,0)))
+			ball2pointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, WHITE))
 			ball2pointer.visible = False
 			ball2pointer.anchor = 'center'
 			self.ballpointers.append(ball2pointer)
 		
-		self.selector = drawFont(self, " ", spyral.Font(FONT, WIDTH/120, (0,0,0)))
+		self.selector = drawFont(self, " ", spyral.Font(FONT, WIDTH/120, WHITE))
 		self.selector.pos = (WIDTH/2, self.countdown.y + WIDTH/40 + WIDTH/10)
 		self.selector.anchor = "center"
 		spyral.event.register("director.update", self.update)
