@@ -234,6 +234,7 @@ class camera(spyral.View):
 		self.lin.pos = (-WIDTH*2.5, 6*HEIGHT/7)
 		self.anchor = 'center'
 		self.balldrop = False
+		self.stopScroll = False
 		self.measures = []
 		self.measurenumbers = []
 		for i in range(51):
@@ -273,17 +274,20 @@ class camera(spyral.View):
 		self.scrolldirection = "left"
 
 	def scroll(self, number):
-		if number * WIDTH/10.0 + WIDTH/2 > self.x:
-			self.scrolldirection = "right"
-			if number * WIDTH/10.0 + WIDTH/2 <= self.x + self.linedx:
-				self.x = number * WIDTH/10.0 + WIDTH/2
-			else:
-				self.x += self.linedx
-		elif number * WIDTH/10.0 + WIDTH/2 < self.x:
-			if number * WIDTH/10.0 + WIDTH/2 >= self.x - self.linedx:
-				self.x = number * WIDTH/10.0 + WIDTH/2
-			else:
-				self.x -= self.linedx
+		if not self.stopScroll:
+			if number * WIDTH/10.0 + WIDTH/2 > self.x:
+				self.scrolldirection = "right"
+				if number * WIDTH/10.0 + WIDTH/2 <= self.x + self.linedx:
+					self.x = number * WIDTH/10.0 + WIDTH/2
+					self.stopScroll = True
+				else:
+					self.x += self.linedx
+			elif number * WIDTH/10.0 + WIDTH/2 < self.x:
+				if number * WIDTH/10.0 + WIDTH/2 >= self.x - self.linedx:
+					self.x = number * WIDTH/10.0 + WIDTH/2
+					self.stopScroll = True
+				else:
+					self.x -= self.linedx
 
 	def deRegister(self):
 		spyral.event.unregister("input.keyboard.down.left", self.left)
@@ -360,6 +364,7 @@ class mainScreen(spyral.Scene):
 		ballpointer.visible = False
 		ballpointer.anchor = 'center'
 		self.ballpointers.append(ballpointer)
+		self.offtime = 0
 		
 		if q.qtype == "compare":
 			ball2pointer = drawFont(self, "", spyral.Font(FONT, WIDTH/30, (0,0,0)))
@@ -435,11 +440,18 @@ class mainScreen(spyral.Scene):
 						break
 
 		if not self.dreg and (self.choose or self.cam.balldrop):
-
-			self.cam.deRegister()
 			self.steve.deRegister()
+			self.cam.deRegister()
+			self.cam.stop()
 			self.dreg = True
 			eval("self.steve." + self.cam.scrolldirection + "()")
 		
 		if self.dreg and self.choose and self.cam.balldrop:
 			self.cam.scroll(-self.steve.ate.number)
+
+		if self.cam.stopScroll and self.offtime < 100:
+			self.offtime += 1
+
+		if self.offtime == 100:
+			spyral.director.pop()
+			spyral.director.get_scene().submitScreenAnswer(self.correct)
