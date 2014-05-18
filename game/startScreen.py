@@ -20,6 +20,7 @@ class drawButton(spyral.Sprite):
         spyral.Sprite.__init__(self, Scene)
         self.image = spyral.image.Image(imageloc)
         self.pos = (posx, posy)
+        self.anchor = 'center'
         self.name = name
         spyral.event.register("input.mouse.down.left", self.handle_clicked)
 
@@ -40,8 +41,8 @@ class StartScreen(spyral.Scene):
         startText = drawFont(self.scene, "Extras/Comic_Book.ttf", "FACEOFF")
         startText.pos = (WIDTH/4, 10)
 
-        drawButton(self, "Extras/startButton.png", WIDTH/2.5, HEIGHT*3/5, "start")
-        drawButton(self, "Extras/loadButton.png", WIDTH/2.5, HEIGHT*4/5, "loadgame")
+        drawButton(self, "Extras/startButton.png", WIDTH/2, HEIGHT*3/5, "start")
+        drawButton(self, "Extras/loadButton.png", WIDTH/2, HEIGHT*4/5, "loadgame")
 
         spyral.event.register("system.quit", spyral.director.pop)
 
