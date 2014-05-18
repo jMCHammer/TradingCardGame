@@ -6,14 +6,14 @@ from OrderedDict import OrderedDict
 resources  = {}
 deck       = {}
 looseCards = {
-    "Addition"         : ["Addition",         80,  40], 
+    "Arithmetic"       : ["Arithmetic",       80,  40], 
     "Geometry"         : ["Geometry",         100, 80],
     "Integer"          : ["Integer",          50,  60], 
-    "Statistics"       : ["Statistics",       100, 120], 
-    "Fractions"        : ["Fractions",        100, 100]
+    "Statistics"       : ["Statistics",      100, 120], 
+    "Fractions"        : ["Fractions",       100, 100]
 }
 allCards   = {
-    "Addition"         : ["Addition",         80,  40], 
+    "Arithmetic"         : ["Arithmetic",         80,  40], 
     "Geometry"         : ["Geometry",         100, 80],
 ##    "Decimal Addition" : ["Decimal Addition", 90,  50], 
 ##    "Algebra"          : ["Algebra",          100, 100],
@@ -31,8 +31,8 @@ class Model:
 
 def loadResources():
     resources["background"] = spyral.image.Image("Extras/background.png")
-    resources["Addition_u"] = spyral.image.Image("Extras/TradingCards/Addition_u.png").scale(Vec2D(200,300))
-    resources["Addition_s"] = spyral.image.Image("Extras/TradingCards/Addition_s.png").scale(Vec2D(200,300))
+    resources["Arithmetic_u"] = spyral.image.Image("Extras/TradingCards/Addition_u.png").scale(Vec2D(200,300))
+    resources["Arithmetic_s"] = spyral.image.Image("Extras/TradingCards/Addition_s.png").scale(Vec2D(200,300))
     resources["Geometry_u"] = spyral.image.Image("Extras/TradingCards/Geometry_u.png").scale(Vec2D(200,300))
     resources["Geometry_s"] = spyral.image.Image("Extras/TradingCards/Geometry_s.png").scale(Vec2D(200,300))
     resources["Integer_u"] = spyral.image.Image("Extras/TradingCards/Integer_u.png").scale(Vec2D(200,300))
