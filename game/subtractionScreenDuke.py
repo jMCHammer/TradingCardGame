@@ -127,13 +127,13 @@ class Beaker(Sprite):
 	def __init__(self, Scene, diff):
 		super(Beaker, self).__init__(Scene)
 		self.image = spyral.Image(size=(WIDTH/(4+DIFFICULTY[diff]),HEIGHT/50))
-		self.color = (180,180,200)
+		self.color = (0,0,0)
 		self.diff = diff
-		self.image.draw_rect(self.color,(WIDTH/1000, 0),(WIDTH/(4+DIFFICULTY[diff]) - WIDTH/500, HEIGHT/50), 0, 'center')
+		self.image.draw_rect(self.color,(WIDTH/500.0, 0),(WIDTH/(4+DIFFICULTY[diff]) - WIDTH/18.0, HEIGHT/50), 0, 'center')
 
 	def fillup(self):
-		self.color = (80,80,127)
-		self.image.draw_rect(self.color,(WIDTH/1000, 0),(WIDTH/(4+DIFFICULTY[self.diff]) - WIDTH/500, HEIGHT/50), 0, 'center')
+		self.color = WHITE
+		self.image.draw_rect(self.color,(WIDTH/500.0, 0),(WIDTH/(4+DIFFICULTY[self.diff]) - WIDTH/18.0, HEIGHT/50), 0, 'center')
 
 class mainScene(spyral.Scene):
     def __init__(self, q, diff):
@@ -163,7 +163,7 @@ class mainScene(spyral.Scene):
         self.firstnum = int(self.firstnum * 10)
         numString = str(self.firstnum)
         if(DIFFICULTY[diff]>0):
-			decimal1 = Pebble(self, (0,0,0))
+			decimal1 = Pebble(self, WHITE)
 			decx = self.borrower.dx * 2.5 
 			decy = HEIGHT/3 + WIDTH/25
 			decimal1.pos = (decx, decy)
@@ -194,7 +194,7 @@ class mainScene(spyral.Scene):
         self.secondnum = int(self.secondnum * 10)
         numString = str(self.secondnum)
         if(DIFFICULTY[diff]>0):
-            decimal2 = Pebble(self, (0,0,0))
+            decimal2 = Pebble(self, WHITE)
             decx = self.borrower.dx * 2.5 
             decy = 2*HEIGHT/3 + WIDTH/25
             decimal2.pos = (decx, decy)
@@ -203,15 +203,15 @@ class mainScene(spyral.Scene):
             if(len(numString) >= d):
                 lbeaker = LegitBeaker(self)
                 lbeaker.x = self.borrower.dx * (4 - d) - (lbeaker.width/2)
-                lbeaker.y = 1.75*HEIGHT/3 + WIDTH/25
+                lbeaker.y = 2*HEIGHT/3 + WIDTH/25 - (lbeaker.height - 55)
                 self.deakers.append(lbeaker)
                 n = int(numString[-1*d])
                 for i in range(n):
                     beaker = Beaker(self, diff)
-                    x = self.borrower.dx * (4 - d) - (beaker.width/2)
+                    x = self.borrower.dx * (4 - d) - (beaker.width/1.9)
                     y = 2*HEIGHT/3 + WIDTH/25 - (beaker.height * i)
                     beaker.pos = (x, y)
-                    beaker.visible = False
+                    beaker.visible = True
                     subbys.append(beaker)
             self.subBy.append(subbys)
 
