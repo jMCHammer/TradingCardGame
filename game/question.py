@@ -21,11 +21,7 @@ class Question:
         #     self.Geometry(difficulty)
         # elif subjec
         # else:
-        if self.subject == "Addition":
-            sub = "Arithmetic" 
-            eval("self." + sub + "(\"" + self.difficulty + "\")");
-        else:
-            eval("self." + self.subject + "(\"" + self.difficulty + "\")");
+        eval("self." + self.subject + "(\"" + self.difficulty + "\")");
             
 
     #### EACH FUNCTION DEFINED CREATES TWO RANDOM NUMBERS AND CHOOSES A RANDOM OPERATOR

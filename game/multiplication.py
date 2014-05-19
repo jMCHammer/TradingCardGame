@@ -113,7 +113,7 @@ class ironBoard(spyral.View):
 		self.denom = ''
 		point = False #did you find the decimal point?
 		d = 0 #location of the decimal point
-		for c in str(denominator):
+		for c in str(denominator*10 if denominator%1 > 0 else denominator):
 			if(c != '.'):
 				self.denom += c
 				if not point:
@@ -124,6 +124,7 @@ class ironBoard(spyral.View):
 		if len(self.denom) < 5:
 			self.denom = '0' * (5-len(self.denom)) + self.denom
 			d += 5-len(self.denom)
+
 		print self.denom
 		#initialize measure lines
 		for i in range(0,6):
@@ -250,7 +251,7 @@ class ironHammer(spyral.View):
 			self.tick += 1
 
 	def hammerTime(self):
-		if not self.hammertime and not self.scene.board.scrol and (self.scene.board.currentPlate < 4 + self.scene.board.diff):
+		if not self.hammertime and not self.scene.board.scrol and (self.scene.board.currentPlate < 5):
 			self.hammertime = True
 
 class mainScreen(spyral.Scene):
@@ -278,7 +279,8 @@ class mainScreen(spyral.Scene):
         text3.pos = (WIDTH/2 - 100, HEIGHT - 50)
         text3.anchor = 'midbottom'
         
-        dividend = drawFont(self, "Dividend: " + str(int(self.board.denom)), spyral.Font(FONT, 30, WHITE))
+        idkwhatthefuckamidoing = 1 if q.randomNumTwo % 1 > 0 else 0
+        dividend = drawFont(self, "Dividend: " + str(int(self.board.denom)/pow(10.0,idkwhatthefuckamidoing)), spyral.Font(FONT, 30, WHITE))
         dividend.pos = (WIDTH/2, HEIGHT - 80)
         dividend.anchor = 'midbottom'
 
@@ -333,6 +335,7 @@ class mainScreen(spyral.Scene):
             for i in range(0,5):
                 answer += answerline[i] * pow(10, 4 - i - isdot)
 
+            print answer
             self.correct = self.answer == answer
             resultText = drawFont(self, "Correct!", spyral.Font(FONT, 50, (0,255,0)))
             resultText.pos = (WIDTH/2 + 200, HEIGHT/3)
