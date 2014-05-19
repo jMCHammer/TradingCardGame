@@ -64,7 +64,7 @@ class EditCollectionScreen(spyral.Scene):
         topy = 50
         bottomx = WIDTH/5
         bottomy = HEIGHT - 350
-        dxl = WIDTH/(len(model.looseCards) + 1)
+        dxl = WIDTH/(len(model.looseCards) + 2)
         dxd = WIDTH/(len(model.deck) + 1)
         # Delete any cards that were moved
         for subject in self.cards:
