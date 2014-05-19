@@ -15,13 +15,20 @@ import time
 WIDTH    = 1200
 HEIGHT   = 900
 BG_COLOR = (0,0,0)
-WHITE    = (255, 255, 255)
+GREEN    = (0, 255, 0)
+RED      = (255, 0, 0)
+WHITE    = (200, 200, 200)
 SIZE     = (WIDTH, HEIGHT)
 
 class drawFont(spyral.Sprite):
     def __init__(self, Scene, font, text, size):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, size, WHITE)
+        if text == "Correct!":
+            f = spyral.Font(font, size, GREEN)
+        elif text == "Wrong":
+            f = spyral.Font(font, size, RED)
+        else:
+            f = spyral.Font(font, size, WHITE)
         self.image = f.render(text)
 
 class Fireball(spyral.Sprite):
@@ -29,13 +36,6 @@ class Fireball(spyral.Sprite):
         spyral.Sprite.__init__(self,Scene)
         self.image = model.resources["fireball"+str(c)]
         self.image = model.resources["fireball"+str(c)]
-        if c == 1:
-            self.image.rotate(90.0)
-        else:
-            self.image.rotate(270.0)
-
-    def rotate_270(self):
-        self.image.rotate(270.0)
 
 #### Used to draw a linear animation 
     def draw_linearly(self, starty, endy):
@@ -53,7 +53,8 @@ class FaceoffScreen(spyral.Scene):
         self.hero.scale_y = .80;
         # Create Opponent Sprite
         self.opponent = Opponent(self);
-        
+
+        self.correct = False
         self.fireball1 = Fireball(self,1)
         self.fireball2 = Fireball(self,2)
         self.background = model.resources[model.currentOpponent + "bg"]
@@ -104,10 +105,10 @@ class FaceoffScreen(spyral.Scene):
         self.showHealth = [0, 0, 0]
         count = 0
         for card in self.deck:
-            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.deck[card].health), 25))
+            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", "HP: "+str(self.deck[card].health), 25))
         count = 0
         for card in self.opponentcards:
-            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponentcards[card].health), 25))
+            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", "HP: "+str(self.opponentcards[card].health), 25))
         
         self.drawAllCards()
 
@@ -138,7 +139,7 @@ class FaceoffScreen(spyral.Scene):
 
         self.deck[self.selectedSubject].initQuestion(diff)
         ##Screen testcase##
-#        while(self.deck[self.selectedSubject].q.randomOpKey != "*"):
+#        while(self.deck[self.selectedSubject].q.randomOpKey != "-"):
 #            self.deck[self.selectedSubject].initQuestion(diff)
         ##endtestcase##
         if self.selectedSubject == "Addition":
@@ -151,7 +152,10 @@ class FaceoffScreen(spyral.Scene):
         elif self.selectedSubject == "Integer":
             spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
-        self.showQuestion.pos = (WIDTH/2-100, HEIGHT/2)
+        if self.selectedSubject == "Geometry":
+            self.showQuestion.pos = (150, HEIGHT/2 - 100)
+        else:
+            self.showQuestion.pos = (WIDTH/2 - 50, HEIGHT/2 - 100)
         self.form.answerField.visible  = True
         self.form.answerButton.visible = True
 
@@ -159,16 +163,41 @@ class FaceoffScreen(spyral.Scene):
 #### Deal Hero Damage to Opponent
     def dealDamage(self, damage):
         #Draw damage from hero to opponent
+        #if hero is correct
+        try:
+            self.herocorrect.visible = False
+            self.opponentcorrect.visible = False
+        except:
+            pass
+
         if self.correct:
+            #tell hero he is correct
+            self.herocorrect = drawFont(self.scene, "Extras/Comic_Book.ttf", "Correct!", 25)
+            self.herocorrect.pos = (WIDTH-150, HEIGHT - 450)
+            #show fireball/damage
             self.fireball1.pos = (WIDTH-100, HEIGHT - 100)
-            self.fireball1.draw_linearly(HEIGHT - 100, 100)
-
+            self.fireball1.draw_linearly(HEIGHT - 100, 15)
+            # modify numbers (damage)
+            self.opponentcards[self.opponent.selectedSubject].applyDamage(damage)
+        else:
+            #tell hero he is wrong
+            self.herocorrect = drawFont(self.scene, "Extras/Comic_Book.ttf", "Wrong", 25)
+            self.herocorrect.pos = (WIDTH-150, HEIGHT - 450)
+        
+        #if opponent is correct
         if self.opponent.correct:
-            #Draw damage from opponent to hero 
+            #show opponent is correct
+            self.opponentcorrect = drawFont(self.scene, "Extras/Comic_Book.ttf", "Correct!", 25)
+            self.opponentcorrect.pos = (50, HEIGHT - 450)
+            #show fireball/damage
             self.fireball2.draw_linearly(100, HEIGHT - 100)
-
-        # Deal damage
-        self.opponentcards[self.opponent.selectedSubject].applyDamage(damage)
+            # modify numbers (damage)
+            self.deck[self.selectedSubject].applyDamage(self.opponentcards[self.opponent.selectedSubject].damage)
+        else:
+            #show opponent is wrong 
+            self.opponentcorrect = drawFont(self.scene, "Extras/Comic_Book.ttf", "Wrong", 25)
+            self.opponentcorrect.pos = (50, HEIGHT - 450)
+        
         print "Successfully dealt damage"
 ###
 
@@ -305,7 +334,7 @@ class FaceoffScreen(spyral.Scene):
                 pass
             # Init health counters
             print card
-            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.deck[card].health), 25))
+            self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf","HP: "+str(self.deck[card].health), 25))
             # Draw Health counters on screen
             self.showHealth[count].layer = "text"
             self.showHealth[count].pos = (x + 70, y - 35)
@@ -316,7 +345,7 @@ class FaceoffScreen(spyral.Scene):
             else:
                 self.deck[card].visible = False
             self.deck[card].pos = (x, y)
-            x = x + 400
+            x = x + 350
             count += 1
 
         # Opponent cards
@@ -330,7 +359,7 @@ class FaceoffScreen(spyral.Scene):
             except:
                 pass
             # Init health counters
-            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.opponentcards[card].health), 25))
+            self.showOppHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", "HP: "+str(self.opponentcards[card].health), 25))
             self.showOppHealth[count].layer = "text"
             self.showOppHealth[count].pos = (x + 70, y + 300)
             # Draw cards on screen
@@ -341,7 +370,7 @@ class FaceoffScreen(spyral.Scene):
                 self.opponentcards[card].visible = False 
             #Card placement
             self.opponentcards[card].pos = (x, y)
-            x = x + 200
+            x = x + 350
             count += 1
         count = 0
 
@@ -350,3 +379,4 @@ class FaceoffScreen(spyral.Scene):
     def backClicked(self, event):
         if (event.value == "down"):
             spyral.director.pop()
+
