@@ -72,6 +72,7 @@ class dyingPebble(Sprite):
 	def __init__(self, Scene, colord, height, pos, dist):
 		super(dyingPebble, self).__init__(Scene)
 		self.pos = pos
+		self.layer = 'beaker'
 		self.h = height
 #		self.h = (height - self.y)/50.0
 		self.dist = (self.x - dist + WIDTH/50)/2
@@ -146,6 +147,7 @@ class mainScene(spyral.Scene):
         self.secondnum = min(q.randomNumOne, q.randomNumTwo)
         self.borrower = Borrower(self, diff)
         self.deakers = []
+        self.layers = ['beakerp','break']
         self.subFrom = []
         self.subBy = []
         self.filllist = [0,0,0]
@@ -204,6 +206,7 @@ class mainScene(spyral.Scene):
                 lbeaker = LegitBeaker(self)
                 lbeaker.x = self.borrower.dx * (4 - d) - (lbeaker.width/2)
                 lbeaker.y = 2*HEIGHT/3 + WIDTH/25 - (lbeaker.height - 55)
+                lbeaker.layer='beakerp'
                 self.deakers.append(lbeaker)
                 n = int(numString[-1*d])
                 for i in range(n):
@@ -212,6 +215,7 @@ class mainScene(spyral.Scene):
                     y = 2*HEIGHT/3 + WIDTH/25 - (beaker.height * i)
                     beaker.pos = (x, y)
                     beaker.visible = True
+                    beaker.layer = 'beaker'
                     subbys.append(beaker)
             self.subBy.append(subbys)
 
@@ -241,7 +245,7 @@ class mainScene(spyral.Scene):
     def borrowFrom(self):
 		position = len(self.subFrom) - self.borrower.position
 		if(len(self.subFrom) > position and position > 0):
-			if(len(self.subFrom[position-1]) == 0):
+			if(len(self.subFrom[position-1]) == 0 and len(self.subFrom[position])>0):
 				self.subFrom[position].pop().kill()
 				subfroms = []
 				d = position
