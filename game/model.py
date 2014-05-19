@@ -6,14 +6,10 @@ from OrderedDict import OrderedDict
 resources  = {}
 deck       = {}
 looseCards = {
-    "Arithmetic"       : ["Arithmetic",       80,  40], 
-    "Geometry"         : ["Geometry",         100, 80],
-    "Integer"          : ["Integer",          50,  60], 
-    "Statistics"       : ["Statistics",      100, 120], 
-    "Fractions"        : ["Fractions",       100, 100]
+    "Addition"         : ["Addition",         80,  40], 
 }
 allCards   = {
-    "Arithmetic"         : ["Arithmetic",         80,  40], 
+    "Addition"         : ["Addition",         80,  40], 
     "Geometry"         : ["Geometry",         100, 80],
 ##    "Decimal Addition" : ["Decimal Addition", 90,  50], 
 ##    "Algebra"          : ["Algebra",          100, 100],
@@ -31,8 +27,8 @@ class Model:
 
 def loadResources():
     resources["background"] = spyral.image.Image("Extras/background.png")
-    resources["Arithmetic_u"] = spyral.image.Image("Extras/TradingCards/Addition_u.png").scale(Vec2D(200,300))
-    resources["Arithmetic_s"] = spyral.image.Image("Extras/TradingCards/Addition_s.png").scale(Vec2D(200,300))
+    resources["Addition_u"] = spyral.image.Image("Extras/TradingCards/Addition_u.png").scale(Vec2D(200,300))
+    resources["Addition_s"] = spyral.image.Image("Extras/TradingCards/Addition_s.png").scale(Vec2D(200,300))
     resources["Geometry_u"] = spyral.image.Image("Extras/TradingCards/Geometry_u.png").scale(Vec2D(200,300))
     resources["Geometry_s"] = spyral.image.Image("Extras/TradingCards/Geometry_s.png").scale(Vec2D(200,300))
     resources["Integer_u"] = spyral.image.Image("Extras/TradingCards/Integer_u.png").scale(Vec2D(200,300))
@@ -48,6 +44,8 @@ def loadResources():
     resources["GayRunLeft"] = spyral.image.Image("Extras/run1.png").flip(True,False)
     resources["ship"] = spyral.image.Image("Extras/rms.png")
     resources["box"] = spyral.image.Image("Extras/box.png").scale(Vec2D(30, 30))
+    resources["beaker"] = spyral.image.Image("Extras/beaker.png")
+    resources["fireball"] = spyral.image.Image("Extras/fireball.png")
     resources["char1"] = spyral.image.Image("Extras/char1.png")
     resources["char2"] = spyral.image.Image("Extras/char2.png")
     resources["char3"] = spyral.image.Image("Extras/char3.png")
@@ -118,3 +116,13 @@ def loadCode(saveCode):
         return True
     except:
         return False
+
+
+def prizeCard():
+    print currentOpponent
+    opp = int(currentOpponent[len(currentOpponent)-1])
+    print "adding prize Card"
+    print opp
+    return model.allCards[model.allCards.keys()[opp+1]]
+
+    

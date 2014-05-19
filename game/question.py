@@ -20,7 +20,12 @@ class Question:
         #     self.Geometry(difficulty)
         # elif subjec
         # else:
-        eval("self." + self.subject + "(\"" + self.difficulty + "\")");
+        if self.subject == "Addition":
+            sub = "Arithmetic" 
+            eval("self." + sub + "(\"" + self.difficulty + "\")");
+        else:
+            eval("self." + self.subject + "(\"" + self.difficulty + "\")");
+            
 
     #### EACH FUNCTION DEFINED CREATES TWO RANDOM NUMBERS AND CHOOSES A RANDOM OPERATOR
     #### THE ANSWER IS CALCULATED FOR THAT SPECIFIC EQUATION AND IS SET, ALONG WITH EQUATION TEXT. 
