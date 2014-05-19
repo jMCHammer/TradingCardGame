@@ -62,8 +62,23 @@ class Question:
 # self.Text = Question string
 # Status = Complete
 
-    def Arithmetic(self, diff):
-        self.randomOpKey = random.choice(ops.keys())
+    def Addition(self, diff):
+        self.Arithmetic(diff, '+')
+
+    def Subtraction(self, diff):
+        self.Arithmetic(diff, '-')
+
+    def Multiplication(self, diff):
+        self.Arithmetic(diff, '*')
+
+    def Division(self, diff):
+        self.Arithmetic(diff, '/')
+            
+    def Arithmetic(self, diff, op = ''):
+        if (op == ''):
+            self.randomOpKey = random.choice(ops.keys())
+        else:
+            self.randomOpKey = op
 
         if diff == "easy":
             if self.randomOpKey == "/" or self.randomOpKey == "*":
@@ -192,7 +207,7 @@ class Question:
             elif(gt == "perimeter"):
                 self.answer = 4*(self.w)
                 self.text += " with length " + str(self.w)
-    def Statistic(self, diff):
+    def Statistics(self, diff):
         self.qtype = random.choice(stattype)
         difficulty = 20 if diff == "hard" else (15 if diff == "medium" else 10)
         self.listNum = []
