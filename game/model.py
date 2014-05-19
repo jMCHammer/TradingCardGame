@@ -6,7 +6,7 @@ from OrderedDict import OrderedDict
 resources  = {}
 deck       = {}
 looseCards = {
-    "Addition"         : ["Addition",         80,  40], 
+    "Addition"         : ["Addition",         80,  40]
 }
 allCards   = {
     "Addition"         : ["Addition",         80,  40], 
@@ -15,7 +15,7 @@ allCards   = {
     "Division"         : ["Division",         90,  50], 
     "Geometry"         : ["Geometry",         100, 80],
     "Integer"          : ["Integer",          50,  60], 
-    "Statistics"       : ["Statistics",       100, 120], 
+    "Statistics"       : ["Statistics",       100, 120] 
 # Not enough time to implement Fraction logic :/
 #    "Fractions"        : ["Fractions",        100, 100]
     }
@@ -133,6 +133,25 @@ def prizeCard():
     opp = int(currentOpponent[len(currentOpponent)-1])
     print "adding prize Card"
     print opp
-    return model.allCards[model.allCards.keys()[opp]]
+    print model.allCards
+    print model.allCards.keys()
+    if opp == 1:
+        return model.allCards["Subtraction"]
+    elif opp == 2:
+        return model.allCards["Multiplication"]
+    elif opp == 3:
+        return model.allCards["Division"]
+    elif opp == 4:
+        return model.allCards["Integer"]
+    elif opp == 5:
+        return model.allCards["Geometry"]
+    elif opp == 6:
+        return model.allCards["Statistics"]
+
+
+
+
+
+
 
     

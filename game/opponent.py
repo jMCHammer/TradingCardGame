@@ -16,18 +16,20 @@ class Opponent(spyral.Sprite):
         self.layer = "text"
         
         #self.deck = {}
-        n = int(self.name[len(self.name)-1])
-        if n < 5:
-            subject = model.allCards.keys()[n-1]
-            print subject
-            self.deck = {subject : model.allCards[subject]}
-        elif n < 6: 
-            self.deck = {model.allCards.keys()[2]: model.allCards[model.allCards.keys()[2]],
-                         model.allCards.keys()[3]: model.allCards[model.allCards.keys()[3]]}
-        else: 
-            self.deck = {model.allCards.keys()[3]: model.allCards[model.allCards.keys()[3]],
-                         model.allCards.keys()[4]: model.allCards[model.allCards.keys()[4]]}
-        self.pickCard()
+        opp = int(self.name[len(self.name)-1])
+        if opp == 1:
+            self.deck = {"Addition": model.allCards["Addition"]}
+        elif opp == 2:
+            self.deck = {"Subtraction": model.allCards["Subtraction"]}
+        elif opp == 3:
+            self.deck = {"Multiplication": model.allCards["Multiplication"]}
+        elif opp == 4:
+            self.deck = {"Integer": model.allCards["Integer"]}
+        elif opp == 5:
+            self.deck = {"Multiplication": model.allCards["Multiplication"],
+                         "Division" : model.allCards["Division"]}
+        elif opp == 6:
+            self.deck = {"Statistics": model.allCards["Statistics"]}
 
     #Randomly pick a card
     def pickCard(self):
