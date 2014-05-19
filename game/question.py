@@ -7,6 +7,7 @@ ops = {"+":add, "-":sub, "*":mul, "/":div}
 shape = ["triangle", "square", "parallelogram", "trapezoid", "rectangle"]
 geotype = ["perimeter","area","volume"]
 itype = ["compare","representation"]
+stattype = ["min","max","median","mean"]
 
 #### FINISHED BESIDES GEOMETRY, WE NEED TO TALK ABOUT WHAT QUESTIONS NEED TO BE DONE FOR THAT ####
 class Question:
@@ -168,7 +169,7 @@ class Question:
                 self.text += " with base length " + str(self.w) + " and height length " + str(self.h)
             elif(gt == "perimeter"):
                 self.answer = self.w + self.s1 + self.s2
-                self.text += " with base length " + str(self.w) + ", and side length " + str(self.s1) + " and " + str(self.s2)
+                self.text += " with base length " + str(self.w) + ", and side length " + str(self.s1) + "\n and " + str(self.s2)
         elif(self.sh == "parallelogram"):
             self.l1 = random.randint(0, self.h)
             self.s1 = round(pow(pow(self.l1,2) + pow(self.h,2),.5),1)
@@ -191,3 +192,28 @@ class Question:
             elif(gt == "perimeter"):
                 self.answer = 4*(self.w)
                 self.text += " with length " + str(self.w)
+    def Statistic(self, diff):
+        self.qtype = random.choice(stattype)
+        difficulty = 20 if diff == "hard" else (15 if diff == "medium" else 10)
+        self.listNum = []
+
+        for i in range(0,difficulty):
+            num = random.randint(0, difficulty)
+            self.listNum.append(num)
+
+        if self.qtype == "min":
+            self.answer = min(self.listNum)
+            self.text = "What is the minimum of following:\n" + str(self.listNum)
+        elif self.qtype == "max":
+            self.answer = max(self.listNum)
+            self.text = "What is the maximum of following:\n" + str(self.listNum)
+        elif self.qtype == "mean":
+            self.answer = sum(self.listNum)/float(len(self.listNum))
+            self.text = "What is the mean of following:\n" + str(self.listNum)
+        else:
+            if len(self.listNum)%2 != 0:
+                self.answer = sorted(self.listNum)[len(self.listNum)/2]
+            else:
+                self.answer = (sorted(self.listNum)[len(self.listNum)/2]
+                    + sorted(self.listNum)[len(self.listNum)/2 + 1])/2.0
+            self.text = "What is the median of following:\n" + str(self.listNum)
