@@ -110,21 +110,21 @@ class ironBoard(spyral.View):
 		self.numHam = [0,0,0,0,0]
 
 		#change the number into string...without dot		
-		denom = ''
+		self.denom = ''
 		point = False #did you find the decimal point?
 		d = 0 #location of the decimal point
 		for c in str(denominator):
 			if(c != '.'):
-				denom += c
+				self.denom += c
 				if not point:
 					d += 1
 			else:
 				point = True
 
-		if len(denom) < 5:
-			denom = '0' * (5-len(denom)) + denom
-			d += 5-len(denom)
-		print denom
+		if len(self.denom) < 5:
+			self.denom = '0' * (5-len(self.denom)) + self.denom
+			d += 5-len(self.denom)
+		print self.denom
 		#initialize measure lines
 		for i in range(0,6):
 			measure = measureLine(self, (i * 3*WIDTH/10.0,HEIGHT/60.0))
@@ -133,7 +133,7 @@ class ironBoard(spyral.View):
 
 		#initialize particle
 		for i in range(0, 5):
-			pn = int(denom[i])
+			pn = int(self.denom[i])
 			particle = Particle(self,pn)
 			particle.pos = (i * 3*WIDTH/10.0 + 3*WIDTH/16.0,HEIGHT/360.0 - particle.radius)
 			self.particles.append(particle)
@@ -187,7 +187,7 @@ class ironHammer(spyral.View):
 		self.head = Sprite(self)
 		self.head.image = model.resources["hammer"]
 		self.head.anchor = 'topleft'
-		self.head.pos = (WIDTH/10 - WIDTH/12, HEIGHT/15)
+		self.head.pos = (WIDTH/10 - WIDTH/12, HEIGHT/10 - 100)
 		self.head.layer = 'hammer'
 		self.isBroke = False
 
@@ -254,74 +254,88 @@ class ironHammer(spyral.View):
 			self.hammertime = True
 
 class mainScreen(spyral.Scene):
-	def __init__(self, q, diff):
-		super(mainScreen, self).__init__(SIZE)
-		model.loadResources()
-		self.background = model.resources["background"]
-		self.layers = ['bot', 't']
-		self.q = q
-		print str(q.answer) + ' ' + str(q.randomNumOne) + ' ' + str(q.randomNumTwo)
-		self.answer = q.answer
-		self.board = ironBoard(self,diff, q.randomNumTwo)
-		self.board.pos = (WIDTH/4,3*HEIGHT/4.0)
-		self.hammer = ironHammer(self, q.randomNumOne)
-		self.hammer.pos = (WIDTH/7.5,HEIGHT/4.5)
-		self.correct = False
+    def __init__(self, q, diff):
+        super(mainScreen, self).__init__(SIZE)
+        model.loadResources()
+        self.background = model.resources["background"]
+        self.layers = ['bot', 't']
+        self.q = q
+        print str(q.answer) + ' ' + str(q.randomNumOne) + ' ' + str(q.randomNumTwo)
+        self.answer = q.answer
+        self.board = ironBoard(self,diff, q.randomNumTwo)
+        self.board.pos = (WIDTH/4,3*HEIGHT/4.0)
+        self.hammer = ironHammer(self, q.randomNumOne)
+        self.hammer.pos = (WIDTH/7.5,HEIGHT/4.5)
+        self.correct = False
 
-		text1 = drawFont(self, "Use the hammer to crush the numbers that can", spyral.Font(FONT, 30, WHITE))
-		text1.pos = (WIDTH/2, 0)
-		text1.anchor = 'midtop'
-		text2 = drawFont(self, "be divided by the number on the hammer!", spyral.Font(FONT, 30, WHITE))
-		text2.pos = (WIDTH/2, text1.height + 10)
-		text2.anchor = 'midtop'
+        text1 = drawFont(self, "Use the hammer to crush the numbers that can", spyral.Font(FONT, 30, WHITE))
+        text1.pos = (WIDTH/2, 0)
+        text1.anchor = 'midtop'
+        text2 = drawFont(self, "be divided by the number on the hammer!", spyral.Font(FONT, 30, WHITE))
+        text2.pos = (WIDTH/2, text1.height + 10)
+        text2.anchor = 'midtop'
+        text3 = drawFont(self, "Answer: ", spyral.Font(FONT, 30, WHITE))
+        text3.pos = (WIDTH/2 - 100, HEIGHT - 50)
+        text3.anchor = 'midbottom'
+        
+        dividend = drawFont(self, "Dividend: " + str(self.board.denom), spyral.Font(FONT, 30, WHITE))
+        dividend.pos = (WIDTH/2, HEIGHT - 80)
+        dividend.anchor = 'midbottom'
 
-		helpText = drawFont(self, "Right Arrow: Move Right     Down Arrow: Hammer Time", spyral.Font(FONT, 30, WHITE))
-		helpText.pos = (WIDTH/2, HEIGHT - 10)
-		helpText.anchor = 'midbottom'
+        helpText = drawFont(self, "Right Arrow: Move Right     Down Arrow: Hammer Time", spyral.Font(FONT, 30, WHITE))
+        helpText.pos = (WIDTH/2, HEIGHT - 10)
+        helpText.anchor = 'midbottom'
 
-		self.numHam = []
+        self.numHam = []
 
-		for i in range(1,6):
-			numham = drawFont(self, '', spyral.Font(FONT, WIDTH/90, (255,255,255)))
-			numham.anchor = 'topleft'
-			numham.pos = (self.hammer.head.x + WIDTH/40.0 + WIDTH/120.0 + (i * WIDTH/21.0), HEIGHT/30.0 + 3*HEIGHT/4.0 + WIDTH/120.0)
-			numham.layer = 't'
-			self.numHam.append(numham)
-		if self.answer%1 > 0:
-			dot = drawFont(self, '.', spyral.Font(FONT, WIDTH/90, (255,255,255)))
-			dot.pos = (self.hammer.head.x + WIDTH/40.0 + WIDTH/120.0 + (4.5 * WIDTH/21.0), HEIGHT/30.0 + 3*HEIGHT/4.0 + WIDTH/120.0)
-			dot.layer = 't'
+        for i in range(1,6):
+	        numham = drawFont(self, '', spyral.Font(FONT, 30, (255,255,255)))
+	        numham.anchor = 'midbottom'
+	        numham.pos = (WIDTH/3 + 50 + (i * WIDTH/20.0), HEIGHT - 50)
+	        numham.layer = 't'
+	        self.numHam.append(numham)
+        if self.answer%1 > 0:
+            dot = drawFont(self, '.', spyral.Font(FONT, 30, (255,255,255)))
+            dot.pos = (WIDTH/3 + 50 + (4.5 * WIDTH/20.0), HEIGHT - 50)
+            dot.anchor = 'midbottom'
+            dot.layer = 't'
 
-		#Scene pop wait time
-		self.popwait = 50
-		self.popt = 0
+        #Scene pop wait time
+        self.popwait = 50
+        self.popt = 0
 
-	def wait(self):
-		if(self.popt < self.popwait):
-			self.popt += 1
-		else:
-			spyral.event.unregister("director.update", self.wait)
-			print "end main screen"
-			pass
+    def wait(self):
+        if(self.popt < self.popwait):
+            self.popt += 1
+        else:
+            spyral.event.unregister("director.update", self.wait)
+            print "end main screen"
+            pass
 		#TODO make transition from mainScreen to resultScreen
 
-	def isWin(self, fail):
-		if fail:
-			pass
-		else:
-			answer = 0
-			answerline = self.board.numHam
-			if self.answer%1 > 0:
-				isdot = 1
-			else:
-				isdot = 0
-				self.answer = int(self.answer)
+    def isWin(self, fail):
+        if fail:
+            resultText = drawFont(self, "Incorrect.  Answer is " + str(self.answer), spyral.Font(FONT, 50, (255,0,0)))
+            resultText.pos = (WIDTH/2, HEIGHT/3)
+            resultText.anchor = 'center'
+            pass
+        else:
+            answer = 0
+            answerline = self.board.numHam
+            if self.answer%1 > 0:
+                isdot = 1
+            else:
+                isdot = 0
+                self.answer = int(self.answer)
 
-			for i in range(0,5):
-				answer += answerline[i] * pow(10, 4 - i - isdot)
+            for i in range(0,5):
+                answer += answerline[i] * pow(10, 4 - i - isdot)
 
-			self.correct = self.answer == answer
-		spyral.event.register("director.update", self.wait)
+            self.correct = self.answer == answer
+            resultText = drawFont(self, "Correct!", spyral.Font(FONT, 50, (0,255,0)))
+            resultText.pos = (WIDTH/2 + 200, HEIGHT/3)
+            resultText.anchor = 'center'
+        spyral.event.register("director.update", self.wait)
 
 class resultScreen(spyral.Scene):
 	def __init__(self, correct):
