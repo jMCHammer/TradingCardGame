@@ -113,7 +113,7 @@ class ironBoard(spyral.View):
 		self.denom = ''
 		point = False #did you find the decimal point?
 		d = 0 #location of the decimal point
-		for c in str(denominator*10 if denominator%1 > 0 else denominator):
+		for c in str(denominator*10 if self.scene.q.randomNumOne%1 > 0 else denominator):
 			if(c != '.'):
 				self.denom += c
 				if not point:
