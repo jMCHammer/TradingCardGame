@@ -153,8 +153,12 @@ class FaceoffScreen(spyral.Scene):
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
         if self.selectedSubject == "Geometry":
             self.showQuestion.pos = (150, HEIGHT/2 - 100)
+        elif self.selectedSubject == "Statistics":
+            self.showQuestion.pos = (50, HEIGHT/2)
+            self.form.answerField.pos = (self.showQuestion.width + 60, HEIGHT/2)
+            self.form.answerButton.pos = (WIDTH - 150, HEIGHT/2)
         else:
-            self.showQuestion.pos = (WIDTH/2 - 50, HEIGHT/2 - 100)
+            self.showQuestion.pos = (WIDTH/2 - 150, HEIGHT/2)
         self.form.answerField.visible  = True
         self.form.answerButton.visible = True
 
@@ -343,11 +347,11 @@ class FaceoffScreen(spyral.Scene):
             else:
                 self.deck[card].visible = False
             self.deck[card].pos = (x, y)
-            x = x + 350
+            x = x + 320
             count += 1
 
         # Opponent cards
-        x = WIDTH/5
+        x = WIDTH/4
         y = 15
         count = 0
         for card in self.opponentcards:
@@ -368,7 +372,7 @@ class FaceoffScreen(spyral.Scene):
                 self.opponentcards[card].visible = False 
             #Card placement
             self.opponentcards[card].pos = (x, y)
-            x = x + 350
+            x = x + 400
             count += 1
         count = 0
 

@@ -42,15 +42,15 @@ class EndGameScreen(spyral.Scene):
         spyral.Scene.__init__(self, SIZE)
         self.hero = Hero(self.scene)
         self.background = model.resources["background"]
-        card_guts = model.prizeCard()
-        if not card_guts[0] in model.deck and not card_guts[0] in model.looseCards:
-            model.looseCards[card_guts[0]] = card_guts
-        print card_guts[0]
-
-        card = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
-        card.pos = (WIDTH/3, HEIGHT/3)
-
         if model.opponentDead == True:
+            card_guts = model.prizeCard()
+            if not card_guts[0] in model.deck and not card_guts[0] in model.looseCards:
+                model.looseCards[card_guts[0]] = card_guts
+            print card_guts[0]
+
+            card = (Card(self, card_guts[0], card_guts[1], card_guts[2]))
+            card.pos = (WIDTH/3, HEIGHT/3)
+
             winText = drawWinFont(self.scene, "Extras/Comic_Book.ttf", "You win!")
             wincard = drawTextFont(self.scene, "Extras/Comic_Book.ttf", "You've won a card!")
             wincard.pos = (WIDTH/4, 200)
