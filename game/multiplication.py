@@ -187,7 +187,7 @@ class ironHammer(spyral.View):
 		self.head = Sprite(self)
 		self.head.image = model.resources["hammer"]
 		self.head.anchor = 'topleft'
-		self.head.pos = (WIDTH/10 - 100, HEIGHT/15)
+		self.head.pos = (WIDTH/10 - WIDTH/12, HEIGHT/15)
 		self.head.layer = 'hammer'
 		self.isBroke = False
 
@@ -254,47 +254,47 @@ class ironHammer(spyral.View):
 			self.hammertime = True
 
 class mainScreen(spyral.Scene):
-    def __init__(self, q, diff):
-        super(mainScreen, self).__init__(SIZE)
-        model.loadResources()
-        self.background = model.resources["background"]
-        self.layers = ['bot', 't']
-        self.q = q
-        print str(q.answer) + ' ' + str(q.randomNumOne) + ' ' + str(q.randomNumTwo)
-        self.answer = q.answer
-        self.board = ironBoard(self,diff, q.randomNumTwo)
-        self.board.pos = (WIDTH/4,3*HEIGHT/4.0)
-        self.hammer = ironHammer(self, q.randomNumOne)
-        self.hammer.pos = (WIDTH/7.5,HEIGHT/4.5)
-        self.correct = False
+	def __init__(self, q, diff):
+		super(mainScreen, self).__init__(SIZE)
+		model.loadResources()
+		self.background = model.resources["background"]
+		self.layers = ['bot', 't']
+		self.q = q
+		print str(q.answer) + ' ' + str(q.randomNumOne) + ' ' + str(q.randomNumTwo)
+		self.answer = q.answer
+		self.board = ironBoard(self,diff, q.randomNumTwo)
+		self.board.pos = (WIDTH/4,3*HEIGHT/4.0)
+		self.hammer = ironHammer(self, q.randomNumOne)
+		self.hammer.pos = (WIDTH/7.5,HEIGHT/4.5)
+		self.correct = False
 
-        text1 = drawFont(self, "Use the hammer to crush the numbers that can", spyral.Font(FONT, 30, WHITE))
-        text1.pos = (WIDTH/2, 0)
-        text1.anchor = 'midtop'
-        text2 = drawFont(self, "be divided by the number on the hammer!", spyral.Font(FONT, 30, WHITE))
-        text2.pos = (WIDTH/2, text1.height + 10)
-        text2.anchor = 'midtop'
+		text1 = drawFont(self, "Use the hammer to crush the numbers that can", spyral.Font(FONT, 30, WHITE))
+		text1.pos = (WIDTH/2, 0)
+		text1.anchor = 'midtop'
+		text2 = drawFont(self, "be divided by the number on the hammer!", spyral.Font(FONT, 30, WHITE))
+		text2.pos = (WIDTH/2, text1.height + 10)
+		text2.anchor = 'midtop'
 
-        helpText = drawFont(self, "Right Arrow: Move Right     Down Arrow: Hammer Time", spyral.Font(FONT, 30, WHITE))
-        helpText.pos = (WIDTH/2, HEIGHT - 10)
-        helpText.anchor = 'midbottom'
+		helpText = drawFont(self, "Right Arrow: Move Right     Down Arrow: Hammer Time", spyral.Font(FONT, 30, WHITE))
+		helpText.pos = (WIDTH/2, HEIGHT - 10)
+		helpText.anchor = 'midbottom'
 
-        self.numHam = []
+		self.numHam = []
 
-        for i in range(1,6):
-	        numham = drawFont(self, '', spyral.Font(FONT, WIDTH/90, (255,255,255)))
-	        numham.anchor = 'topleft'
-	        numham.pos = (self.hammer.head.x + WIDTH/40.0 + WIDTH/120.0 + (i * WIDTH/21.0), HEIGHT/30.0 + 3*HEIGHT/4.0 + WIDTH/120.0)
-	        numham.layer = 't'
-	        self.numHam.append(numham)
-        if self.answer%1 > 0:
-	        dot = drawFont(self, '.', spyral.Font(FONT, WIDTH/90, (255,255,255)))
-	        dot.pos = (self.hammer.head.x + WIDTH/40.0 + WIDTH/120.0 + (4.5 * WIDTH/21.0), HEIGHT/30.0 + 3*HEIGHT/4.0 + WIDTH/120.0)
-	        dot.layer = 't'
+		for i in range(1,6):
+			numham = drawFont(self, '', spyral.Font(FONT, WIDTH/90, (255,255,255)))
+			numham.anchor = 'topleft'
+			numham.pos = (self.hammer.head.x + WIDTH/40.0 + WIDTH/120.0 + (i * WIDTH/21.0), HEIGHT/30.0 + 3*HEIGHT/4.0 + WIDTH/120.0)
+			numham.layer = 't'
+			self.numHam.append(numham)
+		if self.answer%1 > 0:
+			dot = drawFont(self, '.', spyral.Font(FONT, WIDTH/90, (255,255,255)))
+			dot.pos = (self.hammer.head.x + WIDTH/40.0 + WIDTH/120.0 + (4.5 * WIDTH/21.0), HEIGHT/30.0 + 3*HEIGHT/4.0 + WIDTH/120.0)
+			dot.layer = 't'
 
-        #Scene pop wait time
-        self.popwait = 50
-        self.popt = 0
+		#Scene pop wait time
+		self.popwait = 50
+		self.popt = 0
 
 	def wait(self):
 		if(self.popt < self.popwait):

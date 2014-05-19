@@ -30,18 +30,20 @@ class BoatFloor(Sprite):
 		super(BoatFloor,self).__init__(Scene)
 		self.numFloor = 0 #from -2~1
 		self.num = 0 #from 0~9
-		self.image = model.resources["floor"].scale((120, 20))
+		self.image = model.resources["Wood"].scale((WIDTH/19, HEIGHT/32))
 
 	def setNumber(self, fl, num):
 		self.numFloor = fl
 		self.num = num * pow(10,self.numFloor)
 		pass
 
+	def rescale(self,size):
+		self.image = model.resources["Wood"].scale(size)
+
 class Boat(Sprite): #HAVENT BEEN USED YET
 	def __init__(self, Scene):
 		super(Boat,self).__init__(Scene)
-		self.image = spyral.Image(size=(WIDTH, HEIGHT/2))
-		self.image.draw_lines((255,28,0),[(0, HEIGHT/5),(WIDTH, HEIGHT/5), (7*WIDTH/8,HEIGHT/2),(WIDTH/8,HEIGHT/2),(0, HEIGHT/4)],20, True)
+		self.image = model.resources["ship"].scale((WIDTH, HEIGHT/2))
 		self.anchor = "midbottom"
 		self.layer = 'bottom'
 
@@ -82,6 +84,7 @@ class MovingPiece(Sprite):
 	def initialPos(self, pos):
 		self.position = pos
 
+
 class Box(MovingPiece):
 	def __init__(self, Scene, boxWeight):
 		super(Box,self).__init__(Scene)
@@ -89,7 +92,7 @@ class Box(MovingPiece):
 		self.dx = 0
 		self.floor = 0
 		self.pickedUp = False
-		self.image = model.resources["box"]
+		self.image = model.resources["woodbox"].scale((HEIGHT/32, HEIGHT/32))
 
 	def pickUp(self):
 		self.dx = 5
@@ -179,47 +182,59 @@ class DivisionScreen(spyral.Scene):
         self.weightText = drawFont(self, " Box Weight: " + str(self.divisor), spyral.Font(FONT, 30, (255,255,255)))
         self.weightText.pos = (self.answerText.width, 0)
         self.currentText = drawFont(self, " Current: ", spyral.Font(FONT, 30, (255,255,255)))
-        self.currentText.pos = (self.answerText.width + self.weightText.width + 10, 0)
+        self.currentText.pos = (self.answerText.width + self.weightText.width, 0)
+        self.currentText1 = drawFont(self, str(self.divisor), spyral.Font(FONT, 30, (255,255,255)))
+        self.currentText1.pos = (self.answerText.width + self.weightText.width + self.currentText.width + 40, 0)
+        self.currentText2 = drawFont(self, str(self.divisor), spyral.Font(FONT, 30, (255,255,255)))
+        self.currentText2.pos = (self.answerText.width + self.weightText.width + self.currentText.width + 40, 25)
+        self.currentText3 = drawFont(self, str(self.divisor), spyral.Font(FONT, 30, (255,255,255)))
+        self.currentText3.pos = (self.answerText.width + self.weightText.width + self.currentText.width , 50)
+        self.currentText4 = drawFont(self, "-------", spyral.Font(FONT, 30, (255,255,255)))
+        self.currentText4.pos = (self.answerText.width + self.weightText.width + self.currentText.width, 75)
+        self.currentText5 = drawFont(self, str(self.answer), spyral.Font(FONT, 30, (255,255,255)))
+        self.currentText5.pos = (self.answerText.width + self.weightText.width + self.currentText.width + 40, 100)
 
         for f in range(1, 4):
-	        length = 19 if self.difficulty > 0 else 10
-	        modifier = -9 if self.difficulty > 0 else 0
-	        scalar = (WIDTH/length, HEIGHT/32)
-	        floor = []
-	        for i in range(0, length):
-		        floormat = BoatFloor(self)
-		        floormat.setNumber(2 - f, i + modifier)
-		        floormat.pos = (i * WIDTH/length, f * HEIGHT/3 - floormat.image.height)
-		        floor.append(floormat)
-		        t = drawFont(self, str(floormat.num), spyral.Font(FONT, 15, (255,255,255)))
-		        t.pos = (floormat.pos[0], floormat.pos[1] - floormat.image.height)
-		        self.texts.append(t)
-	        self.floors.append(floor)
+            length = 19 if self.difficulty > 0 else 10
+            modifier = -9 if self.difficulty > 0 else 0
+            scalar = (WIDTH/length, HEIGHT/32)
+            floor = []
+            for i in range(0, length):
+                floormat = BoatFloor(self)
+                floormat.setNumber(2 - f, i + modifier)
+                floormat.pos = (i * WIDTH/length, f * HEIGHT/3 - floormat.image.height)
+                floormat.rescale(scalar)
+                floor.append(floormat)
+                t = drawFont(self, str(floormat.num), spyral.Font(FONT, 15, (255,255,255)))
+                t.pos = (floormat.pos[0], floormat.pos[1] - floormat.image.height)
+                self.texts.append(t)
+            self.floors.append(floor)
 
         for i in range(1, 4):
-	        box = Box(self, self.divisor)
-	        box.pos = (WIDTH/19 * 9 + box.width/2 if self.difficulty > 0 else 0 + box.width/2,
-				        self.floors[i - 1][0].pos[1] - HEIGHT/22)
-	        box.floor = i - 1
-	        self.boxes.append(box)
+            box = Box(self, self.divisor)
+            box.pos = (WIDTH/19 * 9 + box.width/2 if self.difficulty > 0 else 0 + box.width/2,
+		                self.floors[i - 1][0].pos[1] - HEIGHT/32)
+            box.floor = i - 1
+            self.boxes.append(box)
 
         self.man = Man(self)
         self.man.pos = (WIDTH/19, self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
 
     def Update(self):
-	    length = 19 if self.difficulty > 0 else 10
-	    modifier = -9 if self.difficulty > 0 else 0
-	    self.man.pos = (self.man.pos[0], self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
-	    answer = 0
-	    for box in self.boxes:
-		    answer += int((box.pos[0]/(WIDTH/length)) + modifier) * self.divisor * pow(10, (1 - box.floor))
-		    self.answer = answer
-            self.currentText.update("Current: " + str((self.boxes[0].pos.x/(WIDTH/length)) * self.divisor * pow(10, (1 - 0))) + " + " + 
-                                                    str((self.boxes[1].pos.x/(WIDTH/length)) * self.divisor * pow(10, (1 - 1))) + " + " +
-                                                    str((self.boxes[2].pos.x/(WIDTH/length)) * self.divisor * pow(10, (1 - 2))) + " = " + str(self.answer))
+        length = 19 if self.difficulty > 0 else 10
+        modifier = -9 if self.difficulty > 0 else 0
+        self.man.pos = (self.man.pos[0], self.floors[self.man.floor][0].pos[1] - HEIGHT/16)
+        answer = 0
+        for box in self.boxes:
+	        answer += int((box.pos[0]/(WIDTH/length)) + modifier) * self.divisor * pow(10, (1 - box.floor))
+        self.answer = answer
+        self.currentText1.update(str(int((self.boxes[0].pos.x/(WIDTH/length)) * self.divisor * pow(10, (1 - 0)))))
+        self.currentText2.update(str(int((self.boxes[1].pos.x/(WIDTH/length)) * self.divisor * pow(10, (1 - 1)))))
+        self.currentText3.update("+ " + str((self.boxes[2].pos.x/(WIDTH/length)) * self.divisor * pow(10, (1 - 2))))
+        self.currentText5.update(str(self.answer))
 
     def Return(self):
-	    spyral.director.replace(resultScreen(int((self.numerator - self.answer)*100), self.numerator))
+        spyral.director.replace(resultScreen(int((self.numerator - self.answer)*100), self.numerator))
 
 class Sea(Sprite):
 	def __init__(self, Scene):
@@ -227,7 +242,6 @@ class Sea(Sprite):
 		self.image = spyral.Image(size=(WIDTH,HEIGHT/2)).fill((80,160,222))
 		self.anchor = 'topleft'	
 		self.layer = 'top'
-
 
 
 class sinkingScreen(spyral.Scene):
@@ -297,4 +311,9 @@ class resultScreen(spyral.Scene):
 				self.ship.pos = (self.ship.pos[0], self.ship.pos[1] + 6)
 		if self.timer >= 200:
 			spyral.director.pop()
+<<<<<<< HEAD
+			time.sleep(3)
 			spyral.director.get_scene().submitScreenAnswer(self.correct)
+=======
+			spyral.director.get_scene().submitScreenAnswer(self.correct)
+>>>>>>> acfad2a6a518ad6b1d93703009aa46debd5dc8e2

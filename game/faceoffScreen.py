@@ -236,6 +236,8 @@ class FaceoffScreen(spyral.Scene):
             try:
                 if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
                     self.correct = True
+                else:
+                    self.correct = False
                 self.dealDamage(self.deck[self.selectedSubject].damage)
                 print "Opponent's answer: " + str(self.opponent.correct)
                 self._reset()
@@ -246,7 +248,9 @@ class FaceoffScreen(spyral.Scene):
         self.opponent.answerQuestion()
         if correct:
             self.correct = True
-            self.dealDamage(self.deck[self.selectedSubject].damage)
+        else:
+            self.correct = False
+        self.dealDamage(self.deck[self.selectedSubject].damage)
         self._reset()
 
 ################### Drawing Functions #########################################
