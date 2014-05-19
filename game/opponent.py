@@ -19,6 +19,7 @@ class Opponent(spyral.Sprite):
         n = int(self.name[len(self.name)-1])
         if n < 5:
             subject = model.allCards.keys()[n-1]
+            print subject
             self.deck = {subject : model.allCards[subject]}
         elif n < 6: 
             self.deck = {model.allCards.keys()[2]: model.allCards[model.allCards.keys()[2]],

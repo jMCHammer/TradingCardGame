@@ -332,7 +332,6 @@ class FaceoffScreen(spyral.Scene):
             except:
                 pass
             # Init health counters
-            print card
             self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf","HP: "+str(self.deck[card].health), 25))
             # Draw Health counters on screen
             self.showHealth[count].layer = "text"
