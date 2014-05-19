@@ -343,11 +343,11 @@ class FaceoffScreen(spyral.Scene):
             else:
                 self.deck[card].visible = False
             self.deck[card].pos = (x, y)
-            x = x + 350
+            x = x + 320
             count += 1
 
         # Opponent cards
-        x = WIDTH/5
+        x = WIDTH/4
         y = 15
         count = 0
         for card in self.opponentcards:
@@ -368,7 +368,7 @@ class FaceoffScreen(spyral.Scene):
                 self.opponentcards[card].visible = False 
             #Card placement
             self.opponentcards[card].pos = (x, y)
-            x = x + 350
+            x = x + 400
             count += 1
         count = 0
 
