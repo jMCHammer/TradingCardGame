@@ -8,10 +8,13 @@ import integerScreen as integer
 import multiplication as mult
 
 def main():
-#	q = question.Question("Arithmetic", "hard")
-#	while(q.randomOpKey != '*'):
-#		q = question.Question("Arithmetic", "hard")
-#	spyral.director.push(mult.mainScreen(q, "hard"))
+	q = question.Question("Arithmetic", "easy")
+	while(q.randomOpKey != '*'):
+		q = question.Question("Arithmetic", "easy")
+
+#	spyral.director.push(division.sinkingScreen(q,"hard"))
+#	spyral.director.push(mult.mainScreen(q, "easy"))
+#	spyral.director.push(sub.mainScene(q, "hard"))
 	spyral.director.push(startScreen.StartScreen())
 
 ###################### Integer Screen #######################
