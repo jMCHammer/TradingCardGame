@@ -152,9 +152,9 @@ class Question:
         self.w = random.randint(int(3*pow(difficulty,2) - 19*difficulty + 31),30/difficulty) #width
         self.h = random.randint(int(3*pow(difficulty,2) - 19*difficulty + 31),30/difficulty) #height
         if(gt == "area"):
-           self.text = "What is the area of a " + self.sh
+           self.text = "What is the area of a " + self.sh + '\n'
         elif(gt == "perimeter"): 
-            self.text = "What is the perimeter of a " + self.sh
+            self.text = "What is the perimeter of a " + self.sh + '\n'
         if(self.sh == "trapezoid"):
             self.h = self.h + 1 if self.h%2 != 0 else self.h
             print int(7.5*pow(difficulty,2) - 42.5*difficulty + 75)
@@ -165,10 +165,10 @@ class Question:
             self.s2 = round(pow(pow(self.l2,2) + pow(self.h,2),.5),1)
             if(gt == "area"):
                 self.answer = (self.w + self.b)*self.h/2
-                self.text += " with top length " + str(self.w) + ", bottom length " + str(self.b) + ", and height length " + str(self.h)
+                self.text += " with top length " + str(self.w) + ",\n bottom length " + str(self.b) + ",\n and height length " + str(self.h)
             elif(gt == "perimeter"):
                 self.answer = self.w + self.b + self.s1 + self.s2
-                self.text += " with bottom length " + str(self.b) + ", top length " + str(self.w) + ", and side length " + str(self.s1) + " and " + str(self.s2)
+                self.text += " with bottom length " + str(self.b) + ",\n top length " + str(self.w) + ",\n and side length " + str(self.s1) + "\n and " + str(self.s2)
         elif(self.sh == "triangle"):
             self.w = self.w + 1 if self.w%2 != 0 else self.w
             self.l1 = random.randint(0,self.w+1)
@@ -177,25 +177,25 @@ class Question:
             self.s2 = self.h if self.l1 == self.w else round(pow(pow(self.l2,2) + pow(self.h,2),.5),1)
             if(gt == "area"):
                 self.answer = self.w*self.h/2
-                self.text += " with base length " + str(self.w) + " and height length " + str(self.h)
+                self.text += " with base length " + str(self.w) + "\n and height length " + str(self.h)
             elif(gt == "perimeter"):
                 self.answer = self.w + self.s1 + self.s2
-                self.text += " with base length " + str(self.w) + ", and side length " + str(self.s1) + "\n and " + str(self.s2)
+                self.text += " with base length " + str(self.w) + ",\n and side length " + str(self.s1) + "\n and " + str(self.s2)
         elif(self.sh == "parallelogram"):
             self.l1 = random.randint(0, self.h)
             self.s1 = round(pow(pow(self.l1,2) + pow(self.h,2),.5),1)
             if(gt == "area"):
                 self.answer = self.w * self.h
-                self.text += " with base length " + str(self.w) + " and height length " + str(self.h)
+                self.text += " with base length " + str(self.w) + "\n and height length " + str(self.h)
             elif(gt == "perimeter"):
                 self.answer = 2*(self.w + self.s1)
-                self.text += " with base length " + str(self.w) + ", and side length " + str(self.s1)
+                self.text += " with base length " + str(self.w) + ",\n and side length " + str(self.s1)
         elif(self.sh == "rectangle"):
             if(gt == "area"):
                 self.answer = self.w * self.h
             elif(gt == "perimeter"):
                 self.answer = 2*(self.w + self.h)
-            self.text += " with base length " + str(self.w) + " and height length " + str(self.h)
+            self.text += " with base length " + str(self.w) + "\n and height length " + str(self.h)
         elif(self.sh == "square"):
             if(gt == "area"):
                 self.answer = pow(self.w, 2)
