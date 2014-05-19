@@ -67,8 +67,8 @@ class FaceoffScreen(spyral.Scene):
             backButton   = spyral.widgets.Button("Back")
             answerButton = spyral.widgets.Button("Submit")
 
-            easyButton   = spyral.widgets.Button()
-            mediumButton = spyral.widgets.Button()
+            easyButton   = spyral.widgets.Button("Easy")
+            mediumButton = spyral.widgets.Button("Medium")
             hardButton   = spyral.widgets.Button("Hard")
             #Fields
             answerField  = spyral.widgets.TextInput(50, "")
