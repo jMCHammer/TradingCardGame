@@ -22,22 +22,22 @@ class drawFont(spyral.Sprite):
         self.image = f.render(text)
 
 class Fireball(spyral.Sprite):
-    def __init__(self, Scene):
+    def __init__(self, Scene,c):
         spyral.Sprite.__init__(self,Scene)
-        self.image = model.resources["fireball"]
-  #      self.visible = False
+        self.image = model.resources["fireball"+str(c)]
+        self.image = model.resources["fireball"+str(c)]
+        if c == 1:
+            self.image.rotate(90.0)
+        else:
+            self.image.rotate(270.0)
+
+    def rotate_270(self):
+        self.image.rotate(270.0)
 
 #### Used to draw a linear animation 
-  #  def draw_linearly(self, startx, endx, starty, endy):
-    def draw_linearly(self, startx, starty, endy):
-  #      self.visible = True
+    def draw_linearly(self, starty, endy):
         animation = Animation('y', easing.Linear(starty, endy), duration = 1.5)
-  #      animation2 = Animation('x', easing.Linear(startx, endx), duration = 1.5)
-  #      animation = animation1 & animation2
         self.animate(animation)
-
-  #      self.visible = False
-
 
 #Scene used for battle
 class FaceoffScreen(spyral.Scene):
@@ -51,7 +51,8 @@ class FaceoffScreen(spyral.Scene):
         # Create Opponent Sprite
         self.opponent = Opponent(self);
         
-        self.fireball = Fireball(self)
+        self.fireball1 = Fireball(self,1)
+        self.fireball2 = Fireball(self,2)
         self.background = model.resources[model.currentOpponent + "bg"]
         self.layers = ["bottom", "text"]
 
@@ -150,32 +151,22 @@ class FaceoffScreen(spyral.Scene):
 ################### Battle Logic #########################################
 #### Deal Hero Damage to Opponent
     def dealDamage(self, damage):
-        #Draw damage on screen
         #Draw damage from hero to opponent
-        self.fireball.pos(self.opponentcards[self.opponent.selectedSubject].x, HEIGHT - 100)
+        if self.correct:
+            self.fireball1.pos = (WIDTH-100, HEIGHT - 100)
+            self.fireball1.draw_linearly(HEIGHT - 100, 100)
 
-        self.fireball.draw_linearly(self.opponentcards[self.opponent.selectedSubject].x,
-                                    #self.deck[self.selectedSubject].x, 
-                                    #self.deck[self.selectedSubject].y, 
-                                    HEIGHT - 100,
-                                    #self.opponentcards[self.opponent.selectedSubject].x, 
-                                    self.opponentcards[self.opponent.selectedSubject].y)
-
-        #Draw damage from opponent to hero 
-  #      self.fireball.draw_linearly(self.opponentcards[self.opponent.selectedSubject].x, 
-   #                                 self.opponentcards[self.opponent.selectedSubject].y, 
-    #                                self.deck[self.selectedSubject].x, 
-     #                               self.deck[self.selectedSubject].y)
+        if self.opponent.correct:
+            #Draw damage from opponent to hero 
+            self.fireball2.draw_linearly(100, HEIGHT - 100)
 
         # Deal damage
         self.opponentcards[self.opponent.selectedSubject].applyDamage(damage)
-        print "Successfully dealth damage"
+        print "Successfully dealt damage"
 ###
 
 #### Starts the battle
     def startBattle(self, event):
-#TODO
-        print self.deck
         subj = self.opponent.pickCard()
         while not self.opponentcards[subj].alive:
             subj = self.opponent.pickCard()
@@ -235,12 +226,14 @@ class FaceoffScreen(spyral.Scene):
 ################### Event Handlers ############################################
 #### Submit answer to system
     def submitAnswer(self, event):
+        self.opponent.answerQuestion()
         if (event.value == "down"):
             # if answer is correct
             try:
                 if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
-                    self.dealDamage(self.deck[self.selectedSubject].damage)
-                print "Opponent's answer: " + str(self.opponent.answerQuestion())
+                    self.correct = True
+                self.dealDamage(self.deck[self.selectedSubject].damage)
+                print "Opponent's answer: " + str(self.opponent.correct)
                 self._reset()
             except(ValueError):
                 pass
@@ -298,6 +291,7 @@ class FaceoffScreen(spyral.Scene):
             except:
                 pass
             # Init health counters
+            print card
             self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf", str(self.deck[card].health), 25))
             # Draw Health counters on screen
             self.showHealth[count].layer = "text"
@@ -306,6 +300,8 @@ class FaceoffScreen(spyral.Scene):
             self.deck[card].layer = "text"
             if self.deck[card].alive:
                 self.deck[card].visible = True
+            else:
+                self.deck[card].visible = False
             self.deck[card].pos = (x, y)
             x = x + 400
             count += 1
@@ -328,10 +324,13 @@ class FaceoffScreen(spyral.Scene):
             self.opponentcards[card].layer = "text"
             if self.opponentcards[card].alive:
                 self.opponentcards[card].visible = True
+            else:
+                self.opponentcards[card].visible = False 
             #Card placement
             self.opponentcards[card].pos = (x, y)
             x = x + 200
             count += 1
+        count = 0
 
 ################### Exit ###################################################
 #### Go back to controlPanelScreen

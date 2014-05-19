@@ -60,6 +60,8 @@ class Opponent(spyral.Sprite):
         # if medium, 35% chance of answering correctly
         # if hard, 17.5% chance of answering correctly
         if t >= (rnge - 7):
+            self.correct = True
             return True
         else:
+            self.correct = False
             return False
