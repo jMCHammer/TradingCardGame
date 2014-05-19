@@ -28,6 +28,9 @@ class EditCollectionScreen(spyral.Scene):
         self.hero.scale_y = .80;
         self.background = spyral.image.Image("Extras/editCollectionBackgroundTemplate.png").scale(Vec2D(1200,900))
         self.layers = ["bottom", "text"]
+    
+        print model.deck
+        print model.looseCards
 
         class RegisterForm(spyral.Form):
             addButton = spyral.widgets.Button("Add to Deck")

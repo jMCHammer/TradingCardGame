@@ -43,7 +43,8 @@ class EndGameScreen(spyral.Scene):
         self.hero = Hero(self.scene)
         self.background = model.resources["background"]
         card_guts = model.prizeCard()
-        model.looseCards[card_guts[0]] = card_guts
+        if not card_guts[0] in model.deck and not card_guts[0] in model.looseCards:
+            model.looseCards[card_guts[0]] = card_guts
         print card_guts[0]
 
         card = (Card(self, card_guts[0], card_guts[1], card_guts[2]))

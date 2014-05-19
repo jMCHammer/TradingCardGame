@@ -34,9 +34,9 @@ class Card(spyral.Sprite):
 #### Determines whether a mouse click has selected this card
     def handle_clicked(self, pos):
         if self.collide_point(pos):
-            if self.clicked:
+            if self.alive and self.clicked:
                 self.handle_deselect()
-            else:
+            elif self.alive:
                 self.clicked = True
                 self.image = model.resources[self.subject + "_s"]
 

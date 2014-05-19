@@ -125,6 +125,6 @@ def prizeCard():
     opp = int(currentOpponent[len(currentOpponent)-1])
     print "adding prize Card"
     print opp
-    return model.allCards[model.allCards.keys()[opp+1]]
+    return model.allCards[model.allCards.keys()[opp]]
 
     

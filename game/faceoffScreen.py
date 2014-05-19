@@ -14,13 +14,20 @@ import time
 WIDTH    = 1200
 HEIGHT   = 900
 BG_COLOR = (0,0,0)
+GREEN    = (0, 255, 0)
+RED      = (255, 0, 0)
 WHITE    = (255, 255, 255)
 SIZE     = (WIDTH, HEIGHT)
 
 class drawFont(spyral.Sprite):
     def __init__(self, Scene, font, text, size):
         spyral.Sprite.__init__(self,Scene)
-        f = spyral.Font(font, size, WHITE)
+        if text == "Correct!":
+            f = spyral.Font(font, size, GREEN)
+        elif text == "Wrong":
+            f = spyral.Font(font, size, RED)
+        else:
+            f = spyral.Font(font, size, WHITE)
         self.image = f.render(text)
 
 class Fireball(spyral.Sprite):
@@ -142,7 +149,10 @@ class FaceoffScreen(spyral.Scene):
         elif self.selectedSubject == "Integer":
             spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
-        self.showQuestion.pos = (WIDTH/2-200, HEIGHT/2 - 100)
+        if self.selectedSubject == "Geometry":
+            self.showQuestion.pos = (150, HEIGHT/2 - 100)
+        else:
+            self.showQuestion.pos = (WIDTH/2 - 50, HEIGHT/2 - 100)
         self.form.answerField.visible  = True
         self.form.answerButton.visible = True
 
@@ -169,7 +179,7 @@ class FaceoffScreen(spyral.Scene):
         else:
             #tell hero he is wrong
             self.herocorrect = drawFont(self.scene, "Extras/Comic_Book.ttf", "Wrong", 25)
-            self.herocorrect.pos = (WIDTH-50, HEIGHT - 450)
+            self.herocorrect.pos = (WIDTH-150, HEIGHT - 450)
         
         #if opponent is correct
         if self.opponent.correct:
