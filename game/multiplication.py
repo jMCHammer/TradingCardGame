@@ -310,6 +310,8 @@ class mainScreen(spyral.Scene):
         else:
             spyral.event.unregister("director.update", self.wait)
             print "end main screen"
+           	spyral.director.pop()
+            spyral.director.get_scene().submitScreenAnswer(self.correct)
             pass
 		#TODO make transition from mainScreen to resultScreen
 
@@ -336,7 +338,3 @@ class mainScreen(spyral.Scene):
             resultText.pos = (WIDTH/2 + 200, HEIGHT/3)
             resultText.anchor = 'center'
         spyral.event.register("director.update", self.wait)
-
-class resultScreen(spyral.Scene):
-	def __init__(self, correct):
-		pass
