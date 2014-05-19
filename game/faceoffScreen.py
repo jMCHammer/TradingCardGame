@@ -151,14 +151,14 @@ class FaceoffScreen(spyral.Scene):
         elif self.selectedSubject == "Integer":
             spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
-        if self.selectedSubject == "Geometry":
-            self.showQuestion.pos = (150, HEIGHT/2 - 100)
-        elif self.selectedSubject == "Statistics":
-            self.showQuestion.pos = (50, HEIGHT/2)
-            self.form.answerField.pos = (self.showQuestion.width + 60, HEIGHT/2)
-            self.form.answerButton.pos = (WIDTH - 150, HEIGHT/2)
+        if self.selectedSubject == "Statistics" or self.selectedSubject == "Geometry":
+            self.showQuestion.pos = (20, HEIGHT/2 - 20)
+            self.form.answerField.pos = (WIDTH/2 - 50, HEIGHT/2 + 20)
+            self.form.answerButton.pos = (WIDTH/2 + 50, HEIGHT/2 + 20)
         else:
             self.showQuestion.pos = (WIDTH/2 - 150, HEIGHT/2)
+            self.form.answerButton.pos = (WIDTH/2+150, HEIGHT/2)
+            self.form.answerField.pos  = (WIDTH/2+70, HEIGHT/2)
         self.form.answerField.visible  = True
         self.form.answerButton.visible = True
 
