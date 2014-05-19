@@ -7,10 +7,6 @@ resources  = {}
 deck       = {}
 looseCards = {
     "Addition"         : ["Addition",         80,  40], 
-    "Geometry"         : ["Geometry",         100, 80],
-    "Integer"          : ["Integer",          50,  60], 
-    "Statistics"       : ["Statistics",       100, 120], 
-    "Fractions"        : ["Fractions",        100, 100]
 }
 allCards   = {
     "Addition"         : ["Addition",         80,  40], 
@@ -48,6 +44,8 @@ def loadResources():
     resources["GayRunLeft"] = spyral.image.Image("Extras/run1.png").flip(True,False)
     resources["ship"] = spyral.image.Image("Extras/rms.png")
     resources["box"] = spyral.image.Image("Extras/box.png").scale(Vec2D(30, 30))
+    resources["beaker"] = spyral.image.Image("Extras/beaker.png")
+    resources["fireball"] = spyral.image.Image("Extras/fireball.png")
     resources["char1"] = spyral.image.Image("Extras/char1.png")
     resources["char2"] = spyral.image.Image("Extras/char2.png")
     resources["char3"] = spyral.image.Image("Extras/char3.png")
@@ -118,3 +116,13 @@ def loadCode(saveCode):
         return True
     except:
         return False
+
+
+def prizeCard():
+    print currentOpponent
+    opp = int(currentOpponent[len(currentOpponent)-1])
+    print "adding prize Card"
+    print opp
+    return model.allCards[model.allCards.keys()[opp+1]]
+
+    

@@ -21,10 +21,23 @@ class drawFont(spyral.Sprite):
         f = spyral.Font(font, size, WHITE)
         self.image = f.render(text)
 
-#### Used to draw a vertical linear animation 
-    def draw_linearly(self, x, starty, endy):
+class Fireball(spyral.Sprite):
+    def __init__(self, Scene):
+        spyral.Sprite.__init__(self,Scene)
+        self.image = model.resources["fireball"]
+  #      self.visible = False
+
+#### Used to draw a linear animation 
+  #  def draw_linearly(self, startx, endx, starty, endy):
+    def draw_linearly(self, startx, starty, endy):
+  #      self.visible = True
         animation = Animation('y', easing.Linear(starty, endy), duration = 1.5)
+  #      animation2 = Animation('x', easing.Linear(startx, endx), duration = 1.5)
+  #      animation = animation1 & animation2
         self.animate(animation)
+
+  #      self.visible = False
+
 
 #Scene used for battle
 class FaceoffScreen(spyral.Scene):
@@ -37,7 +50,8 @@ class FaceoffScreen(spyral.Scene):
         self.hero.scale_y = .80;
         # Create Opponent Sprite
         self.opponent = Opponent(self);
-
+        
+        self.fireball = Fireball(self)
         self.background = model.resources[model.currentOpponent + "bg"]
         self.layers = ["bottom", "text"]
 
@@ -123,7 +137,7 @@ class FaceoffScreen(spyral.Scene):
 #        while(self.deck[self.selectedSubject].q.randomOpKey != "-"):
 #            self.deck[self.selectedSubject].initQuestion(diff)
         ##endtestcase##
-        if self.selectedSubject == "Arithmetic":
+        if self.selectedSubject == "Addition":
             if self.deck[self.selectedSubject].q.randomOpKey == "/":
                 spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
             elif self.deck[self.selectedSubject].q.randomOpKey == "-":
@@ -136,21 +150,35 @@ class FaceoffScreen(spyral.Scene):
 ################### Battle Logic #########################################
 #### Deal Hero Damage to Opponent
     def dealDamage(self, damage):
-        # Draw damage on screen
-        self.showDamage = drawFont(self.scene, "Extras/Comic_Book.ttf", str(damage), 35)
-        self.showDamage.pos = (WIDTH-150, HEIGHT-100)
-        self.showDamage.draw_linearly(WIDTH-150, HEIGHT - 100, 100)
+        #Draw damage on screen
+        #Draw damage from hero to opponent
+        self.fireball.pos(self.opponentcards[self.opponent.selectedSubject].x, HEIGHT - 100)
+
+        self.fireball.draw_linearly(self.opponentcards[self.opponent.selectedSubject].x,
+                                    #self.deck[self.selectedSubject].x, 
+                                    #self.deck[self.selectedSubject].y, 
+                                    HEIGHT - 100,
+                                    #self.opponentcards[self.opponent.selectedSubject].x, 
+                                    self.opponentcards[self.opponent.selectedSubject].y)
+
+        #Draw damage from opponent to hero 
+  #      self.fireball.draw_linearly(self.opponentcards[self.opponent.selectedSubject].x, 
+   #                                 self.opponentcards[self.opponent.selectedSubject].y, 
+    #                                self.deck[self.selectedSubject].x, 
+     #                               self.deck[self.selectedSubject].y)
 
         # Deal damage
-        # TODO 
-###TODO Temporary
         self.opponentcards[self.opponent.selectedSubject].applyDamage(damage)
-        print (self.opponent.deck[self.opponent.selectedSubject])
+        print "Successfully dealth damage"
 ###
 
 #### Starts the battle
     def startBattle(self, event):
-        self.opponent.pickCard()
+#TODO
+        print self.deck
+        subj = self.opponent.pickCard()
+        while not self.opponentcards[subj].alive:
+            subj = self.opponent.pickCard()
         if (event.value == "down"):
             count = 0
             c = 0
@@ -188,6 +216,14 @@ class FaceoffScreen(spyral.Scene):
                 self.form.mediumButton.visible = True
                 self.form.hardButton.visible   = True
 
+                c = 0
+                # Show opponent's selected card
+                for card in self.opponentcards:
+                    if not card == subj:
+                        self.opponentcards[card].visible = False
+                        self.showOppHealth[c].visible = False
+                    c += 1
+
         # If there are no card selected, show all cards
             if count == 0:
                 for card in self.deck:
@@ -209,12 +245,10 @@ class FaceoffScreen(spyral.Scene):
             except(ValueError):
                 pass
 
-    def submitScreenAnswer(self, correct):
-        if correct:
-            self.dealDamage(self.deck[self.selectedSubject].damage)
-        else:
-            print ("False: 0 Damage?")
-        self._reset()
+#    def submitScreenAnswer(self, correct):
+#        if correct:
+#            self.dealDamage(self.deck[self.selectedSubject].damage)
+#        self._reset()
 
 ################### Drawing Functions #########################################
 #### Resets screen
