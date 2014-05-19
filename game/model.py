@@ -10,9 +10,10 @@ looseCards = {
 }
 allCards   = {
     "Addition"         : ["Addition",         80,  40], 
+    "Subtraction"      : ["Subtraction",      75,  50], 
+    "Multiplication"   : ["Multiplication",   90,  50], 
+    "Division"         : ["Division",         90,  50], 
     "Geometry"         : ["Geometry",         100, 80],
-##    "Decimal Addition" : ["Decimal Addition", 90,  50], 
-##    "Algebra"          : ["Algebra",          100, 100],
     "Integer"          : ["Integer",          50,  60], 
     "Statistics"       : ["Statistics",       100, 120], 
     "Fractions"        : ["Fractions",        100, 100]
@@ -29,6 +30,12 @@ def loadResources():
     resources["background"] = spyral.image.Image("Extras/background.png")
     resources["Addition_u"] = spyral.image.Image("Extras/TradingCards/Addition_u.png").scale(Vec2D(200,300))
     resources["Addition_s"] = spyral.image.Image("Extras/TradingCards/Addition_s.png").scale(Vec2D(200,300))
+    resources["Subtraction_u"] = spyral.image.Image("Extras/TradingCards/Subtraction_u.png").scale(Vec2D(200,300))
+    resources["Subtraction_s"] = spyral.image.Image("Extras/TradingCards/Subtraction_s.png").scale(Vec2D(200,300))
+    resources["Multiplication_u"] = spyral.image.Image("Extras/TradingCards/Multiplication_u.png").scale(Vec2D(200,300))
+    resources["Multiplication_s"] = spyral.image.Image("Extras/TradingCards/Multiplication_s.png").scale(Vec2D(200,300))
+    resources["Division_u"] = spyral.image.Image("Extras/TradingCards/Division_u.png").scale(Vec2D(200,300))
+    resources["Division_s"] = spyral.image.Image("Extras/TradingCards/Division_s.png").scale(Vec2D(200,300))
     resources["Geometry_u"] = spyral.image.Image("Extras/TradingCards/Geometry_u.png").scale(Vec2D(200,300))
     resources["Geometry_s"] = spyral.image.Image("Extras/TradingCards/Geometry_s.png").scale(Vec2D(200,300))
     resources["Integer_u"] = spyral.image.Image("Extras/TradingCards/Integer_u.png").scale(Vec2D(200,300))
