@@ -152,7 +152,7 @@ class mainScene(spyral.Scene):
         self.subBy = []
         self.filllist = [0,0,0]
         self.text1 = drawFont(self,"We need the perfect mixture to fuel us to victory!", spyral.Font(FONT, 25, WHITE))
-        self.text2 = drawFont(self,"We have " + str(self.firstnum) + " pebbles but we only need " + str(self.secondnum) +"! Place the difference back in the beakers!", spyral.Font(FONT, 25, WHITE))
+        self.text2 = drawFont(self,"We have " + str(self.firstnum) + " pebbles but we only need " + str(self.secondnum) +"! Place what we need back in the beakers!", spyral.Font(FONT, 25, WHITE))
         self.text3 = drawFont(self,"Fill in the beakers but do not overflow them!",spyral.Font(FONT,25,WHITE))
         self.text4 = drawFont(self,"Down: Fill up the beaker       Space : Lend the pebble to the right", spyral.Font(FONT,25,WHITE))
         self.text1.pos = (WIDTH/6 + 25, 0)
