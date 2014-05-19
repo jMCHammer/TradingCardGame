@@ -47,7 +47,6 @@ class FaceoffScreen(spyral.Scene):
     def __init__(self):
         global manager
         spyral.Scene.__init__(self, SIZE)
-        self.load_style("game/style.spys")
         self.hero = Hero(self)
         self.hero.pos = (WIDTH-180, HEIGHT - 395)
         self.hero.scale_x = .80;
