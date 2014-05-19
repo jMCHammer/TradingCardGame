@@ -3,11 +3,13 @@ import model
 import endGameScreen
 import division
 import subtractionScreenDuke as subtraction
+import integerScreen as integer
 
 from opponent import Opponent
 from spyral import Animation, easing
 from hero import Hero
 from card import Card
+import time
 
 WIDTH    = 1200
 HEIGHT   = 900
@@ -128,6 +130,8 @@ class FaceoffScreen(spyral.Scene):
                 spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
             elif self.deck[self.selectedSubject].q.randomOpKey == "-":
                 spyral.director.push(subtraction.mainScene(self.deck[self.selectedSubject].q, diff))
+        elif self.selectedSubject == "Integer":
+            spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
         self.showQuestion.pos = (WIDTH/2-100, HEIGHT/2)
         self.form.answerField.visible  = True
