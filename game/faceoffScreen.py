@@ -243,7 +243,9 @@ class FaceoffScreen(spyral.Scene):
                 pass
 
     def submitScreenAnswer(self, correct):
+        self.opponent.answerQuestion()
         if correct:
+            self.correct = True
             self.dealDamage(self.deck[self.selectedSubject].damage)
         self._reset()
 
