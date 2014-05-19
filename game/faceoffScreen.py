@@ -249,10 +249,10 @@ class FaceoffScreen(spyral.Scene):
             except(ValueError):
                 pass
 
-#    def submitScreenAnswer(self, correct):
-#        if correct:
-#            self.dealDamage(self.deck[self.selectedSubject].damage)
-#        self._reset()
+    def submitScreenAnswer(self, correct):
+        if correct:
+            self.dealDamage(self.deck[self.selectedSubject].damage)
+        self._reset()
 
 ################### Drawing Functions #########################################
 #### Resets screen
