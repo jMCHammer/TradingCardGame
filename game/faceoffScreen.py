@@ -142,9 +142,9 @@ class FaceoffScreen(spyral.Scene):
 #        while(self.deck[self.selectedSubject].q.randomOpKey != "-"):
 #            self.deck[self.selectedSubject].initQuestion(diff)
         ##endtestcase##
-        if self.selectedSubject == "Division":
+        if self.selectedSubject == "Multiplication":
             spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
-        elif self.selectedSubject == "Multiplication":
+        elif self.selectedSubject == "Division":
             spyral.director.push(subtraction.mainScene(self.deck[self.selectedSubject].q, diff))
         elif self.selectedSubject == "Subtraction":
             spyral.director.push(mult.mainScreen(self.deck[self.selectedSubject].q, diff))
