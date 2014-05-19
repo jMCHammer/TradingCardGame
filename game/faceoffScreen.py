@@ -138,7 +138,7 @@ class FaceoffScreen(spyral.Scene):
 
         self.deck[self.selectedSubject].initQuestion(diff)
         ##Screen testcase##
-#        while(self.deck[self.selectedSubject].q.randomOpKey != "-"):
+#        while(self.deck[self.selectedSubject].q.randomOpKey != "*"):
 #            self.deck[self.selectedSubject].initQuestion(diff)
         ##endtestcase##
         if self.selectedSubject == "Addition":
@@ -147,7 +147,7 @@ class FaceoffScreen(spyral.Scene):
             elif self.deck[self.selectedSubject].q.randomOpKey == "-":
                 spyral.director.push(subtraction.mainScene(self.deck[self.selectedSubject].q, diff))
             elif self.deck[self.selectedSubject].q.randomOpKey == "*":
-                spyral.director.push(mult.mainSceen(self.deck[self.selectedSubject].q, diff))
+                spyral.director.push(mult.mainScreen(self.deck[self.selectedSubject].q, diff))
         elif self.selectedSubject == "Integer":
             spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
