@@ -60,37 +60,31 @@ class Question:
         self.randomOpKey = random.choice(ops.keys())
 
         if diff == "easy":
-            if self.randomOpKey == "/":
+            if self.randomOpKey == "/" or self.randomOpKey == "*":
                 self.randomNumOne = random.randint(0, 10) + 1
                 self.randomNumTwo = (random.randint(0, 20) + 1) * self.randomNumOne
-            elif self.randomOpKey == "*":
-                self.randomNumOne = random.randint(0, 15)
-                self.randomNumTwo = random.randint(0, 15)
             else:
                 self.randomNumOne = random.randint(0, 20) + 1
                 self.randomNumTwo = random.randint(0, 20) + 1
         elif diff == "medium":
-            if self.randomOpKey == "/":
+            if self.randomOpKey == "/" or self.randomOpKey == "*":
                 self.randomNumOne = round(random.uniform(0.0, 12.0) + 1,1)
                 self.randomNumTwo = round(random.uniform(0.0, 30.0) + 1,1) * self.randomNumOne
-            elif self.randomOpKey == "*":
-                self.randomNumOne = round(random.uniform(0.0, 20.0),1)
-                self.randomNumTwo = round(random.uniform(0.0, 20.0),1)
             else:
                 self.randomNumOne = round(random.uniform(0.0, 50.0) + 1,1)
                 self.randomNumTwo = round(random.uniform(0.0, 50.0) + 1,1)
         elif diff == "hard":
-            if self.randomOpKey == "/":
+            if self.randomOpKey == "/" or self.randomOpKey == "*":
                 self.randomNumOne = round(random.uniform(0.0, 12.0) + 1,1)
                 self.randomNumTwo = round(random.uniform(0.0, 50.0),1) * self.randomNumOne
-            elif self.randomOpKey == "*":
-                self.randomNumOne = round(random.uniform(0.0, 30.0),1)
-                self.randomNumTwo = round(random.uniform(0.0, 30.0),1)
             else:
                 self.randomNumOne = round(random.uniform(0.0, 100.0),1)
                 self.randomNumTwo = round(random.uniform(0.0, 100.0),1)
 
-        self.randomOpValue = ops[self.randomOpKey]
+        if self.randomOpKey == "*":
+            self.randomOpValue = ops['/']
+        else:
+            self.randomOpValue = ops[self.randomOpKey]
         if (self.randomNumOne < self.randomNumTwo):
             self.answer = self.randomOpValue(self.randomNumTwo, self.randomNumOne)
             self.text = str(self.randomNumTwo) + " " + self.randomOpKey + " " + str(self.randomNumOne)
