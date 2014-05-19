@@ -22,12 +22,12 @@ class LoadGameScreen(spyral.Scene):
 
         class RegisterForm(spyral.Form):
             #Fields
-            answerField  = spyral.widgets.TextInput(50, "")
+            answerField  = spyral.widgets.TextInput(100, "")
             submitButton   = spyral.widgets.Button("Submit")
 
         self.form = RegisterForm(self)
         self.form.answerField.pos = (WIDTH/2 + 80, HEIGHT*3/4 + 20)
-        self.form.submitButton.pos = (WIDTH/2 + 160, HEIGHT*3/4 + 20)
+        self.form.submitButton.pos = (WIDTH/2 + 220, HEIGHT*3/4 + 20)
 
         title = drawFont(self.scene, "Extras/Comic_Book.ttf", "Enter in your game code", 40)
         title.pos = (120, HEIGHT*3/4) 

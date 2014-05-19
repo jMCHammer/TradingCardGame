@@ -4,6 +4,7 @@ import endGameScreen
 import division
 import subtractionScreenDuke as subtraction
 import integerScreen as integer
+import multiplication as mult
 
 from opponent import Opponent
 from spyral import Animation, easing
@@ -52,7 +53,7 @@ class FaceoffScreen(spyral.Scene):
         self.hero.scale_y = .80;
         # Create Opponent Sprite
         self.opponent = Opponent(self);
-        
+
         self.correct = False
         self.fireball1 = Fireball(self,1)
         self.fireball2 = Fireball(self,2)
@@ -146,6 +147,8 @@ class FaceoffScreen(spyral.Scene):
                 spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
             elif self.deck[self.selectedSubject].q.randomOpKey == "-":
                 spyral.director.push(subtraction.mainScene(self.deck[self.selectedSubject].q, diff))
+            elif self.deck[self.selectedSubject].q.randomOpKey == "*":
+                spyral.director.push(mult.mainScreen(self.deck[self.selectedSubject].q, diff))
         elif self.selectedSubject == "Integer":
             spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)

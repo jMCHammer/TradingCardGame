@@ -278,7 +278,7 @@ class mainScreen(spyral.Scene):
         text3.pos = (WIDTH/2 - 100, HEIGHT - 50)
         text3.anchor = 'midbottom'
         
-        dividend = drawFont(self, "Dividend: " + str(self.board.denom), spyral.Font(FONT, 30, WHITE))
+        dividend = drawFont(self, "Dividend: " + str(int(self.board.denom)), spyral.Font(FONT, 30, WHITE))
         dividend.pos = (WIDTH/2, HEIGHT - 80)
         dividend.anchor = 'midbottom'
 
@@ -289,11 +289,11 @@ class mainScreen(spyral.Scene):
         self.numHam = []
 
         for i in range(1,6):
-	        numham = drawFont(self, '', spyral.Font(FONT, 30, (255,255,255)))
-	        numham.anchor = 'midbottom'
-	        numham.pos = (WIDTH/3 + 50 + (i * WIDTH/20.0), HEIGHT - 50)
-	        numham.layer = 't'
-	        self.numHam.append(numham)
+            numham = drawFont(self, '', spyral.Font(FONT, 30, (255,255,255)))
+            numham.anchor = 'midbottom'
+            numham.pos = (WIDTH/3 + 50 + (i * WIDTH/20.0), HEIGHT - 50)
+            numham.layer = 't'
+            self.numHam.append(numham)
         if self.answer%1 > 0:
             dot = drawFont(self, '.', spyral.Font(FONT, 30, (255,255,255)))
             dot.pos = (WIDTH/3 + 50 + (4.5 * WIDTH/20.0), HEIGHT - 50)
@@ -310,6 +310,8 @@ class mainScreen(spyral.Scene):
         else:
             spyral.event.unregister("director.update", self.wait)
             print "end main screen"
+            spyral.director.pop()
+            spyral.director.get_scene().submitScreenAnswer(self.correct)
             pass
 		#TODO make transition from mainScreen to resultScreen
 
@@ -336,7 +338,3 @@ class mainScreen(spyral.Scene):
             resultText.pos = (WIDTH/2 + 200, HEIGHT/3)
             resultText.anchor = 'center'
         spyral.event.register("director.update", self.wait)
-
-class resultScreen(spyral.Scene):
-	def __init__(self, correct):
-		pass
