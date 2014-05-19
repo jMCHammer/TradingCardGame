@@ -16,7 +16,8 @@ allCards   = {
     "Geometry"         : ["Geometry",         100, 80],
     "Integer"          : ["Integer",          50,  60], 
     "Statistics"       : ["Statistics",       100, 120], 
-    "Fractions"        : ["Fractions",        100, 100]
+# Not enough time to implement Fraction logic :/
+#    "Fractions"        : ["Fractions",        100, 100]
     }
 
 class Model:

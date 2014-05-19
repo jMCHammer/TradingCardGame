@@ -47,6 +47,7 @@ class FaceoffScreen(spyral.Scene):
     def __init__(self):
         global manager
         spyral.Scene.__init__(self, SIZE)
+        self.load_style("game/style.spys")
         self.hero = Hero(self)
         self.hero.pos = (WIDTH-180, HEIGHT - 395)
         self.hero.scale_x = .80;
@@ -67,8 +68,8 @@ class FaceoffScreen(spyral.Scene):
             backButton   = spyral.widgets.Button("Back")
             answerButton = spyral.widgets.Button("Submit")
 
-            easyButton   = spyral.widgets.Button("Easy")
-            mediumButton = spyral.widgets.Button("Medium")
+            easyButton   = spyral.widgets.Button()
+            mediumButton = spyral.widgets.Button()
             hardButton   = spyral.widgets.Button("Hard")
             #Fields
             answerField  = spyral.widgets.TextInput(50, "")
@@ -332,7 +333,6 @@ class FaceoffScreen(spyral.Scene):
             except:
                 pass
             # Init health counters
-            print card
             self.showHealth[count] = (drawFont(self.scene, "Extras/Comic_Book.ttf","HP: "+str(self.deck[card].health), 25))
             # Draw Health counters on screen
             self.showHealth[count].layer = "text"
