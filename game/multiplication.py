@@ -315,6 +315,9 @@ class mainScreen(spyral.Scene):
 
     def isWin(self, fail):
         if fail:
+            resultText = drawFont(self, "Incorrect.  Answer is " + str(self.answer), spyral.Font(FONT, 50, (255,0,0)))
+            resultText.pos = (WIDTH/2, HEIGHT/3)
+            resultText.anchor = 'center'
             pass
         else:
             answer = 0
@@ -329,6 +332,9 @@ class mainScreen(spyral.Scene):
                 answer += answerline[i] * pow(10, 4 - i - isdot)
 
             self.correct = self.answer == answer
+            resultText = drawFont(self, "Correct!", spyral.Font(FONT, 50, (0,255,0)))
+            resultText.pos = (WIDTH/2 + 200, HEIGHT/3)
+            resultText.anchor = 'center'
         spyral.event.register("director.update", self.wait)
 
 class resultScreen(spyral.Scene):
