@@ -16,7 +16,7 @@ HEIGHT   = 900
 BG_COLOR = (0,0,0)
 GREEN    = (0, 255, 0)
 RED      = (255, 0, 0)
-WHITE    = (255, 255, 255)
+WHITE    = (200, 200, 200)
 SIZE     = (WIDTH, HEIGHT)
 
 class drawFont(spyral.Sprite):
@@ -367,7 +367,7 @@ class FaceoffScreen(spyral.Scene):
                 self.opponentcards[card].visible = False 
             #Card placement
             self.opponentcards[card].pos = (x, y)
-            x = x + 200
+            x = x + 350
             count += 1
         count = 0
 
