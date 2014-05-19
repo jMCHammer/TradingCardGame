@@ -3,11 +3,13 @@ import model
 import endGameScreen
 import division
 import subtractionScreenDuke as subtraction
+import integerScreen as integer
 
 from opponent import Opponent
 from spyral import Animation, easing
 from hero import Hero
 from card import Card
+import time
 
 WIDTH    = 1200
 HEIGHT   = 900
@@ -137,6 +139,8 @@ class FaceoffScreen(spyral.Scene):
                 spyral.director.push(division.sinkingScreen(self.deck[self.selectedSubject].q, diff))
             elif self.deck[self.selectedSubject].q.randomOpKey == "-":
                 spyral.director.push(subtraction.mainScene(self.deck[self.selectedSubject].q, diff))
+        elif self.selectedSubject == "Integer":
+            spyral.director.push(integer.mainScreen(self.deck[self.selectedSubject].q, diff))
         self.showQuestion = drawFont(self.scene, "Extras/Comic_Book.ttf", self.deck[self.selectedSubject].question, 25)
         self.showQuestion.pos = (WIDTH/2-200, HEIGHT/2 - 100)
         self.form.answerField.visible  = True
@@ -251,16 +255,22 @@ class FaceoffScreen(spyral.Scene):
             try:
                 if float(self.form.answerField.value) == float(self.deck[self.selectedSubject].answer):
                     self.correct = True
+                else:
+                    self.correct = False
                 self.dealDamage(self.deck[self.selectedSubject].damage)
                 print "Opponent's answer: " + str(self.opponent.correct)
                 self._reset()
             except(ValueError):
                 pass
 
-#    def submitScreenAnswer(self, correct):
-#        if correct:
-#            self.dealDamage(self.deck[self.selectedSubject].damage)
-#        self._reset()
+    def submitScreenAnswer(self, correct):
+        self.opponent.answerQuestion()
+        if correct:
+            self.correct = True
+        else:
+            self.correct = False
+        self.dealDamage(self.deck[self.selectedSubject].damage)
+        self._reset()
 
 ################### Drawing Functions #########################################
 #### Resets screen

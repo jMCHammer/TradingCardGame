@@ -44,6 +44,7 @@ def loadResources():
     resources["GayRunLeft"] = spyral.image.Image("Extras/run1.png").flip(True,False)
     resources["ship"] = spyral.image.Image("Extras/rms.png")
     resources["box"] = spyral.image.Image("Extras/box.png").scale(Vec2D(30, 30))
+    resources["hammer"] = spyral.image.Image("Extras/hammer.png")
     resources["beaker"] = spyral.image.Image("Extras/beaker.png")
     resources["fireball1"] = spyral.image.Image("Extras/fireball_up.png")
     resources["fireball2"] = spyral.image.Image("Extras/fireball_down.png")
