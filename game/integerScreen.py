@@ -444,9 +444,11 @@ class mainScreen(spyral.Scene):
 			self.cam.deRegister()
 			self.cam.stop()
 			self.dreg = True
+			if self.cam.balldrop:
+				self.cam.stopScroll = True
 			eval("self.steve." + self.cam.scrolldirection + "()")
 		
-		if self.dreg and self.choose and self.cam.balldrop:
+		if self.dreg and self.choose:
 			self.cam.scroll(-self.steve.ate.number)
 
 		if self.cam.stopScroll and self.offtime < 100:
