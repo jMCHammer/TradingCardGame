@@ -202,7 +202,7 @@ class mainScene(spyral.Scene):
             decimal2.pos = (decx, decy)
         for d in range(1,4):
             subbys = []
-            if(len(numString) >= d):
+            if(len(numString) >= d and 3 + DIFFICULTY[diff] > 4 - d):
                 lbeaker = LegitBeaker(self)
                 lbeaker.x = self.borrower.dx * (4 - d) - (lbeaker.width/2)
                 lbeaker.y = 2*HEIGHT/3 + WIDTH/25 - (lbeaker.height - 55)
